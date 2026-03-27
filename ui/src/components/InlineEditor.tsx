@@ -14,7 +14,7 @@ interface InlineEditorProps {
   mentions?: MentionOption[];
 }
 
-/** Shared padding so display and edit modes occupy the exact same box. */
+/** 共享内边距，使显示模式和编辑模式占据完全相同的框。 */
 const pad = "px-1 -mx-1";
 const markdownPad = "px-1";
 const AUTOSAVE_DEBOUNCE_MS = 900;
@@ -24,7 +24,7 @@ export function InlineEditor({
   onSave,
   as: Tag = "span",
   className,
-  placeholder = "Click to edit...",
+  placeholder = "点击编辑...",
   multiline = false,
   imageUploadHandler,
   mentions,
@@ -192,12 +192,12 @@ export function InlineEditor({
             )}
           >
             {autosaveState === "saving"
-              ? "Autosaving..."
+              ? "自动保存中..."
               : autosaveState === "saved"
-                ? "Saved"
+                ? "已保存"
                 : autosaveState === "error"
-                  ? "Could not save"
-                  : "Idle"}
+                  ? "保存失败"
+                  : "空闲"}
           </span>
         </div>
       </div>
@@ -228,8 +228,8 @@ export function InlineEditor({
     );
   }
 
-  // Use div instead of Tag when rendering markdown to avoid invalid nesting
-  // (e.g. <p> cannot contain the <div>/<p> elements that markdown produces)
+  // 渲染 markdown 时使用 div 代替 Tag 以避免无效嵌套
+  // （例如 <p> 不能包含 markdown 生成的 <div>/<p> 元素）
   const DisplayTag = value && multiline ? "div" : Tag;
 
   return (

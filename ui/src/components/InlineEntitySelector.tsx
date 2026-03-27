@@ -21,7 +21,7 @@ interface InlineEntitySelectorProps {
   className?: string;
   renderTriggerValue?: (option: InlineEntityOption | null) => ReactNode;
   renderOption?: (option: InlineEntityOption, isSelected: boolean) => ReactNode;
-  /** Skip the Portal so the popover stays in the DOM tree (fixes scroll inside Dialogs). */
+  /** 跳过 Portal，使弹出框保留在 DOM 树中（修复对话框内的滚动问题）。 */
   disablePortal?: boolean;
 }
 
@@ -120,9 +120,9 @@ export const InlineEntitySelector = forwardRef<HTMLButtonElement, InlineEntitySe
           disablePortal={disablePortal}
           onOpenAutoFocus={(event) => {
             event.preventDefault();
-            // On touch devices, don't auto-focus the search input to avoid
-            // opening the virtual keyboard which reshapes the viewport and
-            // pushes the popover off-screen.
+            // 在触摸设备上，不要自动聚焦搜索输入框，以避免
+            // 打开虚拟键盘导致视口重新调整大小，
+            // 并将弹出框推出屏幕。
             const isTouch = window.matchMedia("(pointer: coarse)").matches;
             if (!isTouch) {
               inputRef.current?.focus();

@@ -13,8 +13,8 @@ export function InstanceExperimentalSettings() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: "Instance Settings" },
-      { label: "Experimental" },
+      { label: "实例设置" },
+      { label: "实验性" },
     ]);
   }, [setBreadcrumbs]);
 
@@ -34,12 +34,12 @@ export function InstanceExperimentalSettings() {
       ]);
     },
     onError: (error) => {
-      setActionError(error instanceof Error ? error.message : "Failed to update experimental settings.");
+      setActionError(error instanceof Error ? error.message : "更新实验性设置失败。");
     },
   });
 
   if (experimentalQuery.isLoading) {
-    return <div className="text-sm text-muted-foreground">Loading experimental settings...</div>;
+    return <div className="text-sm text-muted-foreground">正在加载实验性设置...</div>;
   }
 
   if (experimentalQuery.error) {
@@ -47,7 +47,7 @@ export function InstanceExperimentalSettings() {
       <div className="text-sm text-destructive">
         {experimentalQuery.error instanceof Error
           ? experimentalQuery.error.message
-          : "Failed to load experimental settings."}
+          : "加载实验性设置失败。"}
       </div>
     );
   }
@@ -60,10 +60,10 @@ export function InstanceExperimentalSettings() {
       <div className="space-y-2">
         <div className="flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-muted-foreground" />
-          <h1 className="text-lg font-semibold">Experimental</h1>
+          <h1 className="text-lg font-semibold">实验性</h1>
         </div>
         <p className="text-sm text-muted-foreground">
-          Opt into features that are still being evaluated before they become default behavior.
+          选择启用仍在评估中、尚未成为默认行为的功能。
         </p>
       </div>
 
@@ -76,16 +76,15 @@ export function InstanceExperimentalSettings() {
       <section className="rounded-xl border border-border bg-card p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
-            <h2 className="text-sm font-semibold">Enable Isolated Workspaces</h2>
+            <h2 className="text-sm font-semibold">启用隔离工作区</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">
-              Show execution workspace controls in project configuration and allow isolated workspace behavior for new
-              and existing issue runs.
+              在项目配置中显示执行工作区控件，并允许新的和现有的问题运行使用隔离工作区行为。
             </p>
           </div>
           <button
             type="button"
             data-slot="toggle"
-            aria-label="Toggle isolated workspaces experimental setting"
+            aria-label="切换隔离工作区实验性设置"
             disabled={toggleMutation.isPending}
             className={cn(
               "relative inline-flex h-5 w-9 items-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-60",

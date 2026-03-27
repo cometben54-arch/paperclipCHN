@@ -26,7 +26,7 @@ import {
 // ---------------------------------------------------------------------------
 
 /**
- * Threshold for string length above which a Textarea is used instead of a standard Input.
+ * 字符串长度超过此阈值时使用 Textarea 而不是标准 Input。
  */
 const TEXTAREA_THRESHOLD = 200;
 
@@ -35,9 +35,9 @@ const TEXTAREA_THRESHOLD = 200;
 // ---------------------------------------------------------------------------
 
 /**
- * Subset of JSON Schema properties we understand for form rendering.
- * We intentionally keep this loose (`Record<string, unknown>`) at the top
- * level to match the `JsonSchema` type in shared, but narrow internally.
+ * 用于表单渲染的 JSON Schema 属性子集。
+ * 我们有意在顶层保持宽松的类型（`Record<string, unknown>`）
+ * 以匹配 shared 中的 `JsonSchema` 类型，但在内部进行收窄。
  */
 export interface JsonSchemaNode {
   type?: string | string[];
