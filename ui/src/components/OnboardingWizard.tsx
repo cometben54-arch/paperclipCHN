@@ -813,7 +813,7 @@ export function OnboardingWizard() {
                           showMoreAdapters ? "rotate-0" : "-rotate-90"
                         )}
                       />
-                      More Agent Adapter Types
+                      更多智能体适配器类型
                     </button>
 
                     {showMoreAdapters && (
@@ -823,33 +823,33 @@ export function OnboardingWizard() {
                             value: "gemini_local" as const,
                             label: "Gemini CLI",
                             icon: Gem,
-                            desc: "Local Gemini agent"
+                            desc: "本地 Gemini 智能体"
                           },
                           {
                             value: "opencode_local" as const,
                             label: "OpenCode",
                             icon: OpenCodeLogoIcon,
-                            desc: "Local multi-provider agent"
+                            desc: "本地多供应商智能体"
                           },
                           {
                             value: "pi_local" as const,
                             label: "Pi",
                             icon: Terminal,
-                            desc: "Local Pi agent"
+                            desc: "本地 Pi 智能体"
                           },
                           {
                             value: "cursor" as const,
                             label: "Cursor",
                             icon: MousePointer2,
-                            desc: "Local Cursor agent"
+                            desc: "本地 Cursor 智能体"
                           },
                           {
                             value: "openclaw_gateway" as const,
                             label: "OpenClaw Gateway",
                             icon: Bot,
-                            desc: "Invoke OpenClaw via gateway protocol",
+                            desc: "通过网关协议调用 OpenClaw",
                             comingSoon: true,
-                            disabledLabel: "Configure OpenClaw within the App"
+                            disabledLabel: "在应用内配置 OpenClaw"
                           }
                         ].map((opt) => (
                           <button
@@ -889,7 +889,7 @@ export function OnboardingWizard() {
                             <span className="text-muted-foreground text-[10px]">
                               {opt.comingSoon
                                 ? (opt as { disabledLabel?: string })
-                                    .disabledLabel ?? "Coming soon"
+                                    .disabledLabel ?? "即将推出"
                                 : opt.desc}
                             </span>
                           </button>
@@ -898,7 +898,7 @@ export function OnboardingWizard() {
                     )}
                   </div>
 
-                  {/* Conditional adapter fields */}
+                  {/* 条件适配器字段 */}
                   {(adapterType === "claude_local" ||
                     adapterType === "codex_local" ||
                     adapterType === "gemini_local" ||
@@ -908,7 +908,7 @@ export function OnboardingWizard() {
                     <div className="space-y-3">
                       <div>
                         <label className="text-xs text-muted-foreground mb-1 block">
-                          Model
+                          模型
                         </label>
                         <Popover
                           open={modelOpen}

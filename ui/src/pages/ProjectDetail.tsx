@@ -117,7 +117,7 @@ function ColorPicker({
         onClick={() => setOpen(!open)}
         className="shrink-0 h-5 w-5 rounded-md cursor-pointer hover:ring-2 hover:ring-foreground/20 transition-[box-shadow]"
         style={{ backgroundColor: currentColor }}
-        aria-label="Change project color"
+        aria-label="更改项目颜色"
       />
       {open && (
         <div className="absolute top-full left-0 mt-2 p-2 bg-popover border border-border rounded-lg shadow-lg z-50 w-max">
@@ -135,7 +135,7 @@ function ColorPicker({
                     : "hover:ring-2 hover:ring-foreground/30"
                 }`}
                 style={{ backgroundColor: color }}
-                aria-label={`Select color ${color}`}
+                aria-label={`选择颜色 ${color}`}
               />
             ))}
           </div>
@@ -145,7 +145,7 @@ function ColorPicker({
   );
 }
 
-/* ── List (issues) tab content ── */
+/* ── 列表（任务）选项卡内容 ── */
 
 function ProjectIssuesList({ projectId, companyId }: { projectId: string; companyId: string }) {
   const queryClient = useQueryClient();
@@ -200,7 +200,7 @@ function ProjectIssuesList({ projectId, companyId }: { projectId: string; compan
   );
 }
 
-/* ── Main project page ── */
+/* ── 项目主页面 ── */
 
 export function ProjectDetail() {
   const { companyPrefix, projectId, filter } = useParams<{
@@ -321,8 +321,8 @@ export function ProjectDetail() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: "Projects", href: "/projects" },
-      { label: project?.name ?? routeProjectRef ?? "Project" },
+      { label: "项目", href: "/projects" },
+      { label: project?.name ?? routeProjectRef ?? "项目" },
     ]);
   }, [setBreadcrumbs, project, routeProjectRef]);
 

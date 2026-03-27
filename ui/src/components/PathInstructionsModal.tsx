@@ -69,15 +69,15 @@ export function PathInstructionsModal({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-base">How to get a full path</DialogTitle>
+          <DialogTitle className="text-base">如何获取完整路径</DialogTitle>
           <DialogDescription>
-            Paste the absolute path (e.g.{" "}
+            将绝对路径（例如{" "}
             <code className="text-xs bg-muted px-1 py-0.5 rounded">/Users/you/project</code>
-            ) into the input field.
+            ）粘贴到输入框中。
           </DialogDescription>
         </DialogHeader>
 
-        {/* Platform tabs */}
+        {/* 平台选项卡 */}
         <div className="flex gap-1 rounded-md border border-border p-0.5">
           {platforms.map((p) => (
             <button
@@ -97,7 +97,7 @@ export function PathInstructionsModal({
           ))}
         </div>
 
-        {/* Steps */}
+        {/* 步骤 */}
         <ol className="space-y-2 text-sm">
           {current.steps.map((step, i) => (
             <li key={i} className="flex gap-2">
@@ -120,8 +120,8 @@ export function PathInstructionsModal({
 }
 
 /**
- * Small "Choose" button that opens the PathInstructionsModal.
- * Drop-in replacement for the old showDirectoryPicker buttons.
+ * 小型"选择"按钮，打开 PathInstructionsModal。
+ * 旧版 showDirectoryPicker 按钮的直接替代品。
  */
 export function ChoosePathButton({ className }: { className?: string }) {
   const [open, setOpen] = useState(false);
@@ -135,7 +135,7 @@ export function ChoosePathButton({ className }: { className?: string }) {
         )}
         onClick={() => setOpen(true)}
       >
-        Choose
+        选择
       </button>
       <PathInstructionsModal open={open} onOpenChange={setOpen} />
     </>

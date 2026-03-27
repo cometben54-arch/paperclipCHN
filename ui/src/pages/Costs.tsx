@@ -859,15 +859,15 @@ export function Costs() {
                     icon={ArrowUpRight}
                   />
                   <MetricTile
-                    label="Paused agents"
+                    label="已暂停智能体"
                     value={String(budgetData?.pausedAgentCount ?? 0)}
-                    subtitle="Agent heartbeats blocked by budget"
+                    subtitle="因预算限制而阻止心跳的智能体"
                     icon={Coins}
                   />
                   <MetricTile
-                    label="Paused projects"
+                    label="已暂停项目"
                     value={String(budgetData?.pausedProjectCount ?? 0)}
-                    subtitle="Project execution blocked by budget"
+                    subtitle="因预算限制而阻止执行的项目"
                     icon={DollarSign}
                   />
                 </CardContent>
@@ -876,9 +876,9 @@ export function Costs() {
               {activeBudgetIncidents.length > 0 ? (
                 <div className="space-y-3">
                   <div>
-                    <h2 className="text-lg font-semibold">Active incidents</h2>
+                    <h2 className="text-lg font-semibold">活跃事件</h2>
                     <p className="text-sm text-muted-foreground">
-                      Resolve hard stops here by raising the budget or explicitly keeping the scope paused.
+                      在此处通过提高预算或明确保持暂停来解决硬性停止。
                     </p>
                   </div>
                   <div className="grid gap-4 xl:grid-cols-2">
@@ -907,13 +907,13 @@ export function Costs() {
                   return (
                     <section key={scopeType} className="space-y-3">
                       <div>
-                        <h2 className="text-lg font-semibold capitalize">{scopeType} budgets</h2>
+                        <h2 className="text-lg font-semibold capitalize">{scopeType === "company" ? "公司" : scopeType === "agent" ? "智能体" : "项目"}预算</h2>
                         <p className="text-sm text-muted-foreground">
                           {scopeType === "company"
-                            ? "Company-wide monthly policy."
+                            ? "全公司月度策略。"
                             : scopeType === "agent"
-                              ? "Recurring monthly spend policies for individual agents."
-                              : "Lifetime spend policies for execution-bound projects."}
+                              ? "各智能体的循环月度花费策略。"
+                              : "执行绑定项目的终身花费策略。"}
                         </p>
                       </div>
                       <div className="grid gap-4 xl:grid-cols-2">
@@ -939,7 +939,7 @@ export function Costs() {
                 {budgetPolicies.length === 0 ? (
                   <Card>
                     <CardContent className="px-5 py-8 text-sm text-muted-foreground">
-                      No budget policies yet. Set agent and project budgets from their detail pages, or use the existing company monthly budget control.
+                      暂无预算策略。请从智能体和项目详情页设置预算，或使用现有的公司月度预算控制。
                     </CardContent>
                   </Card>
                 ) : null}
