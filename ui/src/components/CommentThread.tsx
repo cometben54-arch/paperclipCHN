@@ -184,7 +184,7 @@ const TimelineList = memo(function TimelineList({
                   />
                 </Link>
               ) : (
-                <Identity name="You" size="sm" />
+                <Identity name="你" size="sm" />
               )}
               <span className="flex items-center gap-1.5">
                 {companyId ? (

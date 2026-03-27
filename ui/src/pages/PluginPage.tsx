@@ -11,12 +11,11 @@ import { ArrowLeft } from "lucide-react";
 import { NotFoundPage } from "./NotFound";
 
 /**
- * Company-context plugin page. Renders a plugin's `page` slot at
- * `/:companyPrefix/plugins/:pluginId` when the plugin declares a page slot
- * and is enabled for that company.
+ * 公司上下文插件页面。当插件声明了页面插槽并在该公司启用时，
+ * 在 `/:companyPrefix/plugins/:pluginId` 渲染插件的 `page` 插槽。
  *
- * @see doc/plugins/PLUGIN_SPEC.md §19.2 — Company-Context Routes
- * @see doc/plugins/PLUGIN_SPEC.md §24.4 — Company-Context Plugin Page
+ * @see doc/plugins/PLUGIN_SPEC.md §19.2 — 公司上下文路由
+ * @see doc/plugins/PLUGIN_SPEC.md §24.4 — 公司上下文插件页面
  */
 export function PluginPage() {
   const { companyPrefix: routeCompanyPrefix, pluginId, pluginRoutePath } = useParams<{
@@ -92,7 +91,7 @@ export function PluginPage() {
   useEffect(() => {
     if (pageSlot) {
       setBreadcrumbs([
-        { label: "Plugins", href: "/instance/settings/plugins" },
+        { label: "插件", href: "/instance/settings/plugins" },
         { label: pageSlot.pluginDisplayName },
       ]);
     }
@@ -104,13 +103,13 @@ export function PluginPage() {
     }
     return (
       <div className="space-y-4">
-        <p className="text-sm text-muted-foreground">Select a company to view this page.</p>
+        <p className="text-sm text-muted-foreground">请选择一个公司以查看此页面。</p>
       </div>
     );
   }
 
   if (!contributions) {
-    return <div className="text-sm text-muted-foreground">Loading…</div>;
+    return <div className="text-sm text-muted-foreground">正在加载…</div>;
   }
 
   if (!pluginId && pluginRoutePath) {
@@ -120,7 +119,7 @@ export function PluginPage() {
     if (duplicateMatches.length > 1) {
       return (
         <div className="rounded-md border border-destructive/30 bg-destructive/5 px-3 py-2 text-sm text-destructive">
-          Multiple plugins declare the route <code>{pluginRoutePath}</code>. Use the plugin-id route until the conflict is resolved.
+          多个插件声明了路由 <code>{pluginRoutePath}</code>。请使用插件 ID 路由，直到冲突解决。
         </div>
       );
     }
@@ -130,7 +129,7 @@ export function PluginPage() {
     if (pluginRoutePath) {
       return <NotFoundPage scope="board" />;
     }
-    // No page slot: redirect to plugin settings where plugin info is always shown
+    // 没有页面插槽：重定向到始终显示插件信息的插件设置页
     const settingsPath = pluginId ? `/instance/settings/plugins/${pluginId}` : "/instance/settings/plugins";
     return <Navigate to={settingsPath} replace />;
   }
@@ -141,7 +140,7 @@ export function PluginPage() {
         <Button variant="ghost" size="sm" asChild>
           <Link to={companyPrefix ? `/${companyPrefix}/dashboard` : "/dashboard"}>
             <ArrowLeft className="h-4 w-4 mr-1" />
-            Back
+            返回
           </Link>
         </Button>
       </div>

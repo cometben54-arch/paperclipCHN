@@ -342,37 +342,33 @@ async function importPluginModule(url: string): Promise<Record<string, unknown>>
 }
 
 /**
- * Dynamically import a plugin's UI entry module and register all named
- * exports that look like React components (functions or classes) into the
- * component registry.
+ * 动态导入插件的 UI 入口模块，并将所有看起来像 React 组件（函数或类）的
+ * 命名导出注册到组件注册表中。
  *
- * This replaces the previous approach where plugin bundles had to
- * self-register via `window.paperclipPlugins.registerReactComponent()`.
- * Now the host is responsible for importing the module and binding
- * exports to the correct `pluginKey:exportName` registry keys.
+ * 这取代了之前需要插件包通过 `window.paperclipPlugins.registerReactComponent()`
+ * 自行注册的方式。现在主机负责导入模块并将导出绑定到正确的
+ * `pluginKey:exportName` 注册表键。
  *
- * Plugin modules are loaded with bare-specifier rewriting so that imports
- * of `@paperclipai/plugin-sdk/ui`, `react`, and `react-dom` resolve to the
- * host-provided implementations via the bridge registry.
+ * 插件模块使用裸说明符重写加载，以便 `@paperclipai/plugin-sdk/ui`、`react`
+ * 和 `react-dom` 的导入通过桥接注册表解析为主机提供的实现。
  *
- * Web-component registrations still work: if the module has a named export
- * that matches an `exportName` declared in a slot AND that export is a
- * string (the custom element tag name), it's registered as a web component.
+ * Web 组件注册仍然有效：如果模块有一个命名导出与插槽中声明的 `exportName`
+ * 匹配且该导出是字符串（自定义元素标签名），则注册为 Web 组件。
  */
 async function loadPluginModule(contribution: PluginUiContribution): Promise<void> {
   const { pluginId, pluginKey, slots, launchers } = contribution;
   const moduleKey = buildPluginModuleKey(contribution);
 
-  // Already loaded or loading — return early.
+  // 已加载或正在加载 — 直接返回。
   const state = pluginLoadStates.get(moduleKey);
   if (state === "loaded" || state === "loading") {
-    // If currently loading, wait for the inflight promise.
+    // 如果当前正在加载，等待进行中的 promise。
     const inflight = inflightImports.get(pluginId);
     if (inflight) await inflight;
     return;
   }
 
-  // If another import for this plugin ID is currently in progress, wait for it.
+  // 如果该插件 ID 的另一个导入正在进行中，等待它完成。
   const running = inflightImports.get(pluginId);
   if (running) {
     await running;

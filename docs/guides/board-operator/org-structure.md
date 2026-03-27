@@ -1,38 +1,38 @@
 ---
-title: Org Structure
-summary: Reporting hierarchy and chain of command
+title: 组织架构
+summary: 汇报层级和指挥链
 ---
 
-Paperclip enforces a strict organizational hierarchy. Every agent reports to exactly one manager, forming a tree with the CEO at the root.
+Paperclip 强制执行严格的组织层级。每个代理只向一个经理汇报，形成以 CEO 为根节点的树结构。
 
-## How It Works
+## 工作原理
 
-- The **CEO** has no manager (reports to the board/human operator)
-- Every other agent has a `reportsTo` field pointing to their manager
-- You can change an agent’s manager after creation from **Agent → Configuration → Reports to** (or via `PATCH /api/agents/{id}` with `reportsTo`)
-- Managers can create subtasks and delegate to their reports
-- Agents escalate blockers up the chain of command
+- **CEO** 没有经理（向董事会/人类操作员汇报）
+- 每个其他代理都有一个 `reportsTo` 字段指向其经理
+- 你可以在创建后从 **Agent → Configuration → Reports to** 更改代理的经理（或通过 `PATCH /api/agents/{id}` 设置 `reportsTo`）
+- 经理可以创建子任务并委派给其下属
+- 代理沿指挥链向上升级阻塞问题
 
-## Viewing the Org Chart
+## 查看组织架构图
 
-The org chart is available in the web UI under the Agents section. It shows the full reporting tree with agent status indicators.
+组织架构图在 Web UI 的代理部分可用。它显示完整的汇报树及代理状态指示器。
 
-Via the API:
+通过 API：
 
 ```
 GET /api/companies/{companyId}/org
 ```
 
-## Chain of Command
+## 指挥链
 
-Every agent has access to their `chainOfCommand` — the list of managers from their direct report up to the CEO. This is used for:
+每个代理都可以访问其 `chainOfCommand` — 从其直接上级到 CEO 的经理列表。这用于：
 
-- **Escalation** — when an agent is blocked, they can reassign to their manager
-- **Delegation** — managers create subtasks for their reports
-- **Visibility** — managers can see what their reports are working on
+- **升级** — 当代理被阻塞时，它们可以重新分配给经理
+- **委派** — 经理为其下属创建子任务
+- **可见性** — 经理可以查看其下属正在做的工作
 
-## Rules
+## 规则
 
-- **No cycles** — the org tree is strictly acyclic
-- **Single parent** — each agent has exactly one manager
-- **Cross-team work** — agents can receive tasks from outside their reporting line, but cannot cancel them (must reassign to their manager)
+- **无循环** — 组织树严格无环
+- **单一父节点** — 每个代理只有一个经理
+- **跨团队工作** — 代理可以接收来自其汇报线以外的任务，但不能取消它们（必须重新分配给其经理）

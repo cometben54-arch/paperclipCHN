@@ -975,7 +975,7 @@ export function JsonSchemaForm({
     onChange(newVal as Record<string, unknown>);
   }, [onChange]);
 
-  // If it's a scalar at root, render a single FormField
+  // 如果根节点是标量，渲染单个 FormField
   if (type !== "object") {
     return (
       <div className={className}>
@@ -992,7 +992,7 @@ export function JsonSchemaForm({
     );
   }
 
-  // Memoize to avoid re-renders when parent provides new object references
+  // 缓存以避免父组件提供新对象引用时的重新渲染
   const properties = useMemo(() => schema.properties ?? {}, [schema.properties]);
   const requiredFields = useMemo(
     () => new Set(schema.required ?? []),
@@ -1014,7 +1014,7 @@ export function JsonSchemaForm({
           className,
         )}
       >
-        No configuration options available.
+        没有可用的配置选项。
       </div>
     );
   }

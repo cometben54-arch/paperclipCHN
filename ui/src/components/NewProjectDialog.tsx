@@ -153,11 +153,11 @@ export function NewProjectDialog() {
     const repoUrl = workspaceRepoUrl.trim();
 
     if (localPath && !isAbsolutePath(localPath)) {
-      setWorkspaceError("Local folder must be a full absolute path.");
+      setWorkspaceError("本地文件夹必须是完整的绝对路径。");
       return;
     }
     if (repoUrl && !isGitHubRepoUrl(repoUrl)) {
-      setWorkspaceError("Repo must use a valid GitHub repo URL.");
+      setWorkspaceError("仓库必须使用有效的 GitHub 仓库 URL。");
       return;
     }
 
@@ -189,7 +189,7 @@ export function NewProjectDialog() {
       reset();
       closeNewProject();
     } catch {
-      // surface through createProject.isError
+      // 通过 createProject.isError 暴露错误
     }
   }
 
@@ -218,7 +218,7 @@ export function NewProjectDialog() {
         className={cn("p-0 gap-0", expanded ? "sm:max-w-2xl" : "sm:max-w-lg")}
         onKeyDown={handleKeyDown}
       >
-        {/* Header */}
+        {/* 头部 */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {selectedCompany && (
@@ -227,7 +227,7 @@ export function NewProjectDialog() {
               </span>
             )}
             <span className="text-muted-foreground/60">&rsaquo;</span>
-            <span>New project</span>
+            <span>新建项目</span>
           </div>
           <div className="flex items-center gap-1">
             <Button

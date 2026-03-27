@@ -483,22 +483,21 @@ export function CompanySettings() {
             <Button size="sm" variant="outline" asChild>
               <a href="/company/import">
                 <Upload className="mr-1.5 h-3.5 w-3.5" />
-                Import
+                导入
               </a>
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Danger Zone */}
+      {/* 危险区域 */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-destructive uppercase tracking-wide">
-          Danger Zone
+          危险区域
         </div>
         <div className="space-y-3 rounded-md border border-destructive/40 bg-destructive/5 px-4 py-4">
           <p className="text-sm text-muted-foreground">
-            Archive this company to hide it from the sidebar. This persists in
-            the database.
+            归档此公司以从侧边栏中隐藏。数据将保留在数据库中。
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -511,7 +510,7 @@ export function CompanySettings() {
               onClick={() => {
                 if (!selectedCompanyId) return;
                 const confirmed = window.confirm(
-                  `Archive company "${selectedCompany.name}"? It will be hidden from the sidebar.`
+                  `归档公司 "${selectedCompany.name}"？它将从侧边栏中隐藏。`
                 );
                 if (!confirmed) return;
                 const nextCompanyId =
