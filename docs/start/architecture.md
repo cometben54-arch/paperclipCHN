@@ -1,11 +1,11 @@
 ---
-title: Architecture
-summary: Stack overview, request flow, and adapter model
+title: 架构
+summary: 技术栈概览、请求流程和适配器模型
 ---
 
-Paperclip is a monorepo with four main layers.
+Paperclip 是一个包含四个主要层次的 monorepo。
 
-## Stack Overview
+## 技术栈概览
 
 ```
 ┌─────────────────────────────────────┐
@@ -24,75 +24,75 @@ Paperclip is a monorepo with four main layers.
 └─────────────────────────────────────┘
 ```
 
-## Technology Stack
+## 技术栈
 
-| Layer | Technology |
+| 层次 | 技术 |
 |-------|-----------|
-| Frontend | React 19, Vite 6, React Router 7, Radix UI, Tailwind CSS 4, TanStack Query |
-| Backend | Node.js 20+, Express.js 5, TypeScript |
-| Database | PostgreSQL 17 (or embedded PGlite), Drizzle ORM |
-| Auth | Better Auth (sessions + API keys) |
-| Adapters | Claude Code CLI, Codex CLI, shell process, HTTP webhook |
-| Package manager | pnpm 9 with workspaces |
+| 前端 | React 19, Vite 6, React Router 7, Radix UI, Tailwind CSS 4, TanStack Query |
+| 后端 | Node.js 20+, Express.js 5, TypeScript |
+| 数据库 | PostgreSQL 17（或内嵌 PGlite）, Drizzle ORM |
+| 认证 | Better Auth（会话 + API 密钥） |
+| 适配器 | Claude Code CLI, Codex CLI, shell 进程, HTTP webhook |
+| 包管理器 | pnpm 9 with workspaces |
 
-## Repository Structure
+## 仓库结构
 
 ```
 paperclip/
-├── ui/                          # React frontend
-│   ├── src/pages/              # Route pages
-│   ├── src/components/         # React components
-│   ├── src/api/                # API client
-│   └── src/context/            # React context providers
+├── ui/                          # React 前端
+│   ├── src/pages/              # 路由页面
+│   ├── src/components/         # React 组件
+│   ├── src/api/                # API 客户端
+│   └── src/context/            # React 上下文提供者
 │
 ├── server/                      # Express.js API
-│   ├── src/routes/             # REST endpoints
-│   ├── src/services/           # Business logic
-│   ├── src/adapters/           # Agent execution adapters
-│   └── src/middleware/         # Auth, logging
+│   ├── src/routes/             # REST 端点
+│   ├── src/services/           # 业务逻辑
+│   ├── src/adapters/           # 代理执行适配器
+│   └── src/middleware/         # 认证、日志
 │
 ├── packages/
-│   ├── db/                      # Drizzle schema + migrations
-│   ├── shared/                  # API types, constants, validators
-│   ├── adapter-utils/           # Adapter interfaces and helpers
+│   ├── db/                      # Drizzle schema + 迁移
+│   ├── shared/                  # API 类型、常量、验证器
+│   ├── adapter-utils/           # 适配器接口和辅助工具
 │   └── adapters/
-│       ├── claude-local/        # Claude Code adapter
-│       └── codex-local/         # OpenAI Codex adapter
+│       ├── claude-local/        # Claude Code 适配器
+│       └── codex-local/         # OpenAI Codex 适配器
 │
-├── skills/                      # Agent skills
-│   └── paperclip/               # Core Paperclip skill (heartbeat protocol)
+├── skills/                      # 代理技能
+│   └── paperclip/               # 核心 Paperclip 技能（心跳协议）
 │
-├── cli/                         # CLI client
-│   └── src/                     # Setup and control-plane commands
+├── cli/                         # CLI 客户端
+│   └── src/                     # 设置和控制平面命令
 │
-└── doc/                         # Internal documentation
+└── doc/                         # 内部文档
 ```
 
-## Request Flow
+## 请求流程
 
-When a heartbeat fires:
+当心跳触发时：
 
-1. **Trigger** — Scheduler, manual invoke, or event (assignment, mention) triggers a heartbeat
-2. **Adapter invocation** — Server calls the configured adapter's `execute()` function
-3. **Agent process** — Adapter spawns the agent (e.g. Claude Code CLI) with Paperclip env vars and a prompt
-4. **Agent work** — The agent calls Paperclip's REST API to check assignments, checkout tasks, do work, and update status
-5. **Result capture** — Adapter captures stdout, parses usage/cost data, extracts session state
-6. **Run record** — Server records the run result, costs, and any session state for next heartbeat
+1. **触发** — 调度器、手动调用或事件（任务分配、提及）触发心跳
+2. **适配器调用** — 服务器调用已配置适配器的 `execute()` 函数
+3. **代理进程** — 适配器使用 Paperclip 环境变量和提示词生成代理（例如 Claude Code CLI）
+4. **代理工作** — 代理调用 Paperclip 的 REST API 来检查任务分配、检出任务、执行工作并更新状态
+5. **结果捕获** — 适配器捕获 stdout，解析使用量/成本数据，提取会话状态
+6. **运行记录** — 服务器记录运行结果、成本以及下次心跳的任何会话状态
 
-## Adapter Model
+## 适配器模型
 
-Adapters are the bridge between Paperclip and agent runtimes. Each adapter is a package with three modules:
+适配器是 Paperclip 与代理运行时之间的桥梁。每个适配器是一个包含三个模块的包：
 
-- **Server module** — `execute()` function that spawns/calls the agent, plus environment diagnostics
-- **UI module** — stdout parser for the run viewer, config form fields for agent creation
-- **CLI module** — terminal formatter for `paperclipai run --watch`
+- **服务器模块** — 生成/调用代理的 `execute()` 函数，以及环境诊断
+- **UI 模块** — 运行查看器的 stdout 解析器，代理创建的配置表单字段
+- **CLI 模块** — `paperclipai run --watch` 的终端格式化器
 
-Built-in adapters: `claude_local`, `codex_local`, `process`, `http`. You can create custom adapters for any runtime.
+内置适配器：`claude_local`、`codex_local`、`process`、`http`。你可以为任何运行时创建自定义适配器。
 
-## Key Design Decisions
+## 关键设计决策
 
-- **Control plane, not execution plane** — Paperclip orchestrates agents; it doesn't run them
-- **Company-scoped** — all entities belong to exactly one company; strict data boundaries
-- **Single-assignee tasks** — atomic checkout prevents concurrent work on the same task
-- **Adapter-agnostic** — any runtime that can call an HTTP API works as an agent
-- **Embedded by default** — zero-config local mode with embedded PostgreSQL
+- **控制平面，而非执行平面** — Paperclip 编排代理；它不运行代理
+- **公司级作用域** — 所有实体都属于恰好一家公司；严格的数据边界
+- **单受理人任务** — 原子检出防止对同一任务的并发工作
+- **适配器无关性** — 任何能调用 HTTP API 的运行时都可以作为代理
+- **默认内嵌** — 使用内嵌 PostgreSQL 的零配置本地模式

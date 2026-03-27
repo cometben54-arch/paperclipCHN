@@ -76,11 +76,10 @@ type UsePluginLaunchersResult = {
 
 type PluginLauncherRuntimeContextValue = {
   /**
-   * Open a launcher using already-discovered contribution metadata.
+   * 使用已发现的贡献元数据打开启动器。
    *
-   * The runtime accepts the normalized `PluginUiContribution` so callers can
-   * reuse the `/api/plugins/ui-contributions` payload they already fetched
-   * instead of issuing another request for each launcher activation.
+   * 运行时接受规范化的 `PluginUiContribution`，以便调用方可以复用已获取的
+   * `/api/plugins/ui-contributions` 载荷，而无需为每次启动器激活发起新请求。
    */
   activateLauncher(
     launcher: ResolvedPluginLauncher,
@@ -129,7 +128,7 @@ const PluginLauncherRuntimeContext = createContext<PluginLauncherRuntimeContextV
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error && error.message) return error.message;
-  return "Unknown error";
+  return "未知错误";
 }
 
 function buildLauncherHostContext(
@@ -252,13 +251,11 @@ function isPluginLauncherBounds(value: unknown): value is PluginLauncherBounds {
 }
 
 /**
- * Discover launchers for the requested host placement zones from the normalized
- * `/api/plugins/ui-contributions` response.
+ * 从规范化的 `/api/plugins/ui-contributions` 响应中发现请求的主机放置区域的启动器。
  *
- * This is the shared discovery path for toolbar, sidebar, detail-view, and
- * context-menu launchers. The hook applies host-side entity filtering and
- * returns both the sorted launcher list and a contribution map so activation
- * can stay on cached metadata.
+ * 这是工具栏、侧边栏、详情视图和上下文菜单启动器的共享发现路径。
+ * 该 hook 应用主机端实体过滤，并返回排序后的启动器列表和贡献映射，
+ * 以便激活操作可以使用缓存的元数据。
  */
 export function usePluginLaunchers(
   filters: UsePluginLaunchersFilters,
@@ -338,11 +335,10 @@ async function resolveLauncherComponent(
 }
 
 /**
- * Scope bridge calls to the currently rendered launcher host context.
+ * 将桥接调用限定在当前渲染的启动器主机上下文中。
  *
- * Hooks such as `useHostContext()`, `usePluginData()`, and `usePluginAction()`
- * consume this ambient context so the bridge can forward company/entity scope
- * and render-environment metadata to the plugin worker.
+ * `useHostContext()`、`usePluginData()` 和 `usePluginAction()` 等 hook
+ * 使用此环境上下文，以便桥接器将公司/实体范围和渲染环境元数据转发给插件 worker。
  */
 function PluginLauncherBridgeScope({
   pluginId,
@@ -379,7 +375,7 @@ class LauncherErrorBoundary extends Component<LauncherErrorBoundaryProps, Launch
   }
 
   override componentDidCatch(error: unknown, info: ErrorInfo): void {
-    console.error("Plugin launcher render failed", {
+    console.error("插件启动器渲染失败", {
       pluginKey: this.props.launcher.pluginKey,
       launcherId: this.props.launcher.id,
       error,
@@ -391,7 +387,7 @@ class LauncherErrorBoundary extends Component<LauncherErrorBoundaryProps, Launch
     if (this.state.hasError) {
       return (
         <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
-          {this.props.launcher.pluginDisplayName}: failed to render
+          {this.props.launcher.pluginDisplayName}：渲染失败
         </div>
       );
     }
@@ -430,7 +426,7 @@ function LauncherRenderContent({
 
     return (
       <div className="rounded-md border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
-        {instance.launcher.pluginDisplayName}: could not resolve launcher target "{instance.launcher.action.target}".
+        {instance.launcher.pluginDisplayName}：无法解析启动器目标 "{instance.launcher.action.target}"。
       </div>
     );
   }
@@ -514,8 +510,8 @@ function LauncherModalShell({
   }), [instance, requestBounds]);
 
   const baseZ = launcherOverlayBaseZIndex + stackIndex * 20;
-  // Keep each launcher in a deterministic z-index band so every stacked modal,
-  // drawer, or popover retains its own backdrop/panel pairing.
+  // 将每个启动器保持在确定的 z-index 区间内，以确保每个堆叠的模态框、
+  // 抽屉或弹出框保留各自的背景/面板配对。
   const shellType = instance.launcher.action.type;
   const containerStyle = shellType === "openPopover"
     ? launcherPopoverStyle(instance)
@@ -570,7 +566,7 @@ function LauncherModalShell({
             className="ml-auto"
             onClick={() => void closeLauncher(instance.key, { reason: "programmatic" })}
           >
-            Close
+            关闭
           </Button>
         </div>
         <div
@@ -621,14 +617,14 @@ export function PluginLauncherProvider({ children }: { children: ReactNode }) {
     void Promise.all(
       stack.map((entry) => closeLauncher(entry.key, { reason: "hostNavigation" })),
     );
-    // Only react to navigation changes, not stack churn.
+    // 仅响应导航变化，不响应堆栈变动。
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.key]);
 
   const requestBounds = useCallback(
     async (key: string, request: PluginModalBoundsRequest) => {
-      // Bounds changes are host-validated. Unsupported presets are ignored so
-      // plugin UI cannot push the shell into an undefined layout state.
+      // 边界变更由主机验证。不支持的预设将被忽略，
+      // 以防止插件 UI 将外壳推入未定义的布局状态。
       if (!isPluginLauncherBounds(request.bounds)) {
         return;
       }
@@ -774,7 +770,7 @@ export function PluginLauncherOutlet({
   if (errorMessage) {
     return (
       <div className={cn("rounded-md border border-destructive/30 bg-destructive/5 px-2 py-1 text-xs text-destructive", errorClassName)}>
-        Plugin launchers unavailable: {errorMessage}
+        插件启动器不可用：{errorMessage}
       </div>
     );
   }

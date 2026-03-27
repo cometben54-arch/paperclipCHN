@@ -1,31 +1,31 @@
 ---
-title: Approvals
-summary: Approval workflow endpoints
+title: 审批
+summary: 审批工作流端点
 ---
 
-Approvals gate certain actions (agent hiring, CEO strategy) behind board review.
+审批在看板审核之前对某些操作（代理招聘、CEO 战略）进行把关。
 
-## List Approvals
+## 列出审批
 
 ```
 GET /api/companies/{companyId}/approvals
 ```
 
-Query parameters:
+查询参数：
 
-| Param | Description |
+| 参数 | 描述 |
 |-------|-------------|
-| `status` | Filter by status (e.g. `pending`) |
+| `status` | 按状态筛选（例如 `pending`） |
 
-## Get Approval
+## 获取审批
 
 ```
 GET /api/approvals/{approvalId}
 ```
 
-Returns approval details including type, status, payload, and decision notes.
+返回审批详情，包括类型、状态、有效载荷和决定备注。
 
-## Create Approval Request
+## 创建审批请求
 
 ```
 POST /api/companies/{companyId}/approvals
@@ -36,7 +36,7 @@ POST /api/companies/{companyId}/approvals
 }
 ```
 
-## Create Hire Request
+## 创建招聘请求
 
 ```
 POST /api/companies/{companyId}/agent-hires
@@ -49,45 +49,45 @@ POST /api/companies/{companyId}/agent-hires
 }
 ```
 
-Creates a draft agent and a linked `hire_agent` approval.
+创建一个草案代理和一个关联的 `hire_agent` 审批。
 
-## Approve
+## 批准
 
 ```
 POST /api/approvals/{approvalId}/approve
 { "decisionNote": "Approved. Good hire." }
 ```
 
-## Reject
+## 拒绝
 
 ```
 POST /api/approvals/{approvalId}/reject
 { "decisionNote": "Budget too high for this role." }
 ```
 
-## Request Revision
+## 请求修改
 
 ```
 POST /api/approvals/{approvalId}/request-revision
 { "decisionNote": "Please reduce the budget and clarify capabilities." }
 ```
 
-## Resubmit
+## 重新提交
 
 ```
 POST /api/approvals/{approvalId}/resubmit
 { "payload": { "updated": "config..." } }
 ```
 
-## Linked Issues
+## 关联问题
 
 ```
 GET /api/approvals/{approvalId}/issues
 ```
 
-Returns issues linked to this approval.
+返回与此审批关联的问题。
 
-## Approval Comments
+## 审批评论
 
 ```
 GET /api/approvals/{approvalId}/comments
@@ -95,7 +95,7 @@ POST /api/approvals/{approvalId}/comments
 { "body": "Discussion comment..." }
 ```
 
-## Approval Lifecycle
+## 审批生命周期
 
 ```
 pending -> approved

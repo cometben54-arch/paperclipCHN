@@ -1,67 +1,67 @@
 ---
-title: CLI Overview
-summary: CLI installation and setup
+title: CLI 概览
+summary: CLI 安装和设置
 ---
 
-The Paperclip CLI handles instance setup, diagnostics, and control-plane operations.
+Paperclip CLI 处理实例设置、诊断和控制平面操作。
 
-## Usage
+## 用法
 
 ```sh
 pnpm paperclipai --help
 ```
 
-## Global Options
+## 全局选项
 
-All commands support:
+所有命令支持：
 
-| Flag | Description |
+| 标志 | 描述 |
 |------|-------------|
-| `--data-dir <path>` | Local Paperclip data root (isolates from `~/.paperclip`) |
-| `--api-base <url>` | API base URL |
-| `--api-key <token>` | API authentication token |
-| `--context <path>` | Context file path |
-| `--profile <name>` | Context profile name |
-| `--json` | Output as JSON |
+| `--data-dir <path>` | 本地 Paperclip 数据根目录（与 `~/.paperclip` 隔离） |
+| `--api-base <url>` | API 基础 URL |
+| `--api-key <token>` | API 认证令牌 |
+| `--context <path>` | 上下文文件路径 |
+| `--profile <name>` | 上下文配置文件名称 |
+| `--json` | 以 JSON 格式输出 |
 
-Company-scoped commands also accept `--company-id <id>`.
+公司级命令还接受 `--company-id <id>`。
 
-For clean local instances, pass `--data-dir` on the command you run:
+对于干净的本地实例，在运行的命令上传递 `--data-dir`：
 
 ```sh
 pnpm paperclipai run --data-dir ./tmp/paperclip-dev
 ```
 
-## Context Profiles
+## 上下文配置文件
 
-Store defaults to avoid repeating flags:
+存储默认值以避免重复输入标志：
 
 ```sh
-# Set defaults
+# 设置默认值
 pnpm paperclipai context set --api-base http://localhost:3100 --company-id <id>
 
-# View current context
+# 查看当前上下文
 pnpm paperclipai context show
 
-# List profiles
+# 列出配置文件
 pnpm paperclipai context list
 
-# Switch profile
+# 切换配置文件
 pnpm paperclipai context use default
 ```
 
-To avoid storing secrets in context, use an env var:
+为避免在上下文中存储密钥，请使用环境变量：
 
 ```sh
 pnpm paperclipai context set --api-key-env-var-name PAPERCLIP_API_KEY
 export PAPERCLIP_API_KEY=...
 ```
 
-Context is stored at `~/.paperclip/context.json`.
+上下文存储在 `~/.paperclip/context.json`。
 
-## Command Categories
+## 命令类别
 
-The CLI has two categories:
+CLI 有两个类别：
 
-1. **[Setup commands](/cli/setup-commands)** — instance bootstrap, diagnostics, configuration
-2. **[Control-plane commands](/cli/control-plane-commands)** — issues, agents, approvals, activity
+1. **[设置命令](/cli/setup-commands)** — 实例引导、诊断、配置
+2. **[控制平面命令](/cli/control-plane-commands)** — 工单、代理、审批、活动

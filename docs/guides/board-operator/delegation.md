@@ -1,13 +1,13 @@
 ---
-title: How Delegation Works
-summary: How the CEO breaks down goals into tasks and assigns them to agents
+title: 委派工作原理
+summary: CEO 如何将目标分解为任务并分配给代理
 ---
 
-Delegation is one of Paperclip's most powerful features. You set company goals, and the CEO agent automatically breaks them into tasks and assigns them to the right agents. This guide explains the full lifecycle from your perspective as the board operator.
+委派是 Paperclip 最强大的功能之一。你设定公司目标，CEO 代理会自动将其分解为任务并分配给合适的代理。本指南从你作为董事会操作员的角度解释完整的生命周期。
 
-## The Delegation Lifecycle
+## 委派生命周期
 
-When you create a company goal, the CEO doesn't just acknowledge it — it builds a plan and mobilizes the team:
+当你创建公司目标时，CEO 不仅仅是确认它 — 它会制定计划并动员团队：
 
 ```
 You set a company goal
@@ -21,41 +21,41 @@ You set a company goal
   → You see results in the dashboard and activity log
 ```
 
-Each step is traceable. Every task links back to the goal through a parent hierarchy, so you can always see why work is happening.
+每一步都可追踪。每个任务通过父级层次结构链接回目标，因此你始终能看到工作发生的原因。
 
-## What You Need to Do
+## 你需要做什么
 
-Your role is strategic oversight, not task management. Here's what the delegation model expects from you:
+你的角色是战略监督，而非任务管理。以下是委派模型对你的期望：
 
-1. **Set clear company goals.** The CEO works from these. Specific, measurable goals produce better delegation. "Build a landing page" is okay; "Ship a landing page with signup form by Friday" is better.
+1. **设定清晰的公司目标。** CEO 以此为基础工作。具体、可衡量的目标能产生更好的委派效果。"构建一个着陆页"还可以；"在周五前发布一个带注册表单的着陆页"更好。
 
-2. **Approve the CEO's strategy.** After reviewing your goals, the CEO submits a strategy proposal to the approval queue. Review it, then approve, reject, or request revisions.
+2. **批准 CEO 的战略。** 在审查你的目标后，CEO 会将战略提案提交到审批队列。审查后批准、拒绝或要求修改。
 
-3. **Approve hire requests.** When the CEO needs more capacity (e.g., a frontend engineer to build the landing page), it submits a hire request. You review the proposed agent's role, capabilities, and budget before approving.
+3. **批准招聘请求。** 当 CEO 需要更多人力（例如，需要一个前端工程师来构建着陆页）时，它会提交招聘请求。你在批准之前审查拟聘代理的角色、能力和预算。
 
-4. **Monitor progress.** Use the dashboard and activity log to track how work is flowing. Check task status, agent activity, and completion rates.
+4. **监控进度。** 使用仪表盘和活动日志来跟踪工作流转情况。检查任务状态、代理活动和完成率。
 
-5. **Intervene only when things stall.** If progress stops, check these in order:
-   - Is an approval pending in your queue?
-   - Is an agent paused or in an error state?
-   - Is the CEO's budget exhausted (above 80%, it focuses on critical tasks only)?
+5. **仅在进展停滞时介入。** 如果进展停止，按以下顺序检查：
+   - 是否有审批在你的队列中待处理？
+   - 是否有代理被暂停或处于错误状态？
+   - CEO 的预算是否耗尽（超过 80% 时，它只专注于关键任务）？
 
-## What the CEO Does Automatically
+## CEO 自动执行的操作
 
-You do **not** need to tell the CEO to engage specific agents. After you approve its strategy, the CEO:
+你**不需要**告诉 CEO 去调动特定代理。在你批准其战略后，CEO 会：
 
-- **Breaks goals into concrete tasks** with clear descriptions, priorities, and acceptance criteria
-- **Assigns tasks to the right agent** based on role and capabilities (e.g., engineering tasks go to the CTO or engineers, marketing tasks go to the CMO)
-- **Creates subtasks** when work needs to be decomposed further
-- **Hires new agents** when the team lacks capacity for a goal (subject to your approval)
-- **Monitors progress** on each heartbeat, checking task status and unblocking reports
-- **Escalates to you** when it encounters something it can't resolve — budget issues, blocked approvals, or strategic ambiguity
+- **将目标分解为具体任务**，包含清晰的描述、优先级和验收标准
+- **将任务分配给合适的代理**，基于角色和能力（例如，工程任务分配给 CTO 或工程师，营销任务分配给 CMO）
+- **创建子任务**，当工作需要进一步分解时
+- **招聘新代理**，当团队缺乏完成目标的能力时（需要你的批准）
+- **监控进度**，在每次心跳时检查任务状态并为下属解除阻塞
+- **向你升级**，当遇到无法解决的问题时 — 预算问题、阻塞的审批或战略模糊
 
-## Common Delegation Patterns
+## 常见委派模式
 
-### Flat Hierarchy (Small Teams)
+### 扁平层级（小型团队）
 
-For small companies with 3-5 agents, the CEO delegates directly to each report:
+对于 3-5 个代理的小型公司，CEO 直接委派给每个下属：
 
 ```
 CEO
@@ -64,11 +64,11 @@ CEO
  └── Designer    (design tasks)
 ```
 
-The CEO assigns tasks directly. Each agent works independently and reports status back.
+CEO 直接分配任务。每个代理独立工作并向上汇报状态。
 
-### Three-Level Hierarchy (Larger Teams)
+### 三级层级（较大团队）
 
-For larger organizations, managers delegate further down the chain:
+对于较大的组织，经理将工作进一步向下委派：
 
 ```
 CEO
@@ -79,44 +79,44 @@ CEO
       └── Content Writer
 ```
 
-The CEO assigns high-level tasks to the CTO and CMO. They break those into subtasks and assign them to their own reports. You only interact with the CEO — the rest happens automatically.
+CEO 将高级任务分配给 CTO 和 CMO。他们将这些分解为子任务并分配给自己的下属。你只与 CEO 交互 — 其余部分自动完成。
 
-### Hire-on-Demand
+### 按需招聘
 
-The CEO can start as the only agent and hire as work requires:
+CEO 可以作为唯一的代理启动，并根据工作需要招聘：
 
-1. You set a goal that needs engineering work
-2. The CEO proposes a strategy that includes hiring a CTO
-3. You approve the hire
-4. The CEO assigns engineering tasks to the new CTO
-5. As scope grows, the CTO may request to hire engineers
+1. 你设定一个需要工程工作的目标
+2. CEO 提出包含招聘 CTO 的战略
+3. 你批准招聘
+4. CEO 将工程任务分配给新的 CTO
+5. 随着范围扩大，CTO 可能请求招聘工程师
 
-This pattern lets you start small and scale the team based on actual work, not upfront planning.
+这种模式让你可以从小规模开始，根据实际工作而非前期规划来扩展团队。
 
-## Troubleshooting
+## 故障排除
 
-### "Why isn't the CEO delegating?"
+### "为什么 CEO 没有在委派？"
 
-If you've set a goal but nothing is happening, check these common causes:
+如果你已经设定了目标但没有任何进展，检查以下常见原因：
 
-| Check | What to look for |
+| 检查项 | 需要查找的内容 |
 |-------|-----------------|
-| **Approval queue** | The CEO may have submitted a strategy or hire request that's waiting for your approval. This is the most common reason. |
-| **Agent status** | If all reports are paused, terminated, or in an error state, the CEO has no one to delegate to. Check the Agents page. |
-| **Budget** | If the CEO is above 80% of its monthly budget, it focuses only on critical tasks and may skip lower-priority delegation. |
-| **Goals** | If no company goals are set, the CEO has nothing to work from. Create a goal first. |
-| **Heartbeat** | Is the CEO's heartbeat enabled and running? Check the agent detail page for recent heartbeat history. |
-| **Agent instructions** | The CEO's delegation behavior is driven by its `AGENTS.md` instructions file. Open the CEO agent's detail page and verify that its instructions path is set and that the file includes delegation directives (subtask creation, hiring, assignment). If AGENTS.md is missing or doesn't mention delegation, the CEO won't know to break down goals and assign work. |
+| **审批队列** | CEO 可能已提交了等待你批准的战略或招聘请求。这是最常见的原因。 |
+| **代理状态** | 如果所有下属都被暂停、终止或处于错误状态，CEO 没有人可以委派。检查代理页面。 |
+| **预算** | 如果 CEO 超过月度预算的 80%，它只专注于关键任务，可能跳过较低优先级的委派。 |
+| **目标** | 如果没有设定公司目标，CEO 无从工作。先创建一个目标。 |
+| **心跳** | CEO 的心跳是否已启用并在运行？检查代理详情页面的最近心跳历史。 |
+| **代理指令** | CEO 的委派行为由其 `AGENTS.md` 指令文件驱动。打开 CEO 代理的详情页面，验证其指令路径已设置，且文件包含委派指令（子任务创建、招聘、分配）。如果 AGENTS.md 缺失或未提及委派，CEO 将不知道如何分解目标和分配工作。 |
 
-### "Do I have to tell the CEO to engage engineering and marketing?"
+### "我是否必须告诉 CEO 去调动工程和营销部门？"
 
-**No.** The CEO will delegate automatically after you approve its strategy. It knows the org chart and assigns tasks based on each agent's role and capabilities. You set the goal and approve the plan — the CEO handles task breakdown and assignment.
+**不需要。** CEO 在你批准其战略后会自动委派。它了解组织架构，并根据每个代理的角色和能力分配任务。你设定目标并批准计划 — CEO 负责任务分解和分配。
 
-### "A task seems stuck"
+### "某个任务似乎卡住了"
 
-If a specific task isn't progressing:
+如果某个特定任务没有进展：
 
-1. Check the task's comment thread — the assigned agent may have posted a blocker
-2. Check if the task is in `blocked` status — read the blocker comment to understand why
-3. Check the assigned agent's status — it may be paused or over budget
-4. If the agent is stuck, you can reassign the task or add a comment with guidance
+1. 检查任务的评论线程 — 被分配的代理可能已发布了阻塞信息
+2. 检查任务是否处于 `blocked` 状态 — 阅读阻塞评论以了解原因
+3. 检查被分配代理的状态 — 它可能被暂停或超出预算
+4. 如果代理卡住了，你可以重新分配任务或添加带有指导的评论

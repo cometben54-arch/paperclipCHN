@@ -1,13 +1,13 @@
 ---
-title: Writing a Skill
-summary: SKILL.md format and best practices
+title: 编写技能
+summary: SKILL.md 格式与最佳实践
 ---
 
-Skills are reusable instructions that agents can invoke during their heartbeats. They're markdown files that teach agents how to perform specific tasks.
+技能是代理在心跳期间可以调用的可复用指令。它们是教代理如何执行特定任务的 markdown 文件。
 
-## Skill Structure
+## 技能结构
 
-A skill is a directory containing a `SKILL.md` file with YAML frontmatter:
+技能是一个包含 `SKILL.md` 文件的目录，带有 YAML 前置元数据：
 
 ```
 skills/
@@ -17,7 +17,7 @@ skills/
         └── examples.md
 ```
 
-## SKILL.md Format
+## SKILL.md 格式
 
 ```markdown
 ---
@@ -33,28 +33,28 @@ description: >
 Detailed instructions for the agent...
 ```
 
-### Frontmatter Fields
+### 前置元数据字段
 
-- **name** — unique identifier for the skill (kebab-case)
-- **description** — routing description that tells the agent when to use this skill. Write it as decision logic, not marketing copy.
+- **name** — 技能的唯一标识符（kebab-case 格式）
+- **description** — 路由描述，告诉代理何时使用此技能。将其写成决策逻辑，而非营销文案。
 
-## How Skills Work at Runtime
+## 技能在运行时的工作原理
 
-1. Agent sees skill metadata (name + description) in its context
-2. Agent decides whether the skill is relevant to its current task
-3. If relevant, agent loads the full SKILL.md content
-4. Agent follows the instructions in the skill
+1. 代理在其上下文中看到技能元数据（名称 + 描述）
+2. 代理判断该技能是否与其当前任务相关
+3. 如果相关，代理加载完整的 SKILL.md 内容
+4. 代理按照技能中的指令执行
 
-This keeps the base prompt small — full skill content is only loaded on demand.
+这使得基础提示保持精简 — 完整的技能内容仅在需要时才加载。
 
-## Best Practices
+## 最佳实践
 
-- **Write descriptions as routing logic** — include "use when" and "don't use when" guidance
-- **Be specific and actionable** — agents should be able to follow skills without ambiguity
-- **Include code examples** — concrete API calls and command examples are more reliable than prose
-- **Keep skills focused** — one skill per concern; don't combine unrelated procedures
-- **Reference files sparingly** — put supporting detail in `references/` rather than bloating the main SKILL.md
+- **将描述写成路由逻辑** — 包含"在何时使用"和"在何时不使用"的指导
+- **具体且可操作** — 代理应能毫无歧义地遵循技能指令
+- **包含代码示例** — 具体的 API 调用和命令示例比纯文字描述更可靠
+- **保持技能专注** — 一个技能对应一个关注点；不要将不相关的流程组合在一起
+- **谨慎使用参考文件** — 将补充细节放在 `references/` 中，而非使主 SKILL.md 膨胀
 
-## Skill Injection
+## 技能注入
 
-Adapters are responsible for making skills discoverable to their agent runtime. The `claude_local` adapter uses a temp directory with symlinks and `--add-dir`. The `codex_local` adapter uses the global skills directory. See the [Creating an Adapter](/adapters/creating-an-adapter) guide for details.
+适配器负责使技能对其代理运行时可发现。`claude_local` 适配器使用带有符号链接的临时目录和 `--add-dir`。`codex_local` 适配器使用全局技能目录。详情请参阅[创建适配器](/adapters/creating-an-adapter)指南。

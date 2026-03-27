@@ -1,4 +1,4 @@
-# CLI 参考
+# CLI 参考手册
 
 Paperclip CLI 现在支持以下两类功能：
 
@@ -35,9 +35,9 @@ pnpm paperclipai run --instance dev
 - 运行时可以通过 `PAPERCLIP_DEPLOYMENT_MODE` 覆盖模式
 - `paperclipai run` 和 `paperclipai doctor` 尚未提供直接的 `--mode` 标志
 
-目标行为（计划中）记录在 `doc/DEPLOYMENT-MODES.md` 第 5 节中。
+目标行为（计划中）记录在 `doc/DEPLOYMENT-MODES.md` 第 5 节。
 
-允许经过身份验证的/私有主机名（例如自定义 Tailscale DNS）：
+允许已认证/私有主机名（例如自定义 Tailscale DNS）：
 
 ```sh
 pnpm paperclipai allowed-hostname dotta-macbook-pro
@@ -54,16 +54,16 @@ pnpm paperclipai allowed-hostname dotta-macbook-pro
 
 公司范围的命令还支持 `--company-id <id>`。
 
-使用 `--data-dir` 可在任何 CLI 命令中将所有默认本地状态（配置/上下文/数据库/日志/存储/密钥）隔离到 `~/.paperclip` 以外的位置：
+使用 `--data-dir` 可以在任何 CLI 命令上将所有默认本地状态（配置/上下文/数据库/日志/存储/密钥）隔离到 `~/.paperclip` 之外的路径：
 
 ```sh
 pnpm paperclipai run --data-dir ./tmp/paperclip-dev
 pnpm paperclipai issue list --data-dir ./tmp/paperclip-dev
 ```
 
-## 上下文配置文件
+## 上下文配置
 
-将本地默认设置存储在 `~/.paperclip/context.json` 中：
+在 `~/.paperclip/context.json` 中存储本地默认值：
 
 ```sh
 pnpm paperclipai context set --api-base http://localhost:3100 --company-id <company-id>
@@ -72,7 +72,7 @@ pnpm paperclipai context list
 pnpm paperclipai context use default
 ```
 
-为避免在上下文中存储密钥，可设置 `apiKeyEnvVarName` 并将密钥保存在环境变量中：
+为避免在上下文中存储密钥，可以设置 `apiKeyEnvVarName` 并将密钥保存在环境变量中：
 
 ```sh
 pnpm paperclipai context set --api-key-env-var-name PAPERCLIP_API_KEY
@@ -97,7 +97,7 @@ pnpm paperclipai company delete 5cbe79ee-acb3-4597-896e-7662742593cd --yes --con
 注意事项：
 
 - 删除操作受服务器端 `PAPERCLIP_ENABLE_COMPANY_DELETION` 控制。
-- 使用 Agent 身份验证时，公司删除限定在公司范围内。请使用当前公司 ID/前缀（例如通过 `--company-id` 或 `PAPERCLIP_COMPANY_ID`），不能操作其他公司。
+- 使用代理认证时，公司删除操作限定在公司范围内。请使用当前公司 ID/前缀（例如通过 `--company-id` 或 `PAPERCLIP_COMPANY_ID`），而非其他公司。
 
 ## Issue 命令
 
@@ -111,7 +111,7 @@ pnpm paperclipai issue checkout <issue-id> --agent-id <agent-id> [--expected-sta
 pnpm paperclipai issue release <issue-id>
 ```
 
-## Agent 命令
+## 代理命令
 
 ```sh
 pnpm paperclipai agent list --company-id <company-id>
@@ -119,13 +119,13 @@ pnpm paperclipai agent get <agent-id>
 pnpm paperclipai agent local-cli <agent-id-or-shortname> --company-id <company-id>
 ```
 
-`agent local-cli` 是以 Paperclip Agent 身份手动运行本地 Claude/Codex 的最快方式：
+`agent local-cli` 是以 Paperclip 代理身份手动运行本地 Claude/Codex 的最快方式：
 
-- 创建一个新的长期 Agent API 密钥
+- 创建一个新的长期代理 API 密钥
 - 将缺失的 Paperclip 技能安装到 `~/.codex/skills` 和 `~/.claude/skills`
 - 打印 `export ...` 行，包含 `PAPERCLIP_API_URL`、`PAPERCLIP_COMPANY_ID`、`PAPERCLIP_AGENT_ID` 和 `PAPERCLIP_API_KEY`
 
-基于短名称的本地设置示例：
+基于短名称进行本地设置的示例：
 
 ```sh
 pnpm paperclipai agent local-cli codexcoder --company-id <company-id>
@@ -175,7 +175,7 @@ pnpm paperclipai heartbeat run --agent-id <agent-id> [--api-base http://localhos
 - 存储：`~/.paperclip/instances/default/data/storage`
 - 密钥文件：`~/.paperclip/instances/default/secrets/master.key`
 
-通过环境变量覆盖基础主目录或实例：
+通过环境变量覆盖基础目录或实例：
 
 ```sh
 PAPERCLIP_HOME=/custom/home PAPERCLIP_INSTANCE_ID=dev pnpm paperclipai run
@@ -183,13 +183,13 @@ PAPERCLIP_HOME=/custom/home PAPERCLIP_INSTANCE_ID=dev pnpm paperclipai run
 
 ## 存储配置
 
-配置存储提供程序和设置：
+配置存储提供者和设置：
 
 ```sh
 pnpm paperclipai configure --section storage
 ```
 
-支持的提供程序：
+支持的提供者：
 
 - `local_disk`（默认；本地单用户安装）
-- `s3`（S3 兼容对象存储）
+- `s3`（兼容 S3 的对象存储）

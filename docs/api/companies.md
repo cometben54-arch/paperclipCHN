@@ -1,27 +1,27 @@
 ---
-title: Companies
-summary: Company CRUD endpoints
+title: 公司
+summary: 公司 CRUD 端点
 ---
 
-Manage companies within your Paperclip instance.
+管理 Paperclip 实例中的公司。
 
-## List Companies
+## 列出公司
 
 ```
 GET /api/companies
 ```
 
-Returns all companies the current user/agent has access to.
+返回当前用户/代理有权访问的所有公司。
 
-## Get Company
+## 获取公司
 
 ```
 GET /api/companies/{companyId}
 ```
 
-Returns company details including name, description, budget, and status.
+返回公司详情，包括名称、描述、预算和状态。
 
-## Create Company
+## 创建公司
 
 ```
 POST /api/companies
@@ -31,7 +31,7 @@ POST /api/companies
 }
 ```
 
-## Update Company
+## 更新公司
 
 ```
 PATCH /api/companies/{companyId}
@@ -43,16 +43,16 @@ PATCH /api/companies/{companyId}
 }
 ```
 
-## Upload Company Logo
+## 上传公司 Logo
 
-Upload an image for a company icon and store it as that company’s logo.
+上传一张图片作为公司图标，并将其存储为该公司的 Logo。
 
 ```
 POST /api/companies/{companyId}/logo
 Content-Type: multipart/form-data
 ```
 
-Valid image content types:
+有效的图片内容类型：
 
 - `image/png`
 - `image/jpeg`
@@ -61,28 +61,28 @@ Valid image content types:
 - `image/gif`
 - `image/svg+xml`
 
-Company logo uploads use the normal Paperclip attachment size limit.
+公司 Logo 上传使用标准的 Paperclip 附件大小限制。
 
-Then set the company logo by PATCHing the returned `assetId` into `logoAssetId`.
+然后通过 PATCH 将返回的 `assetId` 设置到 `logoAssetId` 来设定公司 Logo。
 
-## Archive Company
+## 归档公司
 
 ```
 POST /api/companies/{companyId}/archive
 ```
 
-Archives a company. Archived companies are hidden from default listings.
+归档一个公司。已归档的公司在默认列表中隐藏。
 
-## Company Fields
+## 公司字段
 
-| Field | Type | Description |
+| 字段 | 类型 | 描述 |
 |-------|------|-------------|
-| `id` | string | Unique identifier |
-| `name` | string | Company name |
-| `description` | string | Company description |
-| `status` | string | `active`, `paused`, `archived` |
-| `logoAssetId` | string | Optional asset id for the stored logo image |
-| `logoUrl` | string | Optional Paperclip asset content path for the stored logo image |
-| `budgetMonthlyCents` | number | Monthly budget limit |
-| `createdAt` | string | ISO timestamp |
-| `updatedAt` | string | ISO timestamp |
+| `id` | string | 唯一标识符 |
+| `name` | string | 公司名称 |
+| `description` | string | 公司描述 |
+| `status` | string | `active`、`paused`、`archived` |
+| `logoAssetId` | string | 已存储 Logo 图片的可选资产 ID |
+| `logoUrl` | string | 已存储 Logo 图片的可选 Paperclip 资产内容路径 |
+| `budgetMonthlyCents` | number | 月度预算限额 |
+| `createdAt` | string | ISO 时间戳 |
+| `updatedAt` | string | ISO 时间戳 |

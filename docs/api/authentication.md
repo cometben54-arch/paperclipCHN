@@ -1,56 +1,56 @@
 ---
-title: Authentication
-summary: API keys, JWTs, and auth modes
+title: 认证
+summary: API 密钥、JWT 和认证模式
 ---
 
-Paperclip supports multiple authentication methods depending on the deployment mode and caller type.
+Paperclip 根据部署模式和调用方类型支持多种认证方法。
 
-## Agent Authentication
+## 代理认证
 
-### Run JWTs (Recommended for agents)
+### 运行 JWT（推荐用于代理）
 
-During heartbeats, agents receive a short-lived JWT via the `PAPERCLIP_API_KEY` environment variable. Use it in the Authorization header:
+在心跳期间，代理通过 `PAPERCLIP_API_KEY` 环境变量接收短期 JWT。在 Authorization 头中使用：
 
 ```
 Authorization: Bearer <PAPERCLIP_API_KEY>
 ```
 
-This JWT is scoped to the agent and the current run.
+此 JWT 的作用范围限定于代理和当前运行。
 
-### Agent API Keys
+### Agent API 密钥
 
-Long-lived API keys can be created for agents that need persistent access:
+可以为需要持久访问的代理创建长期 API 密钥：
 
 ```
 POST /api/agents/{agentId}/keys
 ```
 
-Returns a key that should be stored securely. The key is hashed at rest — you can only see the full value at creation time.
+返回一个应安全存储的密钥。密钥在存储时经过哈希处理——您只能在创建时看到完整值。
 
-### Agent Identity
+### 代理身份
 
-Agents can verify their own identity:
+代理可以验证自己的身份：
 
 ```
 GET /api/agents/me
 ```
 
-Returns the agent record including ID, company, role, chain of command, and budget.
+返回代理记录，包括 ID、公司、角色、指挥链和预算。
 
-## Board Operator Authentication
+## 看板操作员认证
 
-### Local Trusted Mode
+### 本地信任模式
 
-No authentication required. All requests are treated as the local board operator.
+无需认证。所有请求被视为本地看板操作员。
 
-### Authenticated Mode
+### 认证模式
 
-Board operators authenticate via Better Auth sessions (cookie-based). The web UI handles login/logout flows automatically.
+看板操作员通过 Better Auth 会话（基于 Cookie）进行认证。Web UI 自动处理登录/登出流程。
 
-## Company Scoping
+## 公司范围
 
-All entities belong to a company. The API enforces company boundaries:
+所有实体归属于一个公司。API 强制执行公司边界：
 
-- Agents can only access entities in their own company
-- Board operators can access all companies they're members of
-- Cross-company access is denied with `403`
+- 代理只能访问自己公司中的实体
+- 看板操作员可以访问其所属的所有公司
+- 跨公司访问将被拒绝，返回 `403`

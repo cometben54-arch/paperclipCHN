@@ -98,7 +98,7 @@ export function OpenClawGatewayConfigFields({
 
   return (
     <>
-      <Field label="Gateway URL" hint={help.webhookUrl}>
+      <Field label="网关 URL" hint={help.webhookUrl}>
         <DraftInput
           value={
             isCreate
@@ -134,7 +134,7 @@ export function OpenClawGatewayConfigFields({
 
       {!isCreate && (
         <>
-          <Field label="Paperclip API URL override">
+          <Field label="Paperclip API URL 覆盖">
             <DraftInput
               value={
                 eff(
@@ -150,20 +150,20 @@ export function OpenClawGatewayConfigFields({
             />
           </Field>
 
-          <Field label="Session strategy">
+          <Field label="会话策略">
             <select
               value={sessionStrategy}
               onChange={(e) => mark("adapterConfig", "sessionKeyStrategy", e.target.value)}
               className={inputClass}
             >
-              <option value="fixed">Fixed</option>
-              <option value="issue">Per issue</option>
-              <option value="run">Per run</option>
+              <option value="fixed">固定</option>
+              <option value="issue">按任务</option>
+              <option value="run">按运行</option>
             </select>
           </Field>
 
           {sessionStrategy === "fixed" && (
-            <Field label="Session key">
+            <Field label="会话密钥">
               <DraftInput
                 value={eff("adapterConfig", "sessionKey", String(config.sessionKey ?? "paperclip"))}
                 onCommit={(v) => mark("adapterConfig", "sessionKey", v || undefined)}
@@ -175,13 +175,13 @@ export function OpenClawGatewayConfigFields({
           )}
 
           <SecretField
-            label="Gateway auth token (x-openclaw-token)"
+            label="网关认证令牌 (x-openclaw-token)"
             value={effectiveGatewayToken}
             onCommit={commitGatewayToken}
-            placeholder="OpenClaw gateway token"
+            placeholder="OpenClaw 网关令牌"
           />
 
-          <Field label="Role">
+          <Field label="角色">
             <DraftInput
               value={eff("adapterConfig", "role", String(config.role ?? "operator"))}
               onCommit={(v) => mark("adapterConfig", "role", v || undefined)}
@@ -191,7 +191,7 @@ export function OpenClawGatewayConfigFields({
             />
           </Field>
 
-          <Field label="Scopes (comma-separated)">
+          <Field label="权限范围（逗号分隔）">
             <DraftInput
               value={eff("adapterConfig", "scopes", parseScopes(config.scopes ?? ["operator.admin"]))}
               onCommit={(v) => {
@@ -207,7 +207,7 @@ export function OpenClawGatewayConfigFields({
             />
           </Field>
 
-          <Field label="Wait timeout (ms)">
+          <Field label="等待超时时间（毫秒）">
             <DraftInput
               value={eff("adapterConfig", "waitTimeoutMs", String(config.waitTimeoutMs ?? "120000"))}
               onCommit={(v) => {
@@ -224,10 +224,9 @@ export function OpenClawGatewayConfigFields({
             />
           </Field>
 
-          <Field label="Device auth">
+          <Field label="设备认证">
             <div className="text-xs text-muted-foreground leading-relaxed">
-              Always enabled for gateway agents. Paperclip persists a device key during onboarding so pairing approvals
-              remain stable across runs.
+              网关智能体始终启用此功能。Paperclip 在初始化过程中持久化设备密钥，以确保配对审批在多次运行间保持稳定。
             </div>
           </Field>
         </>

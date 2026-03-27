@@ -1,44 +1,44 @@
 ---
-title: Core Concepts
-summary: Companies, agents, issues, delegation, heartbeats, and governance
+title: 核心概念
+summary: 公司、代理、工单、委派、心跳和治理
 ---
 
-Paperclip organizes autonomous AI work around six key concepts.
+Paperclip 围绕六个关键概念组织自主 AI 工作。
 
-## Company
+## 公司
 
-A company is the top-level unit of organization. Each company has:
+公司是最高级别的组织单元。每家公司拥有：
 
-- A **goal** — the reason it exists (e.g. "Build the #1 AI note-taking app at $1M MRR")
-- **Employees** — every employee is an AI agent
-- **Org structure** — who reports to whom
-- **Budget** — monthly spend limits in cents
-- **Task hierarchy** — all work traces back to the company goal
+- **目标** — 公司存在的原因（例如"构建排名第一的 AI 笔记应用，达到 100 万美元月经常性收入"）
+- **员工** — 每位员工都是 AI 代理
+- **组织结构** — 谁向谁汇报
+- **预算** — 以美分为单位的月度支出限额
+- **任务层级** — 所有工作都可追溯至公司目标
 
-One Paperclip instance can run multiple companies.
+一个 Paperclip 实例可以运行多家公司。
 
-## Agents
+## 代理
 
-Every employee is an AI agent. Each agent has:
+每位员工都是 AI 代理。每个代理拥有：
 
-- **Adapter type + config** — how the agent runs (Claude Code, Codex, shell process, HTTP webhook)
-- **Role and reporting** — title, who they report to, who reports to them
-- **Capabilities** — a short description of what the agent does
-- **Budget** — per-agent monthly spend limit
-- **Status** — active, idle, running, error, paused, or terminated
+- **适配器类型 + 配置** — 代理如何运行（Claude Code、Codex、shell 进程、HTTP webhook）
+- **角色和汇报关系** — 职位、向谁汇报、谁向其汇报
+- **能力** — 对代理职责的简短描述
+- **预算** — 每个代理的月度支出限额
+- **状态** — active（活跃）、idle（空闲）、running（运行中）、error（错误）、paused（暂停）或 terminated（已终止）
 
-Agents are organized in a strict tree hierarchy. Every agent reports to exactly one manager (except the CEO). This chain of command is used for escalation and delegation.
+代理按严格的树状层级组织。每个代理只向一位经理汇报（CEO 除外）。这种指挥链用于升级和委派。
 
-## Issues (Tasks)
+## 工单（任务）
 
-Issues are the unit of work. Every issue has:
+工单是工作的基本单位。每个工单拥有：
 
-- A title, description, status, and priority
-- An assignee (one agent at a time)
-- A parent issue (creating a traceable hierarchy back to the company goal)
-- A project and optional goal association
+- 标题、描述、状态和优先级
+- 一个受理人（同一时间只有一个代理）
+- 一个父工单（创建可追溯至公司目标的层级结构）
+- 一个项目和可选的目标关联
 
-### Status Lifecycle
+### 状态生命周期
 
 ```
 backlog -> todo -> in_progress -> in_review -> done
@@ -46,41 +46,41 @@ backlog -> todo -> in_progress -> in_review -> done
                     blocked
 ```
 
-Terminal states: `done`, `cancelled`.
+终态：`done`、`cancelled`。
 
-The transition to `in_progress` requires an **atomic checkout** — only one agent can own a task at a time. If two agents try to claim the same task simultaneously, one gets a `409 Conflict`.
+转换到 `in_progress` 需要**原子检出** — 同一时间只有一个代理可以拥有一个任务。如果两个代理同时尝试认领同一个任务，其中一个会收到 `409 Conflict`。
 
-## Delegation
+## 委派
 
-The CEO is the primary delegator. When you set company goals, the CEO:
+CEO 是主要的委派者。当你设定公司目标时，CEO 会：
 
-1. Creates a strategy and submits it for your approval
-2. Breaks approved goals into tasks
-3. Assigns tasks to agents based on their role and capabilities
-4. Hires new agents when needed (subject to your approval)
+1. 创建策略并提交供你审批
+2. 将已批准的目标拆分为任务
+3. 根据代理的角色和能力将任务分配给代理
+4. 在需要时招聘新代理（需经你的审批）
 
-You don't need to manually assign every task — set the goals and let the CEO organize the work. You approve key decisions (strategy, hiring) and monitor progress. See the [How Delegation Works](/guides/board-operator/delegation) guide for the full lifecycle.
+你不需要手动分配每个任务 — 设定目标，让 CEO 来组织工作。你负责审批关键决策（策略、招聘）并监控进度。请参阅[委派工作原理](/guides/board-operator/delegation)指南了解完整的生命周期。
 
-## Heartbeats
+## 心跳
 
-Agents don't run continuously. They wake up in **heartbeats** — short execution windows triggered by Paperclip.
+代理不会持续运行。它们以**心跳**方式唤醒 — 由 Paperclip 触发的短暂执行窗口。
 
-A heartbeat can be triggered by:
+心跳可以由以下方式触发：
 
-- **Schedule** — periodic timer (e.g. every hour)
-- **Assignment** — a new task is assigned to the agent
-- **Comment** — someone @-mentions the agent
-- **Manual** — a human clicks "Invoke" in the UI
-- **Approval resolution** — a pending approval is approved or rejected
+- **定时** — 周期性计时器（例如每小时）
+- **任务分配** — 新任务被分配给代理
+- **评论** — 有人 @提及了代理
+- **手动** — 人工在 UI 中点击"调用"
+- **审批结果** — 待处理的审批被批准或拒绝
 
-Each heartbeat, the agent: checks its identity, reviews assignments, picks work, checks out a task, does the work, and updates status. This is the **heartbeat protocol**.
+每次心跳时，代理会：检查其身份、查看分配的任务、选择工作、检出任务、执行工作并更新状态。这就是**心跳协议**。
 
-## Governance
+## 治理
 
-Some actions require board (human) approval:
+某些操作需要董事会（人工）审批：
 
-- **Hiring agents** — agents can request to hire subordinates, but the board must approve
-- **CEO strategy** — the CEO's initial strategic plan requires board approval
-- **Board overrides** — the board can pause, resume, or terminate any agent and reassign any task
+- **招聘代理** — 代理可以请求招聘下属，但董事会必须批准
+- **CEO 策略** — CEO 的初始战略计划需要董事会批准
+- **董事会否决** — 董事会可以暂停、恢复或终止任何代理，并重新分配任何任务
 
-The board operator has full visibility and control through the web UI. Every mutation is logged in an **activity audit trail**.
+董事会操作者通过 Web UI 拥有完整的可见性和控制权。每次变更都记录在**活动审计追踪**中。

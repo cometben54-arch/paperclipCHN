@@ -1,8 +1,7 @@
 /**
- * @fileoverview Plugin Manager page — admin UI for discovering,
- * installing, enabling/disabling, and uninstalling plugins.
+ * @fileoverview 插件管理器页面 — 用于发现、安装、启用/禁用和卸载插件的管理界面。
  *
- * @see PLUGIN_SPEC.md §9 — Plugin Marketplace / Manager
+ * @see PLUGIN_SPEC.md §9 — 插件市场 / 管理器
  */
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -40,25 +39,25 @@ function firstNonEmptyLine(value: string | null | undefined): string | null {
 }
 
 function getPluginErrorSummary(plugin: PluginRecord): string {
-  return firstNonEmptyLine(plugin.lastError) ?? "Plugin entered an error state without a stored error message.";
+  return firstNonEmptyLine(plugin.lastError) ?? "插件进入错误状态，但没有存储错误信息。";
 }
 
 /**
- * PluginManager page component.
+ * 插件管理器页面组件。
  *
- * Provides a management UI for the Paperclip plugin system:
- * - Lists all installed plugins with their status, version, and category badges.
- * - Allows installing new plugins by npm package name.
- * - Provides per-plugin actions: enable, disable, navigate to settings.
- * - Uninstall with a two-step confirmation dialog to prevent accidental removal.
+ * 提供 Paperclip 插件系统的管理界面：
+ * - 列出所有已安装插件及其状态、版本和分类标签。
+ * - 允许通过 npm 包名安装新插件。
+ * - 提供每个插件的操作：启用、禁用、导航到设置。
+ * - 通过两步确认对话框卸载，防止误删。
  *
- * Data flow:
- * - Reads from `GET /api/plugins` via `pluginsApi.list()`.
- * - Mutations (install / uninstall / enable / disable) invalidate
- *   `queryKeys.plugins.all` so the list refreshes automatically.
+ * 数据流：
+ * - 通过 `pluginsApi.list()` 从 `GET /api/plugins` 读取。
+ * - 变更操作（安装/卸载/启用/禁用）使
+ *   `queryKeys.plugins.all` 失效以自动刷新列表。
  *
- * @see PluginSettings — linked from the Settings icon on each plugin row.
- * @see doc/plugins/PLUGIN_SPEC.md §3 — Plugin Lifecycle for status semantics.
+ * @see PluginSettings — 从每个插件行的设置图标链接。
+ * @see doc/plugins/PLUGIN_SPEC.md §3 — 插件生命周期的状态语义。
  */
 export function PluginManager() {
   const { selectedCompany } = useCompany();
@@ -74,9 +73,9 @@ export function PluginManager() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: selectedCompany?.name ?? "Company", href: "/dashboard" },
-      { label: "Settings", href: "/instance/settings/heartbeats" },
-      { label: "Plugins" },
+      { label: selectedCompany?.name ?? "公司", href: "/dashboard" },
+      { label: "设置", href: "/instance/settings/heartbeats" },
+      { label: "插件" },
     ]);
   }, [selectedCompany?.name, setBreadcrumbs]);
 
@@ -103,10 +102,10 @@ export function PluginManager() {
       invalidatePluginQueries();
       setInstallDialogOpen(false);
       setInstallPackage("");
-      pushToast({ title: "Plugin installed successfully", tone: "success" });
+      pushToast({ title: "插件安装成功", tone: "success" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to install plugin", body: err.message, tone: "error" });
+      pushToast({ title: "安装插件失败", body: err.message, tone: "error" });
     },
   });
 
@@ -114,10 +113,10 @@ export function PluginManager() {
     mutationFn: (pluginId: string) => pluginsApi.uninstall(pluginId),
     onSuccess: () => {
       invalidatePluginQueries();
-      pushToast({ title: "Plugin uninstalled successfully", tone: "success" });
+      pushToast({ title: "插件卸载成功", tone: "success" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to uninstall plugin", body: err.message, tone: "error" });
+      pushToast({ title: "卸载插件失败", body: err.message, tone: "error" });
     },
   });
 
@@ -125,10 +124,10 @@ export function PluginManager() {
     mutationFn: (pluginId: string) => pluginsApi.enable(pluginId),
     onSuccess: () => {
       invalidatePluginQueries();
-      pushToast({ title: "Plugin enabled", tone: "success" });
+      pushToast({ title: "插件已启用", tone: "success" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to enable plugin", body: err.message, tone: "error" });
+      pushToast({ title: "启用插件失败", body: err.message, tone: "error" });
     },
   });
 
@@ -136,10 +135,10 @@ export function PluginManager() {
     mutationFn: (pluginId: string) => pluginsApi.disable(pluginId),
     onSuccess: () => {
       invalidatePluginQueries();
-      pushToast({ title: "Plugin disabled", tone: "info" });
+      pushToast({ title: "插件已禁用", tone: "info" });
     },
     onError: (err: Error) => {
-      pushToast({ title: "Failed to disable plugin", body: err.message, tone: "error" });
+      pushToast({ title: "禁用插件失败", body: err.message, tone: "error" });
     },
   });
 
@@ -155,34 +154,34 @@ export function PluginManager() {
     [installedPlugins]
   );
 
-  if (isLoading) return <div className="p-4 text-sm text-muted-foreground">Loading plugins...</div>;
-  if (error) return <div className="p-4 text-sm text-destructive">Failed to load plugins.</div>;
+  if (isLoading) return <div className="p-4 text-sm text-muted-foreground">正在加载插件...</div>;
+  if (error) return <div className="p-4 text-sm text-destructive">加载插件失败。</div>;
 
   return (
     <div className="space-y-6 max-w-5xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Puzzle className="h-6 w-6 text-muted-foreground" />
-          <h1 className="text-xl font-semibold">Plugin Manager</h1>
+          <h1 className="text-xl font-semibold">插件管理器</h1>
         </div>
         
         <Dialog open={installDialogOpen} onOpenChange={setInstallDialogOpen}>
           <DialogTrigger asChild>
             <Button size="sm" className="gap-2">
               <Plus className="h-4 w-4" />
-              Install Plugin
+              安装插件
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Install Plugin</DialogTitle>
+              <DialogTitle>安装插件</DialogTitle>
               <DialogDescription>
-                Enter the npm package name of the plugin you wish to install.
+                输入您要安装的插件的 npm 包名。
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
               <div className="grid gap-2">
-                <Label htmlFor="packageName">npm Package Name</Label>
+                <Label htmlFor="packageName">npm 包名</Label>
                 <Input
                   id="packageName"
                   placeholder="@paperclipai/plugin-example"
@@ -192,12 +191,12 @@ export function PluginManager() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>Cancel</Button>
+              <Button variant="outline" onClick={() => setInstallDialogOpen(false)}>取消</Button>
               <Button
                 onClick={() => installMutation.mutate({ packageName: installPackage })}
                 disabled={!installPackage || installMutation.isPending}
               >
-                {installMutation.isPending ? "Installing..." : "Install"}
+                {installMutation.isPending ? "正在安装..." : "安装"}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -208,9 +207,9 @@ export function PluginManager() {
         <div className="flex items-start gap-3">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-700" />
           <div className="space-y-1 text-sm">
-            <p className="font-medium text-foreground">Plugins are alpha.</p>
+            <p className="font-medium text-foreground">插件功能处于 Alpha 阶段。</p>
             <p className="text-muted-foreground">
-              The plugin runtime and API surface are still changing. Expect breaking changes while this feature settles.
+              插件运行时和 API 接口仍在变化中。在此功能稳定之前，请预期可能出现重大变更。
             </p>
           </div>
         </div>
@@ -219,17 +218,17 @@ export function PluginManager() {
       <section className="space-y-3">
         <div className="flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Available Plugins</h2>
-          <Badge variant="outline">Examples</Badge>
+          <h2 className="text-base font-semibold">可用插件</h2>
+          <Badge variant="outline">示例</Badge>
         </div>
 
         {examplesQuery.isLoading ? (
-          <div className="text-sm text-muted-foreground">Loading bundled examples...</div>
+          <div className="text-sm text-muted-foreground">正在加载内置示例...</div>
         ) : examplesQuery.error ? (
-          <div className="text-sm text-destructive">Failed to load bundled examples.</div>
+          <div className="text-sm text-destructive">加载内置示例失败。</div>
         ) : examples.length === 0 ? (
           <div className="rounded-md border border-dashed px-4 py-3 text-sm text-muted-foreground">
-            No bundled example plugins were found in this checkout.
+            在此代码库中未找到内置示例插件。
           </div>
         ) : (
           <ul className="divide-y rounded-md border bg-card">
@@ -246,7 +245,7 @@ export function PluginManager() {
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-medium">{example.displayName}</span>
-                        <Badge variant="outline">Example</Badge>
+                        <Badge variant="outline">示例</Badge>
                         {installedPlugin ? (
                           <Badge
                             variant={installedPlugin.status === "ready" ? "default" : "secondary"}
@@ -255,7 +254,7 @@ export function PluginManager() {
                             {installedPlugin.status}
                           </Badge>
                         ) : (
-                          <Badge variant="secondary">Not installed</Badge>
+                          <Badge variant="secondary">未安装</Badge>
                         )}
                       </div>
                       <p className="mt-1 text-sm text-muted-foreground">{example.description}</p>
@@ -271,12 +270,12 @@ export function PluginManager() {
                               disabled={enableMutation.isPending}
                               onClick={() => enableMutation.mutate(installedPlugin.id)}
                             >
-                              Enable
+                              启用
                             </Button>
                           )}
                           <Button variant="outline" size="sm" asChild>
                             <Link to={`/instance/settings/plugins/${installedPlugin.id}`}>
-                              {installedPlugin.status === "ready" ? "Open Settings" : "Review"}
+                              {installedPlugin.status === "ready" ? "打开设置" : "查看"}
                             </Link>
                           </Button>
                         </>
@@ -291,7 +290,7 @@ export function PluginManager() {
                             })
                           }
                         >
-                          {installPending ? "Installing..." : "Install Example"}
+                          {installPending ? "正在安装..." : "安装示例"}
                         </Button>
                       )}
                     </div>
@@ -306,16 +305,16 @@ export function PluginManager() {
       <section className="space-y-3">
         <div className="flex items-center gap-2">
           <Puzzle className="h-5 w-5 text-muted-foreground" />
-          <h2 className="text-base font-semibold">Installed Plugins</h2>
+          <h2 className="text-base font-semibold">已安装插件</h2>
         </div>
 
         {!installedPlugins.length ? (
           <Card className="bg-muted/30">
             <CardContent className="flex flex-col items-center justify-center py-10">
               <Puzzle className="h-10 w-10 text-muted-foreground mb-4" />
-              <p className="text-sm font-medium">No plugins installed</p>
+              <p className="text-sm font-medium">未安装任何插件</p>
               <p className="text-xs text-muted-foreground mt-1">
-                Install a plugin to extend functionality.
+                安装插件以扩展功能。
               </p>
             </CardContent>
           </Card>
@@ -334,7 +333,7 @@ export function PluginManager() {
                         {plugin.manifestJson.displayName ?? plugin.packageName}
                       </Link>
                       {examplePackageNames.has(plugin.packageName) && (
-                        <Badge variant="outline">Example</Badge>
+                        <Badge variant="outline">示例</Badge>
                       )}
                     </div>
                     <div>
@@ -343,7 +342,7 @@ export function PluginManager() {
                       </p>
                     </div>
                     <p className="text-sm text-muted-foreground truncate mt-0.5" title={plugin.manifestJson.description}>
-                      {plugin.manifestJson.description || "No description provided."}
+                      {plugin.manifestJson.description || "未提供描述。"}
                     </p>
                     {plugin.status === "error" && (
                       <div className="mt-3 rounded-md border border-red-500/25 bg-red-500/[0.06] px-3 py-2">
@@ -351,7 +350,7 @@ export function PluginManager() {
                           <div className="min-w-0 flex-1">
                             <div className="flex items-center gap-2 text-sm font-medium text-red-700 dark:text-red-300">
                               <AlertTriangle className="h-4 w-4 shrink-0" />
-                              <span>Plugin error</span>
+                              <span>插件错误</span>
                             </div>
                             <p
                               className="mt-1 text-sm text-red-700/90 dark:text-red-200/90 break-words"
@@ -366,7 +365,7 @@ export function PluginManager() {
                             className="border-red-500/30 bg-background/60 text-red-700 hover:bg-red-500/10 hover:text-red-800 dark:text-red-200 dark:hover:text-red-100"
                             onClick={() => setErrorDetailsPlugin(plugin)}
                           >
-                            View full error
+                            查看完整错误
                           </Button>
                         </div>
                       </div>
@@ -394,7 +393,7 @@ export function PluginManager() {
                           variant="outline"
                           size="icon-sm"
                           className="h-8 w-8"
-                          title={plugin.status === "ready" ? "Disable" : "Enable"}
+                          title={plugin.status === "ready" ? "禁用" : "启用"}
                           onClick={() => {
                             if (plugin.status === "ready") {
                               disableMutation.mutate(plugin.id);
@@ -410,7 +409,7 @@ export function PluginManager() {
                           variant="outline"
                           size="icon-sm"
                           className="h-8 w-8 text-destructive hover:text-destructive"
-                          title="Uninstall"
+                          title="卸载"
                           onClick={() => {
                             setUninstallPluginId(plugin.id);
                             setUninstallPluginName(plugin.manifestJson.displayName ?? plugin.packageName);
@@ -423,7 +422,7 @@ export function PluginManager() {
                       <Button variant="outline" size="sm" className="mt-2 h-8" asChild>
                         <Link to={`/instance/settings/plugins/${plugin.id}`}>
                           <Settings className="h-4 w-4" />
-                          Configure
+                          配置
                         </Link>
                       </Button>
                     </div>
@@ -441,13 +440,13 @@ export function PluginManager() {
       >
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Uninstall Plugin</DialogTitle>
+            <DialogTitle>卸载插件</DialogTitle>
             <DialogDescription>
-              Are you sure you want to uninstall <strong>{uninstallPluginName}</strong>? This action cannot be undone.
+              您确定要卸载 <strong>{uninstallPluginName}</strong> 吗？此操作无法撤销。
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setUninstallPluginId(null)}>Cancel</Button>
+            <Button variant="outline" onClick={() => setUninstallPluginId(null)}>取消</Button>
             <Button
               variant="destructive"
               disabled={uninstallMutation.isPending}
@@ -459,7 +458,7 @@ export function PluginManager() {
                 }
               }}
             >
-              {uninstallMutation.isPending ? "Uninstalling..." : "Uninstall"}
+              {uninstallMutation.isPending ? "正在卸载..." : "卸载"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -471,9 +470,9 @@ export function PluginManager() {
       >
         <DialogContent className="sm:max-w-2xl">
           <DialogHeader>
-            <DialogTitle>Error Details</DialogTitle>
+            <DialogTitle>错误详情</DialogTitle>
             <DialogDescription>
-              {errorDetailsPlugin?.manifestJson.displayName ?? errorDetailsPlugin?.packageName ?? "Plugin"} hit an error state.
+              {errorDetailsPlugin?.manifestJson.displayName ?? errorDetailsPlugin?.packageName ?? "插件"} 进入了错误状态。
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
@@ -482,24 +481,24 @@ export function PluginManager() {
                 <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-red-700 dark:text-red-300" />
                 <div className="space-y-1 text-sm">
                   <p className="font-medium text-red-700 dark:text-red-300">
-                    What errored
+                    错误内容
                   </p>
                   <p className="text-red-700/90 dark:text-red-200/90 break-words">
-                    {errorDetailsPlugin ? getPluginErrorSummary(errorDetailsPlugin) : "No error summary available."}
+                    {errorDetailsPlugin ? getPluginErrorSummary(errorDetailsPlugin) : "无可用的错误摘要。"}
                   </p>
                 </div>
               </div>
             </div>
             <div className="space-y-2">
-              <p className="text-sm font-medium">Full error output</p>
+              <p className="text-sm font-medium">完整错误输出</p>
               <pre className="max-h-[50vh] overflow-auto rounded-md border bg-muted/40 p-3 text-xs leading-5 whitespace-pre-wrap break-words">
-                {errorDetailsPlugin?.lastError ?? "No stored error message."}
+                {errorDetailsPlugin?.lastError ?? "没有存储的错误信息。"}
               </pre>
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setErrorDetailsPlugin(null)}>
-              Close
+              关闭
             </Button>
           </DialogFooter>
         </DialogContent>

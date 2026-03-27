@@ -105,16 +105,15 @@ export function InstanceExperimentalSettings() {
       <section className="rounded-xl border border-border bg-card p-5">
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1.5">
-            <h2 className="text-sm font-semibold">Auto-Restart Dev Server When Idle</h2>
+            <h2 className="text-sm font-semibold">空闲时自动重启开发服务器</h2>
             <p className="max-w-2xl text-sm text-muted-foreground">
-              In `pnpm dev:once`, wait for all queued and running local agent runs to finish, then restart the server
-              automatically when backend changes or migrations make the current boot stale.
+              在 `pnpm dev:once` 中，等待所有排队和正在运行的本地智能体运行完成，然后在后端更改或迁移使当前启动过时时自动重启服务器。
             </p>
           </div>
           <button
             type="button"
             data-slot="toggle"
-            aria-label="Toggle guarded dev-server auto-restart"
+            aria-label="切换受保护的开发服务器自动重启"
             disabled={toggleMutation.isPending}
             className={cn(
               "relative inline-flex h-5 w-9 items-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-60",

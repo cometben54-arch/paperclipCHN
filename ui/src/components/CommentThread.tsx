@@ -39,7 +39,7 @@ interface CommentThreadProps {
   issueStatus?: string;
   agentMap?: Map<string, Agent>;
   imageUploadHandler?: (file: File) => Promise<string>;
-  /** Callback to attach an image file to the parent issue (not inline in a comment). */
+  /** 将图片文件附加到父工单的回调（不是内联在评论中）。 */
   onAttachImage?: (file: File) => Promise<void>;
   draftKey?: string;
   liveRunSlot?: React.ReactNode;
@@ -101,7 +101,7 @@ function CopyMarkdownButton({ text }: { text: string }) {
     <button
       type="button"
       className="text-muted-foreground hover:text-foreground transition-colors"
-      title="Copy as markdown"
+      title="复制为 Markdown"
       onClick={() => {
         navigator.clipboard.writeText(text).then(() => {
           setCopied(true);
@@ -132,7 +132,7 @@ const TimelineList = memo(function TimelineList({
   highlightCommentId?: string | null;
 }) {
   if (timeline.length === 0) {
-    return <p className="text-sm text-muted-foreground">No comments or runs yet.</p>;
+    return <p className="text-sm text-muted-foreground">暂无评论或运行记录。</p>;
   }
 
   return (
@@ -154,7 +154,7 @@ const TimelineList = memo(function TimelineList({
                 </span>
               </div>
               <div className="flex items-center gap-2 text-xs">
-                <span className="text-muted-foreground">Run</span>
+                <span className="text-muted-foreground">运行</span>
                 <Link
                   to={`/agents/${run.agentId}/runs/${run.runId}`}
                   className="inline-flex items-center rounded-md border border-border bg-accent/40 px-2 py-1 font-mono text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors"

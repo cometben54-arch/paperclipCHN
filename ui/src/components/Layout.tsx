@@ -155,13 +155,13 @@ export function Layout() {
     setMobileNavVisible(true);
   }, [isMobile]);
 
-  // Swipe gesture to open/close sidebar on mobile
+  // 移动端滑动手势打开/关闭侧边栏
   useEffect(() => {
     if (!isMobile) return;
 
-    const EDGE_ZONE = 30; // px from left edge to start open-swipe
-    const MIN_DISTANCE = 50; // minimum horizontal swipe distance
-    const MAX_VERTICAL = 75; // max vertical drift before we ignore
+    const EDGE_ZONE = 30; // 从左边缘开始的像素距离
+    const MIN_DISTANCE = 50; // 最小水平滑动距离
+    const MAX_VERTICAL = 75; // 忽略前的最大垂直偏移
 
     let startX = 0;
     let startY = 0;
@@ -177,15 +177,15 @@ export function Layout() {
       const dx = t.clientX - startX;
       const dy = Math.abs(t.clientY - startY);
 
-      if (dy > MAX_VERTICAL) return; // vertical scroll, ignore
+      if (dy > MAX_VERTICAL) return; // 垂直滚动，忽略
 
-      // Swipe right from left edge → open
+      // 从左边缘向右滑动 → 打开
       if (!sidebarOpen && startX < EDGE_ZONE && dx > MIN_DISTANCE) {
         setSidebarOpen(true);
         return;
       }
 
-      // Swipe left when open → close
+      // 打开时向左滑动 → 关闭
       if (sidebarOpen && dx < -MIN_DISTANCE) {
         setSidebarOpen(false);
       }
@@ -254,7 +254,7 @@ export function Layout() {
     try {
       window.localStorage.setItem(INSTANCE_SETTINGS_MEMORY_KEY, nextPath);
     } catch {
-      // Ignore storage failures in restricted environments.
+      // 在受限环境中忽略存储失败。
     }
   }, [location.hash, location.pathname, location.search]);
 
@@ -269,7 +269,7 @@ export function Layout() {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[200] focus:rounded-md focus:bg-background focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
-        Skip to Main Content
+        跳转到主要内容
       </a>
       <WorktreeBanner />
       <DevRestartBanner devServer={health?.devServer} />
@@ -279,7 +279,7 @@ export function Layout() {
             type="button"
             className="fixed inset-0 z-40 bg-black/50"
             onClick={() => setSidebarOpen(false)}
-            aria-label="Close sidebar"
+            aria-label="关闭侧边栏"
           />
         )}
 
@@ -303,7 +303,7 @@ export function Layout() {
                   className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium transition-colors text-foreground/80 hover:bg-accent/50 hover:text-foreground flex-1 min-w-0"
                 >
                   <BookOpen className="h-4 w-4 shrink-0" />
-                  <span className="truncate">Documentation</span>
+                  <span className="truncate">文档</span>
                 </a>
                 {health?.version && (
                   <Tooltip>
@@ -316,8 +316,8 @@ export function Layout() {
                 <Button variant="ghost" size="icon-sm" className="text-muted-foreground shrink-0" asChild>
                   <Link
                     to={instanceSettingsTarget}
-                    aria-label="Instance settings"
-                    title="Instance settings"
+                    aria-label="实例设置"
+                    title="实例设置"
                     onClick={() => {
                       if (isMobile) setSidebarOpen(false);
                     }}
@@ -331,8 +331,8 @@ export function Layout() {
                   size="icon-sm"
                   className="text-muted-foreground shrink-0"
                   onClick={toggleTheme}
-                  aria-label={`Switch to ${nextTheme} mode`}
-                  title={`Switch to ${nextTheme} mode`}
+                  aria-label={`切换到${nextTheme === "dark" ? "深色" : "浅色"}模式`}
+                  title={`切换到${nextTheme === "dark" ? "深色" : "浅色"}模式`}
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </Button>
@@ -361,7 +361,7 @@ export function Layout() {
                   className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium transition-colors text-foreground/80 hover:bg-accent/50 hover:text-foreground flex-1 min-w-0"
                 >
                   <BookOpen className="h-4 w-4 shrink-0" />
-                  <span className="truncate">Documentation</span>
+                  <span className="truncate">文档</span>
                 </a>
                 {health?.version && (
                   <Tooltip>
@@ -374,8 +374,8 @@ export function Layout() {
                 <Button variant="ghost" size="icon-sm" className="text-muted-foreground shrink-0" asChild>
                   <Link
                     to={instanceSettingsTarget}
-                    aria-label="Instance settings"
-                    title="Instance settings"
+                    aria-label="实例设置"
+                    title="实例设置"
                     onClick={() => {
                       if (isMobile) setSidebarOpen(false);
                     }}
@@ -389,8 +389,8 @@ export function Layout() {
                   size="icon-sm"
                   className="text-muted-foreground shrink-0"
                   onClick={toggleTheme}
-                  aria-label={`Switch to ${nextTheme} mode`}
-                  title={`Switch to ${nextTheme} mode`}
+                  aria-label={`切换到${nextTheme === "dark" ? "深色" : "浅色"}模式`}
+                  title={`切换到${nextTheme === "dark" ? "深色" : "浅色"}模式`}
                 >
                   {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                 </Button>

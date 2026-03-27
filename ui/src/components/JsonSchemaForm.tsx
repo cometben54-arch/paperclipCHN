@@ -79,17 +79,17 @@ export interface JsonSchemaNode {
 }
 
 export interface JsonSchemaFormProps {
-  /** The JSON Schema to render. */
+  /** 要渲染的 JSON Schema。 */
   schema: JsonSchemaNode;
-  /** Current form values. */
+  /** 当前表单值。 */
   values: Record<string, unknown>;
-  /** Called whenever any field value changes. */
+  /** 当任何字段值变化时调用。 */
   onChange: (values: Record<string, unknown>) => void;
-  /** Validation errors keyed by JSON pointer path (e.g. "/apiKey"). */
+  /** 以 JSON 指针路径为键的验证错误（例如 "/apiKey"）。 */
   errors?: Record<string, string>;
-  /** If true, all fields are disabled. */
+  /** 如果为 true，所有字段将被禁用。 */
   disabled?: boolean;
-  /** Additional CSS class for the root container. */
+  /** 根容器的附加 CSS 类。 */
   className?: string;
 }
 
@@ -97,29 +97,29 @@ export interface JsonSchemaFormProps {
 // Helpers
 // ---------------------------------------------------------------------------
 
-/** Resolve the primary type string from a schema node. */
+/** 从 schema 节点解析主类型字符串。 */
 export function resolveType(schema: JsonSchemaNode): string {
   if (schema.enum) return "enum";
   if (schema.const !== undefined) return "const";
   if (schema.format === "secret-ref") return "secret-ref";
   if (Array.isArray(schema.type)) {
-    // Use the first non-null type
+    // 使用第一个非 null 类型
     return schema.type.find((t) => t !== "null") ?? "string";
   }
   return schema.type ?? "string";
 }
 
-/** Human-readable label from schema title or property key. */
+/** 从 schema 标题或属性键生成人类可读的标签。 */
 export function labelFromKey(key: string, schema: JsonSchemaNode): string {
   if (schema.title) return schema.title;
-  // Convert camelCase / snake_case to Title Case
+  // 将 camelCase / snake_case 转换为 Title Case
   return key
     .replace(/([a-z])([A-Z])/g, "$1 $2")
     .replace(/[_-]+/g, " ")
     .replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
-/** Produce a sensible default value for a schema node. */
+/** 为 schema 节点生成合理的默认值。 */
 export function getDefaultForSchema(schema: JsonSchemaNode): unknown {
   if (schema.default !== undefined) return schema.default;
 
@@ -150,7 +150,7 @@ export function getDefaultForSchema(schema: JsonSchemaNode): unknown {
   }
 }
 
-/** Validate a single field value against schema constraints. Returns error string or null. */
+/** 根据 schema 约束验证单个字段值。返回错误字符串或 null。 */
 export function validateField(
   value: unknown,
   schema: JsonSchemaNode,
@@ -160,32 +160,32 @@ export function validateField(
 
   // Required check
   if (isRequired && (value === undefined || value === null || value === "")) {
-    return "This field is required";
+    return "此字段为必填项";
   }
 
-  // Skip further validation if empty and not required
+  // 如果为空且非必填则跳过进一步验证
   if (value === undefined || value === null || value === "") return null;
 
   if (type === "string" || type === "secret-ref") {
     const str = String(value);
     if (schema.minLength != null && str.length < schema.minLength) {
-      return `Must be at least ${schema.minLength} characters`;
+      return `至少需要 ${schema.minLength} 个字符`;
     }
     if (schema.maxLength != null && str.length > schema.maxLength) {
-      return `Must be at most ${schema.maxLength} characters`;
+      return `最多允许 ${schema.maxLength} 个字符`;
     }
     if (schema.pattern) {
-      // Guard against ReDoS: reject overly complex patterns from plugin JSON Schemas.
-      // Limit pattern length and run the regex with a defensive try/catch.
+      // 防止 ReDoS：拒绝来自插件 JSON Schema 的过于复杂的正则表达式。
+      // 限制正则表达式长度并使用防御性 try/catch 执行。
       const MAX_PATTERN_LENGTH = 512;
       if (schema.pattern.length <= MAX_PATTERN_LENGTH) {
         try {
           const re = new RegExp(schema.pattern);
           if (!re.test(str)) {
-            return `Must match pattern: ${schema.pattern}`;
+            return `必须匹配模式: ${schema.pattern}`;
           }
         } catch {
-          // Invalid regex in schema — skip
+          // schema 中的正则表达式无效 — 跳过
         }
       }
     }
@@ -193,41 +193,41 @@ export function validateField(
 
   if (type === "number" || type === "integer") {
     const num = Number(value);
-    if (isNaN(num)) return "Must be a valid number";
+    if (isNaN(num)) return "必须是有效的数字";
     if (schema.minimum != null && num < schema.minimum) {
-      return `Must be at least ${schema.minimum}`;
+      return `不能小于 ${schema.minimum}`;
     }
     if (schema.maximum != null && num > schema.maximum) {
-      return `Must be at most ${schema.maximum}`;
+      return `不能大于 ${schema.maximum}`;
     }
     if (schema.exclusiveMinimum != null && num <= schema.exclusiveMinimum) {
-      return `Must be greater than ${schema.exclusiveMinimum}`;
+      return `必须大于 ${schema.exclusiveMinimum}`;
     }
     if (schema.exclusiveMaximum != null && num >= schema.exclusiveMaximum) {
-      return `Must be less than ${schema.exclusiveMaximum}`;
+      return `必须小于 ${schema.exclusiveMaximum}`;
     }
     if (type === "integer" && !Number.isInteger(num)) {
-      return "Must be a whole number";
+      return "必须是整数";
     }
     if (schema.multipleOf != null && num % schema.multipleOf !== 0) {
-      return `Must be a multiple of ${schema.multipleOf}`;
+      return `必须是 ${schema.multipleOf} 的倍数`;
     }
   }
 
   if (type === "array") {
     const arr = value as unknown[];
     if (schema.minItems != null && arr.length < schema.minItems) {
-      return `Must have at least ${schema.minItems} items`;
+      return `至少需要 ${schema.minItems} 项`;
     }
     if (schema.maxItems != null && arr.length > schema.maxItems) {
-      return `Must have at most ${schema.maxItems} items`;
+      return `最多允许 ${schema.maxItems} 项`;
     }
   }
 
   return null;
 }
 
-/** Public API for validation */
+/** 验证公共 API */
 export function validateJsonSchemaForm(
   schema: JsonSchemaNode,
   values: Record<string, unknown>,
@@ -244,13 +244,13 @@ export function validateJsonSchemaForm(
     const isRequired = requiredFields.has(key);
     const type = resolveType(propSchema);
 
-    // Per-field validation
+    // 逐字段验证
     const fieldErr = validateField(value, propSchema, isRequired);
     if (fieldErr) {
       errors[errorKey] = fieldErr;
     }
 
-    // Recurse into objects
+    // 递归处理对象
     if (type === "object" && propSchema.properties && typeof value === "object" && value !== null) {
       Object.assign(
         errors,
@@ -258,7 +258,7 @@ export function validateJsonSchemaForm(
       );
     }
 
-    // Recurse into arrays
+    // 递归处理数组
     if (type === "array" && propSchema.items && Array.isArray(value)) {
       const itemSchema = propSchema.items as JsonSchemaNode;
       const isObjectItem = resolveType(itemSchema) === "object";
@@ -289,7 +289,7 @@ export function validateJsonSchemaForm(
   return errors;
 }
 
-/** Public API for default values */
+/** 默认值公共 API */
 export function getDefaultValues(schema: JsonSchemaNode): Record<string, unknown> {
   const result: Record<string, unknown> = {};
   const properties = schema.properties ?? {};
@@ -318,7 +318,7 @@ interface FieldWrapperProps {
 }
 
 /**
- * Common wrapper for form fields that handles labels, descriptions, and error messages.
+ * 表单字段的通用包装器，处理标签、描述和错误消息。
  */
 const FieldWrapper = React.memo(({
   label,
@@ -366,7 +366,7 @@ interface FormFieldProps {
 }
 
 /**
- * Specialized field for boolean (checkbox) values.
+ * 用于布尔值（复选框）的专用字段。
  */
 const BooleanField = React.memo(({
   id,
@@ -417,7 +417,7 @@ const BooleanField = React.memo(({
 BooleanField.displayName = "BooleanField";
 
 /**
- * Specialized field for enum (select) values.
+ * 用于枚举（选择）值的专用字段。
  */
 const EnumField = React.memo(({
   value,
@@ -451,7 +451,7 @@ const EnumField = React.memo(({
       disabled={disabled}
     >
       <SelectTrigger className="w-full">
-        <SelectValue placeholder="Select an option" />
+        <SelectValue placeholder="选择一个选项" />
       </SelectTrigger>
       <SelectContent>
         {options.map((option) => (
@@ -467,7 +467,7 @@ const EnumField = React.memo(({
 EnumField.displayName = "EnumField";
 
 /**
- * Specialized field for secret-ref values, providing a toggleable password input.
+ * 用于 secret-ref 值的专用字段，提供可切换的密码输入框。
  */
 const SecretField = React.memo(({
   value,
@@ -494,7 +494,7 @@ const SecretField = React.memo(({
       label={label}
       description={
         description ||
-        "This secret is stored securely via the Paperclip secret provider."
+        "此密钥通过 Paperclip 密钥提供程序安全存储。"
       }
       required={isRequired}
       error={error}
@@ -524,7 +524,7 @@ const SecretField = React.memo(({
             <Eye className="h-4 w-4 text-muted-foreground" />
           )}
           <span className="sr-only">
-            {isVisible ? "Hide secret" : "Show secret"}
+            {isVisible ? "隐藏密钥" : "显示密钥"}
           </span>
         </Button>
       </div>
@@ -535,7 +535,7 @@ const SecretField = React.memo(({
 SecretField.displayName = "SecretField";
 
 /**
- * Specialized field for numeric (number/integer) values.
+ * 用于数值（数字/整数）的专用字段。
  */
 const NumberField = React.memo(({
   value,
@@ -583,7 +583,7 @@ const NumberField = React.memo(({
 NumberField.displayName = "NumberField";
 
 /**
- * Specialized field for string values, rendering either an Input or Textarea based on length or format.
+ * 用于字符串值的专用字段，根据长度或格式渲染 Input 或 Textarea。
  */
 const StringField = React.memo(({
   value,
@@ -643,7 +643,7 @@ const StringField = React.memo(({
 StringField.displayName = "StringField";
 
 /**
- * Specialized field for array values, handling dynamic addition and removal of items.
+ * 用于数组值的专用字段，处理项目的动态添加和删除。
  */
 const ArrayField = React.memo(({
   propSchema,
@@ -694,7 +694,7 @@ const ArrayField = React.memo(({
           }}
         >
           <Plus className="mr-2 h-4 w-4" />
-          {isComplex ? "Add item" : "Add"}
+          {isComplex ? "添加项目" : "添加"}
         </Button>
       </div>
 
@@ -706,7 +706,7 @@ const ArrayField = React.memo(({
           >
             <div className="flex-1">
               <div className="mb-2 text-xs font-medium text-muted-foreground">
-                Item {index + 1}
+                第 {index + 1} 项
               </div>
               <FormField
                 propSchema={itemSchema}
@@ -739,13 +739,13 @@ const ArrayField = React.memo(({
               }}
             >
               <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Remove item</span>
+              <span className="sr-only">删除项目</span>
             </Button>
           </div>
         ))}
         {items.length === 0 && (
           <div className="rounded-lg border border-dashed p-4 text-center text-xs text-muted-foreground">
-            No items added yet.
+            尚未添加任何项目。
           </div>
         )}
       </div>
@@ -759,7 +759,7 @@ const ArrayField = React.memo(({
 ArrayField.displayName = "ArrayField";
 
 /**
- * Specialized field for object values, handling recursive rendering of nested properties.
+ * 用于对象值的专用字段，处理嵌套属性的递归渲染。
  */
 const ObjectField = React.memo(({
   propSchema,
@@ -829,7 +829,7 @@ const ObjectField = React.memo(({
 ObjectField.displayName = "ObjectField";
 
 /**
- * Orchestrator component that selects and renders the appropriate field type based on the schema node.
+ * 编排组件，根据 schema 节点选择并渲染适当的字段类型。
  */
 const FormField = React.memo(({
   propSchema,
@@ -956,9 +956,9 @@ FormField.displayName = "FormField";
 // ---------------------------------------------------------------------------
 
 /**
- * Main JsonSchemaForm component.
- * Renders a form based on a subset of JSON Schema specification.
- * Supports primitive types, enums, secrets, objects, and arrays with recursion.
+ * JsonSchemaForm 主组件。
+ * 基于 JSON Schema 规范子集渲染表单。
+ * 支持基本类型、枚举、密钥、对象和数组的递归渲染。
  */
 export function JsonSchemaForm({
   schema,
@@ -971,7 +971,7 @@ export function JsonSchemaForm({
   const type = resolveType(schema);
 
   const handleRootScalarChange = useCallback((newVal: unknown) => {
-    // If root is a scalar, values IS the value
+    // 如果根节点是标量，values 就是值本身
     onChange(newVal as Record<string, unknown>);
   }, [onChange]);
 

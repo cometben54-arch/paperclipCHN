@@ -45,7 +45,7 @@ function saveOrder(ids: string[]) {
   localStorage.setItem(ORDER_STORAGE_KEY, JSON.stringify(ids));
 }
 
-/** Sort companies by stored order, appending any new ones at the end. */
+/** 按存储顺序排序公司，将新公司追加到末尾。 */
 function sortByStoredOrder(companies: Company[]): Company[] {
   const order = getStoredOrder();
   if (order.length === 0) return companies;
@@ -60,7 +60,7 @@ function sortByStoredOrder(companies: Company[]): Company[] {
       byId.delete(id);
     }
   }
-  // Append any companies not in stored order
+  // 追加不在存储顺序中的公司
   for (const c of byId.values()) {
     sorted.push(c);
   }
@@ -108,7 +108,7 @@ function SortableCompanyItem({
             }}
             className="relative flex items-center justify-center group overflow-visible"
           >
-            {/* Selection indicator pill */}
+            {/* 选中指示条 */}
             <div
               className={cn(
                 "absolute left-[-14px] w-1 rounded-r-full bg-foreground transition-[height] duration-150",
@@ -195,14 +195,14 @@ export function CompanyRail() {
     return result;
   }, [companyIds, sidebarBadgeQueries]);
 
-  // Maintain sorted order in local state, synced from companies + localStorage
+  // 在本地状态中维护排序顺序，从 companies + localStorage 同步
   const [orderedIds, setOrderedIds] = useState<string[]>(() =>
     sortByStoredOrder(sidebarCompanies).map((c) => c.id)
   );
 
-  // Re-sync orderedIds from localStorage whenever companies changes.
-  // Handles initial data load (companies starts as [] before query resolves)
-  // and subsequent refetches triggered by live updates.
+  // 每当 companies 变化时从 localStorage 重新同步 orderedIds。
+  // 处理初始数据加载（companies 在查询解析前以 [] 开始）
+  // 以及由实时更新触发的后续重新获取。
   useEffect(() => {
     if (sidebarCompanies.length === 0) {
       setOrderedIds([]);
@@ -211,7 +211,7 @@ export function CompanyRail() {
     setOrderedIds(sortByStoredOrder(sidebarCompanies).map((c) => c.id));
   }, [sidebarCompanies]);
 
-  // Sync order across tabs via the native storage event
+  // 通过原生 storage 事件跨标签页同步顺序
   useEffect(() => {
     const handleStorage = (e: StorageEvent) => {
       if (e.key !== ORDER_STORAGE_KEY) return;
@@ -224,7 +224,7 @@ export function CompanyRail() {
     return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
-  // Re-derive when companies change (new company added/removed)
+  // 当公司变化时（新增/删除公司）重新计算
   const orderedCompanies = useMemo(() => {
     const byId = new Map(sidebarCompanies.map((c) => [c.id, c]));
     const result: Company[] = [];
@@ -235,14 +235,14 @@ export function CompanyRail() {
         byId.delete(id);
       }
     }
-    // Append any new companies not yet in our order
+    // 追加尚未在排序中的新公司
     for (const c of byId.values()) {
       result.push(c);
     }
     return result;
   }, [sidebarCompanies, orderedIds]);
 
-  // Require 8px of movement before starting a drag to avoid interfering with clicks
+  // 需要 8px 的移动距离才开始拖拽，以避免干扰点击
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: { distance: 8 },
@@ -268,12 +268,12 @@ export function CompanyRail() {
 
   return (
     <div className="flex flex-col items-center w-[72px] shrink-0 h-full bg-background border-r border-border">
-      {/* Paperclip icon - aligned with top sections (implied line, no visible border) */}
+      {/* Paperclip 图标 - 与顶部区域对齐（隐含线，无可见边框） */}
       <div className="flex items-center justify-center h-12 w-full shrink-0">
         <Paperclip className="h-5 w-5 text-foreground" />
       </div>
 
-      {/* Company list */}
+      {/* 公司列表 */}
       <div className="flex-1 flex flex-col items-center gap-2 py-3 w-full overflow-y-auto overflow-x-hidden scrollbar-none">
         <DndContext
           sensors={sensors}
@@ -303,23 +303,23 @@ export function CompanyRail() {
         </DndContext>
       </div>
 
-      {/* Separator before add button */}
+      {/* 添加按钮前的分隔线 */}
       <div className="w-8 h-px bg-border mx-auto shrink-0" />
 
-      {/* Add company button */}
+      {/* 添加公司按钮 */}
       <div className="flex items-center justify-center py-2 shrink-0">
         <Tooltip delayDuration={300}>
           <TooltipTrigger asChild>
             <button
               onClick={() => openOnboarding()}
               className="flex items-center justify-center w-11 h-11 rounded-[22px] hover:rounded-[14px] border-2 border-dashed border-border text-muted-foreground hover:border-foreground/30 hover:text-foreground transition-[border-color,color,border-radius] duration-150"
-              aria-label="Add company"
+              aria-label="添加公司"
             >
               <Plus className="h-5 w-5" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="right" sideOffset={8}>
-            <p>Add company</p>
+            <p>添加公司</p>
           </TooltipContent>
         </Tooltip>
       </div>

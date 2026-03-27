@@ -1,22 +1,18 @@
 /**
- * @fileoverview Plugin UI slot system — dynamic loading, error isolation,
- * and rendering of plugin-contributed UI extensions.
+ * @fileoverview 插件 UI 插槽系统 — 动态加载、错误隔离和插件贡献的 UI 扩展渲染。
  *
- * Provides:
- * - `usePluginSlots(type, context?)` — React hook that discovers and
- *   filters plugin UI contributions for a given slot type.
- * - `PluginSlotOutlet` — renders all matching slots inline with error
- *   boundary isolation per plugin.
- * - `PluginBridgeScope` — wraps each plugin's component tree to inject
- *   the bridge context (`pluginId`, host context) needed by bridge hooks.
+ * 提供：
+ * - `usePluginSlots(type, context?)` — React hook，用于发现和过滤指定插槽类型的插件 UI 贡献。
+ * - `PluginSlotOutlet` — 内联渲染所有匹配的插槽，并为每个插件提供错误边界隔离。
+ * - `PluginBridgeScope` — 包装每个插件的组件树，注入桥接 hook 所需的桥接上下文
+ *   （`pluginId`、主机上下文）。
  *
- * Plugin UI modules are loaded via dynamic ESM `import()` from the host's
- * static file server (`/_plugins/:pluginId/ui/:entryFile`). Each module
- * exports named React components that correspond to `ui.slots[].exportName`
- * in the manifest.
+ * 插件 UI 模块通过从主机静态文件服务器（`/_plugins/:pluginId/ui/:entryFile`）
+ * 动态 ESM `import()` 加载。每个模块导出与清单中 `ui.slots[].exportName`
+ * 对应的命名 React 组件。
  *
- * @see PLUGIN_SPEC.md §19 — UI Extension Model
- * @see PLUGIN_SPEC.md §19.0.3 — Bundle Serving
+ * @see PLUGIN_SPEC.md §19 — UI 扩展模型
+ * @see PLUGIN_SPEC.md §19.0.3 — 包服务
  */
 import {
   Component,
@@ -51,7 +47,7 @@ export type PluginSlotContext = {
   projectId?: string | null;
   entityId?: string | null;
   entityType?: PluginUiSlotEntityType | null;
-  /** Parent entity ID for nested slots (e.g. comment annotations within an issue). */
+  /** 嵌套插槽的父实体 ID（例如任务中的评论注释）。 */
   parentEntityId?: string | null;
   projectRef?: string | null;
 };
@@ -92,8 +88,8 @@ type UsePluginSlotsResult = {
 };
 
 /**
- * In-memory registry for plugin UI exports loaded by the host page.
- * Keys are `${pluginKey}:${exportName}` to match manifest slot declarations.
+ * 主机页面加载的插件 UI 导出的内存注册表。
+ * 键为 `${pluginKey}:${exportName}`，与清单插槽声明匹配。
  */
 const registry = new Map<string, RegisteredPluginComponent>();
 
@@ -107,11 +103,11 @@ function requiresEntityType(slotType: PluginUiSlotType): boolean {
 
 function getErrorMessage(error: unknown): string {
   if (error instanceof Error && error.message) return error.message;
-  return "Unknown error";
+  return "未知错误";
 }
 
 /**
- * Registers a React component export for a plugin UI slot.
+ * 为插件 UI 插槽注册一个 React 组件导出。
  */
 export function registerPluginReactComponent(
   pluginKey: string,
@@ -125,7 +121,7 @@ export function registerPluginReactComponent(
 }
 
 /**
- * Registers a custom element tag for a plugin UI slot.
+ * 为插件 UI 插槽注册一个自定义元素标签。
  */
 export function registerPluginWebComponent(
   pluginKey: string,
@@ -150,31 +146,29 @@ export function resolveRegisteredPluginComponent(
 }
 
 // ---------------------------------------------------------------------------
-// Plugin module dynamic import loader
+// 插件模块动态导入加载器
 // ---------------------------------------------------------------------------
 
 type PluginLoadState = "idle" | "loading" | "loaded" | "error";
 
 /**
- * Tracks the load state for each plugin's UI module by contribution cache key.
+ * 按贡献缓存键跟踪每个插件 UI 模块的加载状态。
  *
- * Once a plugin module is loaded, all its named exports are inspected and
- * registered into the component `registry` so that `resolveRegisteredComponent`
- * can find them when slots render.
+ * 插件模块加载后，其所有命名导出会被检查并注册到组件 `registry` 中，
+ * 以便 `resolveRegisteredComponent` 在插槽渲染时能够找到它们。
  */
 const pluginLoadStates = new Map<string, PluginLoadState>();
 
 /**
- * Promise cache to prevent concurrent duplicate imports for the same plugin.
+ * Promise 缓存，防止同一插件的并发重复导入。
  */
 const inflightImports = new Map<string, Promise<void>>();
 
 /**
- * Build the full URL for a plugin's UI entry module.
+ * 构建插件 UI 入口模块的完整 URL。
  *
- * The server serves plugin UI bundles at `/_plugins/:pluginId/ui/*`.
- * The `uiEntryFile` from the contribution (typically `"index.js"`) is
- * appended to form the complete import path.
+ * 服务器在 `/_plugins/:pluginId/ui/*` 提供插件 UI 包。
+ * 贡献中的 `uiEntryFile`（通常为 `"index.js"`）被追加以形成完整的导入路径。
  */
 function buildPluginModuleKey(contribution: PluginUiContribution): string {
   const cacheHint = contribution.updatedAt ?? contribution.version ?? "0";
@@ -187,25 +181,24 @@ function buildPluginUiUrl(contribution: PluginUiContribution): string {
 }
 
 /**
- * Import a plugin's UI entry module with bare-specifier rewriting.
+ * 导入带有裸说明符重写的插件 UI 入口模块。
  *
- * Plugin bundles are built with `external: ["@paperclipai/plugin-sdk/ui", "react", "react-dom"]`,
- * so their ESM output contains bare specifier imports like:
+ * 插件包使用 `external: ["@paperclipai/plugin-sdk/ui", "react", "react-dom"]` 构建，
+ * 因此其 ESM 输出包含如下裸说明符导入：
  *
  * ```js
  * import { usePluginData } from "@paperclipai/plugin-sdk/ui";
  * import React from "react";
  * ```
  *
- * Browsers cannot resolve bare specifiers without an import map. Rather than
- * fighting import map timing constraints, we:
- * 1. Fetch the module source text
- * 2. Rewrite bare specifier imports to use blob URLs that re-export from the
- *    host's global bridge registry (`globalThis.__paperclipPluginBridge__`)
- * 3. Import the rewritten module via a blob URL
+ * 浏览器无法在没有导入映射的情况下解析裸说明符。我们不使用导入映射的时序约束，
+ * 而是：
+ * 1. 获取模块源文本
+ * 2. 将裸说明符导入重写为 blob URL，从主机的全局桥接注册表
+ *    （`globalThis.__paperclipPluginBridge__`）重新导出
+ * 3. 通过 blob URL 导入重写后的模块
  *
- * This approach is compatible with all modern browsers and avoids import map
- * ordering issues.
+ * 此方法兼容所有现代浏览器，并避免了导入映射的排序问题。
  */
 const shimBlobUrls: Record<string, string> = {};
 
@@ -270,19 +263,19 @@ function getShimBlobUrl(specifier: "react" | "react-dom" | "react-dom/client" | 
 }
 
 /**
- * Rewrite bare specifier imports in an ESM source string to use blob URLs.
+ * 将 ESM 源字符串中的裸说明符导入重写为 blob URL。
  *
- * This handles the standard import patterns emitted by esbuild/rollup:
+ * 处理 esbuild/rollup 生成的标准导入模式：
  * - `import { ... } from "react";`
  * - `import React from "react";`
  * - `import * as React from "react";`
  * - `import { ... } from "@paperclipai/plugin-sdk/ui";`
  *
- * Also handles re-exports:
+ * 也处理重导出：
  * - `export { ... } from "react";`
  */
 function rewriteBareSpecifiers(source: string): string {
-  // Build a mapping of bare specifiers to blob URLs.
+  // 构建裸说明符到 blob URL 的映射。
   const rewrites: Record<string, string> = {
     '"@paperclipai/plugin-sdk/ui"': `"${getShimBlobUrl("sdk-ui")}"`,
     "'@paperclipai/plugin-sdk/ui'": `'${getShimBlobUrl("sdk-ui")}'`,
@@ -300,10 +293,10 @@ function rewriteBareSpecifiers(source: string): string {
 
   let result = source;
   for (const [from, to] of Object.entries(rewrites)) {
-    // Only rewrite in import/export from contexts, not in arbitrary strings.
-    // The regex matches `from "..."` or `from '...'` patterns.
+    // 仅在 import/export from 上下文中重写，不在任意字符串中重写。
+    // 正则匹配 `from "..."` 或 `from '...'` 模式。
     result = result.replaceAll(` from ${from}`, ` from ${to}`);
-    // Also handle `import "..."` (side-effect imports)
+    // 也处理 `import "..."`（副作用导入）
     result = result.replaceAll(`import ${from}`, `import ${to}`);
   }
 
@@ -311,31 +304,31 @@ function rewriteBareSpecifiers(source: string): string {
 }
 
 /**
- * Fetch, rewrite, and import a plugin UI module.
+ * 获取、重写并导入插件 UI 模块。
  *
- * @param url - The URL to the plugin's UI entry module
- * @returns The module's exports
+ * @param url - 插件 UI 入口模块的 URL
+ * @returns 模块的导出
  */
 async function importPluginModule(url: string): Promise<Record<string, unknown>> {
-  // Check if the bridge registry is available. If not, fall back to direct
-  // import (which will fail on bare specifiers but won't crash the loader).
+  // 检查桥接注册表是否可用。如果不可用，回退到直接导入
+  //（裸说明符会失败但不会导致加载器崩溃）。
   if (!globalThis.__paperclipPluginBridge__) {
-    console.warn("[plugin-loader] Bridge registry not initialized, falling back to direct import");
+    console.warn("[plugin-loader] 桥接注册表未初始化，回退到直接导入");
     return import(/* @vite-ignore */ url);
   }
 
-  // Fetch the module source text
+  // 获取模块源文本
   const response = await fetch(url);
   if (!response.ok) {
-    throw new Error(`Failed to fetch plugin module: ${response.status} ${response.statusText}`);
+    throw new Error(`获取插件模块失败：${response.status} ${response.statusText}`);
   }
 
   const source = await response.text();
 
-  // Rewrite bare specifier imports to blob URLs
+  // 将裸说明符导入重写为 blob URL
   const rewritten = rewriteBareSpecifiers(source);
 
-  // Create a blob URL from the rewritten source and import it
+  // 从重写后的源创建 blob URL 并导入
   const blob = new Blob([rewritten], { type: "application/javascript" });
   const blobUrl = URL.createObjectURL(blob);
 
@@ -343,7 +336,7 @@ async function importPluginModule(url: string): Promise<Record<string, unknown>>
     const mod = await import(/* @vite-ignore */ blobUrl);
     return mod;
   } finally {
-    // Clean up the blob URL after import (the module is already loaded)
+    // 导入后清理 blob URL（模块已加载）
     URL.revokeObjectURL(blobUrl);
   }
 }

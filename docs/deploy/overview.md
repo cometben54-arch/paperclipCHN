@@ -1,54 +1,54 @@
 ---
-title: Deployment Overview
-summary: Deployment modes at a glance
+title: 部署概览
+summary: 部署模式一览
 ---
 
-Paperclip supports three deployment configurations, from zero-friction local to internet-facing production.
+Paperclip 支持三种部署配置，从零摩擦的本地部署到面向互联网的生产部署。
 
-## Deployment Modes
+## 部署模式
 
-| Mode | Auth | Best For |
+| 模式 | 认证 | 适用场景 |
 |------|------|----------|
-| `local_trusted` | No login required | Single-operator local machine |
-| `authenticated` + `private` | Login required | Private network (Tailscale, VPN, LAN) |
-| `authenticated` + `public` | Login required | Internet-facing cloud deployment |
+| `local_trusted` | 无需登录 | 单操作员本地机器 |
+| `authenticated` + `private` | 需要登录 | 私有网络（Tailscale、VPN、LAN） |
+| `authenticated` + `public` | 需要登录 | 面向互联网的云部署 |
 
-## Quick Comparison
+## 快速对比
 
-### Local Trusted (Default)
+### 本地信任模式（默认）
 
-- Loopback-only host binding (localhost)
-- No human login flow
-- Fastest local startup
-- Best for: solo development and experimentation
+- 仅绑定回环地址（localhost）
+- 无人工登录流程
+- 最快的本地启动速度
+- 适用于：独立开发和实验
 
-### Authenticated + Private
+### 认证 + 私有模式
 
-- Login required via Better Auth
-- Binds to all interfaces for network access
-- Auto base URL mode (lower friction)
-- Best for: team access over Tailscale or local network
+- 需要通过 Better Auth 登录
+- 绑定所有接口以实现网络访问
+- 自动基础 URL 模式（低摩擦）
+- 适用于：通过 Tailscale 或本地网络的团队访问
 
-### Authenticated + Public
+### 认证 + 公开模式
 
-- Login required
-- Explicit public URL required
-- Stricter security checks
-- Best for: cloud hosting, internet-facing deployment
+- 需要登录
+- 需要显式的公开 URL
+- 更严格的安全检查
+- 适用于：云托管、面向互联网的部署
 
-## Choosing a Mode
+## 选择模式
 
-- **Just trying Paperclip?** Use `local_trusted` (the default)
-- **Sharing with a team on private network?** Use `authenticated` + `private`
-- **Deploying to the cloud?** Use `authenticated` + `public`
+- **只是试用 Paperclip？** 使用 `local_trusted`（默认）
+- **在私有网络上与团队共享？** 使用 `authenticated` + `private`
+- **部署到云端？** 使用 `authenticated` + `public`
 
-Set the mode during onboarding:
+在引导过程中设置模式：
 
 ```sh
 pnpm paperclipai onboard
 ```
 
-Or update it later:
+或稍后更新：
 
 ```sh
 pnpm paperclipai configure --section server

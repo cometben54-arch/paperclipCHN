@@ -1,11 +1,11 @@
 ---
-title: Control-Plane Commands
-summary: Issue, agent, approval, and dashboard commands
+title: 控制平面命令
+summary: 工单、代理、审批和仪表板命令
 ---
 
-Client-side commands for managing issues, agents, approvals, and more.
+用于管理工单、代理、审批等的客户端命令。
 
-## Issue Commands
+## 工单命令
 
 ```sh
 # List issues
@@ -30,7 +30,7 @@ pnpm paperclipai issue checkout <issue-id> --agent-id <agent-id>
 pnpm paperclipai issue release <issue-id>
 ```
 
-## Company Commands
+## 公司命令
 
 ```sh
 pnpm paperclipai company list
@@ -56,14 +56,14 @@ pnpm paperclipai company import \
   --include company,agents
 ```
 
-## Agent Commands
+## 代理命令
 
 ```sh
 pnpm paperclipai agent list
 pnpm paperclipai agent get <agent-id>
 ```
 
-## Approval Commands
+## 审批命令
 
 ```sh
 # List approvals
@@ -91,19 +91,19 @@ pnpm paperclipai approval resubmit <approval-id> [--payload '{"..."}']
 pnpm paperclipai approval comment <approval-id> --body "..."
 ```
 
-## Activity Commands
+## 活动命令
 
 ```sh
 pnpm paperclipai activity list [--agent-id <id>] [--entity-type issue] [--entity-id <id>]
 ```
 
-## Dashboard
+## 仪表板
 
 ```sh
 pnpm paperclipai dashboard get
 ```
 
-## Heartbeat
+## 心跳
 
 ```sh
 pnpm paperclipai heartbeat run --agent-id <agent-id> [--api-base http://localhost:3100]

@@ -1,13 +1,13 @@
 ---
-title: Importing & Exporting Companies
-summary: Export companies to portable packages and import them from local paths or GitHub
+title: 导入与导出公司
+summary: 将公司导出为可移植包，并从本地路径或 GitHub 导入
 ---
 
-Paperclip companies can be exported to portable markdown packages and imported from local directories or GitHub repositories. This lets you share company configurations, duplicate setups, and version-control your agent teams.
+Paperclip 公司可以导出为可移植的 markdown 包，也可以从本地目录或 GitHub 仓库导入。这让你可以共享公司配置、复制设置，以及对代理团队进行版本控制。
 
-## Package Format
+## 包格式
 
-Exported packages follow the [Agent Companies specification](/companies/companies-spec) and use a markdown-first structure:
+导出的包遵循 [Agent Companies 规范](/companies/companies-spec)，采用 markdown 优先的结构：
 
 ```text
 my-company/
@@ -24,32 +24,32 @@ my-company/
 └── .paperclip.yaml     # Adapter config, env inputs, routines
 ```
 
-- **COMPANY.md** defines company name, description, and metadata.
-- **AGENT.md** files contain agent identity, role, and instructions.
-- **SKILL.md** files are compatible with the Agent Skills ecosystem.
-- **.paperclip.yaml** holds Paperclip-specific config (adapter types, env inputs, budgets) as an optional sidecar.
+- **COMPANY.md** 定义公司名称、描述和元数据。
+- **AGENT.md** 文件包含代理身份、角色和指令。
+- **SKILL.md** 文件与 Agent Skills 生态系统兼容。
+- **.paperclip.yaml** 作为可选的附属文件，保存 Paperclip 特定配置（适配器类型、环境输入、预算）。
 
-## Exporting a Company
+## 导出公司
 
-Export a company into a portable folder:
+将公司导出到一个可移植的文件夹：
 
 ```sh
 paperclipai company export <company-id> --out ./my-export
 ```
 
-### Options
+### 选项
 
-| Option | Description | Default |
+| 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
-| `--out <path>` | Output directory (required) | — |
-| `--include <values>` | Comma-separated set: `company`, `agents`, `projects`, `issues`, `tasks`, `skills` | `company,agents` |
-| `--skills <values>` | Export only specific skill slugs | all |
-| `--projects <values>` | Export only specific project shortnames or IDs | all |
-| `--issues <values>` | Export specific issue identifiers or IDs | none |
-| `--project-issues <values>` | Export issues belonging to specific projects | none |
-| `--expand-referenced-skills` | Vendor skill file contents instead of keeping upstream references | `false` |
+| `--out <path>` | 输出目录（必需） | — |
+| `--include <values>` | 逗号分隔的集合：`company`、`agents`、`projects`、`issues`、`tasks`、`skills` | `company,agents` |
+| `--skills <values>` | 仅导出特定的技能 slug | 全部 |
+| `--projects <values>` | 仅导出特定的项目简称或 ID | 全部 |
+| `--issues <values>` | 导出特定的议题标识符或 ID | 无 |
+| `--project-issues <values>` | 导出属于特定项目的议题 | 无 |
+| `--expand-referenced-skills` | 内联技能文件内容，而非保留上游引用 | `false` |
 
-### Examples
+### 示例
 
 ```sh
 # Export company with agents and projects
@@ -62,20 +62,20 @@ paperclipai company export abc123 --out ./full-export --include company,agents,p
 paperclipai company export abc123 --out ./skills-only --include skills --skills review,deploy
 ```
 
-### What Gets Exported
+### 导出的内容
 
-- Company name, description, and metadata
-- Agent names, roles, reporting structure, and instructions
-- Project definitions and workspace config
-- Task/issue descriptions (when included)
-- Skill packages (as references or vendored content)
-- Adapter type and env input declarations in `.paperclip.yaml`
+- 公司名称、描述和元数据
+- 代理名称、角色、汇报结构和指令
+- 项目定义和工作区配置
+- 任务/议题描述（包含时）
+- 技能包（作为引用或内联内容）
+- `.paperclip.yaml` 中的适配器类型和环境输入声明
 
-Secret values, machine-local paths, and database IDs are **never** exported.
+密钥值、本机路径和数据库 ID **永远不会**被导出。
 
-## Importing a Company
+## 导入公司
 
-Import from a local directory, GitHub URL, or GitHub shorthand:
+从本地目录、GitHub URL 或 GitHub 简写导入：
 
 ```sh
 # From a local folder
@@ -92,59 +92,59 @@ paperclipai company import org/repo
 paperclipai company import org/repo/companies/acme
 ```
 
-### Options
+### 选项
 
-| Option | Description | Default |
+| 选项 | 描述 | 默认值 |
 |--------|-------------|---------|
-| `--target <mode>` | `new` (create a new company) or `existing` (merge into existing) | inferred from context |
-| `--company-id <id>` | Target company ID for `--target existing` | current context |
-| `--new-company-name <name>` | Override company name for `--target new` | from package |
-| `--include <values>` | Comma-separated set: `company`, `agents`, `projects`, `issues`, `tasks`, `skills` | auto-detected |
-| `--agents <list>` | Comma-separated agent slugs to import, or `all` | `all` |
-| `--collision <mode>` | How to handle name conflicts: `rename`, `skip`, or `replace` | `rename` |
-| `--ref <value>` | Git ref for GitHub imports (branch, tag, or commit) | default branch |
-| `--dry-run` | Preview what would be imported without applying | `false` |
-| `--yes` | Skip the interactive confirmation prompt | `false` |
-| `--json` | Output result as JSON | `false` |
+| `--target <mode>` | `new`（创建新公司）或 `existing`（合并到现有公司） | 根据上下文推断 |
+| `--company-id <id>` | `--target existing` 的目标公司 ID | 当前上下文 |
+| `--new-company-name <name>` | `--target new` 时覆盖公司名称 | 来自包 |
+| `--include <values>` | 逗号分隔的集合：`company`、`agents`、`projects`、`issues`、`tasks`、`skills` | 自动检测 |
+| `--agents <list>` | 逗号分隔的要导入的代理 slug，或 `all` | `all` |
+| `--collision <mode>` | 如何处理名称冲突：`rename`、`skip` 或 `replace` | `rename` |
+| `--ref <value>` | GitHub 导入的 Git 引用（分支、标签或提交） | 默认分支 |
+| `--dry-run` | 预览将要导入的内容，但不实际应用 | `false` |
+| `--yes` | 跳过交互式确认提示 | `false` |
+| `--json` | 以 JSON 格式输出结果 | `false` |
 
-### Target Modes
+### 目标模式
 
-- **`new`** — Creates a fresh company from the package. Good for duplicating a company template.
-- **`existing`** — Merges the package into an existing company. Use `--company-id` to specify the target.
+- **`new`** — 从包创建一个全新的公司。适合复制公司模板。
+- **`existing`** — 将包合并到现有公司中。使用 `--company-id` 指定目标。
 
-If `--target` is not specified, Paperclip infers it: if a `--company-id` is provided (or one exists in context), it defaults to `existing`; otherwise `new`.
+如果未指定 `--target`，Paperclip 会自动推断：如果提供了 `--company-id`（或上下文中存在），则默认为 `existing`；否则为 `new`。
 
-### Collision Strategies
+### 冲突策略
 
-When importing into an existing company, agent or project names may conflict with existing ones:
+当导入到现有公司时，代理或项目名称可能与现有名称冲突：
 
-- **`rename`** (default) — Appends a suffix to avoid conflicts (e.g., `ceo` becomes `ceo-2`).
-- **`skip`** — Skips entities that already exist.
-- **`replace`** — Overwrites existing entities. Only available for non-safe imports (not available through the CEO API).
+- **`rename`**（默认） — 添加后缀以避免冲突（例如，`ceo` 变为 `ceo-2`）。
+- **`skip`** — 跳过已存在的实体。
+- **`replace`** — 覆盖现有实体。仅适用于非安全导入（不通过 CEO API 提供）。
 
-### Interactive Selection
+### 交互式选择
 
-When running interactively (no `--yes` or `--json` flags), the import command shows a selection picker before applying. You can choose exactly which agents, projects, skills, and tasks to import using a checkbox interface.
+在交互式运行时（没有 `--yes` 或 `--json` 标志），导入命令在应用前显示一个选择器。你可以使用复选框界面精确选择要导入的代理、项目、技能和任务。
 
-### Preview Before Applying
+### 应用前预览
 
-Always preview first with `--dry-run`:
+始终先使用 `--dry-run` 预览：
 
 ```sh
 paperclipai company import org/repo --target existing --company-id abc123 --dry-run
 ```
 
-The preview shows:
-- **Package contents** — How many agents, projects, tasks, and skills are in the source
-- **Import plan** — What will be created, renamed, skipped, or replaced
-- **Env inputs** — Environment variables that may need values after import
-- **Warnings** — Potential issues like missing skills or unresolved references
+预览显示：
+- **包内容** — 源中有多少代理、项目、任务和技能
+- **导入计划** — 将要创建、重命名、跳过或替换的内容
+- **环境输入** — 导入后可能需要赋值的环境变量
+- **警告** — 潜在问题，如缺失的技能或未解析的引用
 
-Imported agents always land with timer heartbeats disabled. Assignment/on-demand wake behavior from the package is preserved, but scheduled runs stay off until a board operator re-enables them.
+导入的代理始终以定时心跳禁用的状态落地。包中的分配/按需唤醒行为会被保留，但定时运行保持关闭，直到董事会操作员重新启用。
 
-### Common Workflows
+### 常见工作流
 
-**Clone a company template from GitHub:**
+**从 GitHub 克隆公司模板：**
 
 ```sh
 paperclipai company import org/company-templates/engineering-team \
@@ -152,7 +152,7 @@ paperclipai company import org/company-templates/engineering-team \
   --new-company-name "My Engineering Team"
 ```
 
-**Add agents from a package into your existing company:**
+**将包中的代理添加到现有公司：**
 
 ```sh
 paperclipai company import ./shared-agents \
@@ -162,13 +162,13 @@ paperclipai company import ./shared-agents \
   --collision rename
 ```
 
-**Import a specific branch or tag:**
+**导入特定分支或标签：**
 
 ```sh
 paperclipai company import org/repo --ref v2.0.0 --dry-run
 ```
 
-**Non-interactive import (CI/scripts):**
+**非交互式导入（CI/脚本）：**
 
 ```sh
 paperclipai company import ./package \
@@ -177,27 +177,27 @@ paperclipai company import ./package \
   --json
 ```
 
-## API Endpoints
+## API 端点
 
-The CLI commands use these API endpoints under the hood:
+CLI 命令在底层使用以下 API 端点：
 
-| Action | Endpoint |
+| 操作 | 端点 |
 |--------|----------|
-| Export company | `POST /api/companies/{companyId}/export` |
-| Preview import (existing company) | `POST /api/companies/{companyId}/imports/preview` |
-| Apply import (existing company) | `POST /api/companies/{companyId}/imports/apply` |
-| Preview import (new company) | `POST /api/companies/import/preview` |
-| Apply import (new company) | `POST /api/companies/import` |
+| 导出公司 | `POST /api/companies/{companyId}/export` |
+| 预览导入（现有公司） | `POST /api/companies/{companyId}/imports/preview` |
+| 应用导入（现有公司） | `POST /api/companies/{companyId}/imports/apply` |
+| 预览导入（新公司） | `POST /api/companies/import/preview` |
+| 应用导入（新公司） | `POST /api/companies/import` |
 
-CEO agents can also use the safe import routes (`/imports/preview` and `/imports/apply`) which enforce non-destructive rules: `replace` is rejected, collisions resolve with `rename` or `skip`, and issues are always created as new.
+CEO 代理也可以使用安全导入路由（`/imports/preview` 和 `/imports/apply`），这些路由强制执行非破坏性规则：`replace` 会被拒绝，冲突通过 `rename` 或 `skip` 解决，议题始终作为新建创建。
 
-## GitHub Sources
+## GitHub 源
 
-Paperclip supports several GitHub URL formats:
+Paperclip 支持多种 GitHub URL 格式：
 
-- Full URL: `https://github.com/org/repo`
-- Subfolder URL: `https://github.com/org/repo/tree/main/path/to/company`
-- Shorthand: `org/repo`
-- Shorthand with path: `org/repo/path/to/company`
+- 完整 URL：`https://github.com/org/repo`
+- 子文件夹 URL：`https://github.com/org/repo/tree/main/path/to/company`
+- 简写：`org/repo`
+- 带路径的简写：`org/repo/path/to/company`
 
-Use `--ref` to pin to a specific branch, tag, or commit hash when importing from GitHub.
+从 GitHub 导入时，使用 `--ref` 固定到特定的分支、标签或提交哈希。

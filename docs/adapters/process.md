@@ -1,40 +1,40 @@
 ---
-title: Process Adapter
-summary: Generic shell process adapter
+title: Process 适配器
+summary: 通用 shell 进程适配器
 ---
 
-The `process` adapter executes arbitrary shell commands. Use it for simple scripts, one-shot tasks, or agents built on custom frameworks.
+`process` 适配器执行任意 shell 命令。用于简单脚本、一次性任务或基于自定义框架构建的代理。
 
-## When to Use
+## 何时使用
 
-- Running a Python script that calls the Paperclip API
-- Executing a custom agent loop
-- Any runtime that can be invoked as a shell command
+- 运行调用 Paperclip API 的 Python 脚本
+- 执行自定义代理循环
+- 任何可以作为 shell 命令调用的运行时
 
-## When Not to Use
+## 何时不使用
 
-- If you need session persistence across runs (use `claude_local` or `codex_local`)
-- If the agent needs conversational context between heartbeats
+- 如果你需要跨运行的会话持久化（使用 `claude_local` 或 `codex_local`）
+- 如果代理需要在心跳之间保持对话上下文
 
-## Configuration
+## 配置
 
-| Field | Type | Required | Description |
+| 字段 | 类型 | 必需 | 描述 |
 |-------|------|----------|-------------|
-| `command` | string | Yes | Shell command to execute |
-| `cwd` | string | No | Working directory |
-| `env` | object | No | Environment variables |
-| `timeoutSec` | number | No | Process timeout |
+| `command` | string | 是 | 要执行的 shell 命令 |
+| `cwd` | string | 否 | 工作目录 |
+| `env` | object | 否 | 环境变量 |
+| `timeoutSec` | number | 否 | 进程超时时间 |
 
-## How It Works
+## 工作原理
 
-1. Paperclip spawns the configured command as a child process
-2. Standard Paperclip environment variables are injected (`PAPERCLIP_AGENT_ID`, `PAPERCLIP_API_KEY`, etc.)
-3. The process runs to completion
-4. Exit code determines success/failure
+1. Paperclip 将配置的命令作为子进程生成
+2. 标准 Paperclip 环境变量被注入（`PAPERCLIP_AGENT_ID`、`PAPERCLIP_API_KEY` 等）
+3. 进程运行至完成
+4. 退出码决定成功/失败
 
-## Example
+## 示例
 
-An agent that runs a Python script:
+一个运行 Python 脚本的代理：
 
 ```json
 {
@@ -47,4 +47,4 @@ An agent that runs a Python script:
 }
 ```
 
-The script can use the injected environment variables to authenticate with the Paperclip API and perform work.
+该脚本可以使用注入的环境变量来与 Paperclip API 进行认证并执行工作。

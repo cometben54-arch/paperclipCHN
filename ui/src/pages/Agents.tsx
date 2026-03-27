@@ -96,7 +96,7 @@ export function Agents() {
     refetchInterval: 15_000,
   });
 
-  // Map agentId -> first live run + live run count
+  // 映射 agentId -> 第一个实时运行 + 实时运行数量
   const liveRunByAgent = useMemo(() => {
     const map = new Map<string, { runId: string; liveCount: number }>();
     for (const r of runs ?? []) {
@@ -118,11 +118,11 @@ export function Agents() {
   }, [agents]);
 
   useEffect(() => {
-    setBreadcrumbs([{ label: "Agents" }]);
+    setBreadcrumbs([{ label: "智能体" }]);
   }, [setBreadcrumbs]);
 
   if (!selectedCompanyId) {
-    return <EmptyState icon={Bot} message="Select a company to view agents." />;
+    return <EmptyState icon={Bot} message="请选择一个公司以查看智能体。" />;
   }
 
   if (isLoading) {
@@ -138,17 +138,17 @@ export function Agents() {
         <Tabs value={tab} onValueChange={(v) => navigate(`/agents/${v}`)}>
           <PageTabBar
             items={[
-              { value: "all", label: "All" },
-              { value: "active", label: "Active" },
-              { value: "paused", label: "Paused" },
-              { value: "error", label: "Error" },
+              { value: "all", label: "全部" },
+              { value: "active", label: "活跃" },
+              { value: "paused", label: "已暂停" },
+              { value: "error", label: "错误" },
             ]}
             value={tab}
             onValueChange={(v) => navigate(`/agents/${v}`)}
           />
         </Tabs>
         <div className="flex items-center gap-2">
-          {/* Filters */}
+          {/* 筛选 */}
           <div className="relative">
             <button
               className={cn(
@@ -158,7 +158,7 @@ export function Agents() {
               onClick={() => setFiltersOpen(!filtersOpen)}
             >
               <SlidersHorizontal className="h-3 w-3" />
-              Filters
+              筛选
               {showTerminated && <span className="ml-0.5 px-1 bg-foreground/10 rounded text-[10px]">1</span>}
             </button>
             {filtersOpen && (
@@ -173,12 +173,12 @@ export function Agents() {
                   )}>
                     {showTerminated && <span className="text-background text-[10px] leading-none">&#10003;</span>}
                   </span>
-                  Show terminated
+                  显示已终止
                 </button>
               </div>
             )}
           </div>
-          {/* View toggle */}
+          {/* 视图切换 */}
           {!forceListView && (
             <div className="flex items-center border border-border">
               <button
@@ -203,13 +203,13 @@ export function Agents() {
           )}
           <Button size="sm" variant="outline" onClick={openNewAgent}>
             <Plus className="h-3.5 w-3.5 mr-1.5" />
-            New Agent
+            新建智能体
           </Button>
         </div>
       </div>
 
       {filtered.length > 0 && (
-        <p className="text-xs text-muted-foreground">{filtered.length} agent{filtered.length !== 1 ? "s" : ""}</p>
+        <p className="text-xs text-muted-foreground">{filtered.length} 个智能体</p>
       )}
 
       {error && <p className="text-sm text-destructive">{error.message}</p>}
@@ -217,13 +217,13 @@ export function Agents() {
       {agents && agents.length === 0 && (
         <EmptyState
           icon={Bot}
-          message="Create your first agent to get started."
-          action="New Agent"
+          message="创建您的第一个智能体以开始使用。"
+          action="新建智能体"
           onAction={openNewAgent}
         />
       )}
 
-      {/* List view */}
+      {/* 列表视图 */}
       {effectiveView === "list" && filtered.length > 0 && (
         <div className="border border-border">
           {filtered.map((agent) => {
@@ -281,11 +281,11 @@ export function Agents() {
 
       {effectiveView === "list" && agents && agents.length > 0 && filtered.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-8">
-          No agents match the selected filter.
+          没有符合筛选条件的智能体。
         </p>
       )}
 
-      {/* Org chart view */}
+      {/* 组织架构视图 */}
       {effectiveView === "org" && filteredOrg.length > 0 && (
         <div className="border border-border py-1">
           {filteredOrg.map((node) => (
@@ -296,13 +296,13 @@ export function Agents() {
 
       {effectiveView === "org" && orgTree && orgTree.length > 0 && filteredOrg.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-8">
-          No agents match the selected filter.
+          没有符合筛选条件的智能体。
         </p>
       )}
 
       {effectiveView === "org" && orgTree && orgTree.length === 0 && (
         <p className="text-sm text-muted-foreground text-center py-8">
-          No organizational hierarchy defined.
+          尚未定义组织层级结构。
         </p>
       )}
     </div>
@@ -407,7 +407,7 @@ function LiveRunIndicator({
         <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500" />
       </span>
       <span className="text-[11px] font-medium text-blue-600 dark:text-blue-400">
-        Live{liveCount > 1 ? ` (${liveCount})` : ""}
+        实时{liveCount > 1 ? ` (${liveCount})` : ""}
       </span>
     </Link>
   );

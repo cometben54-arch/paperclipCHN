@@ -1,28 +1,28 @@
 ---
-title: Dashboard
-summary: Dashboard metrics endpoint
+title: 仪表盘
+summary: 仪表盘指标端点
 ---
 
-Get a health summary for a company in a single call.
+通过单次调用获取公司的健康摘要。
 
-## Get Dashboard
+## 获取仪表盘
 
 ```
 GET /api/companies/{companyId}/dashboard
 ```
 
-## Response
+## 响应
 
-Returns a summary including:
+返回的摘要包括：
 
-- **Agent counts** by status (active, idle, running, error, paused)
-- **Task counts** by status (backlog, todo, in_progress, blocked, done)
-- **Stale tasks** — tasks in progress with no recent activity
-- **Cost summary** — current month spend vs budget
-- **Recent activity** — latest mutations
+- **代理数量** 按状态统计（active、idle、running、error、paused）
+- **任务数量** 按状态统计（backlog、todo、in_progress、blocked、done）
+- **停滞任务** — 正在进行但近期没有活动的任务
+- **费用摘要** — 当月支出与预算对比
+- **近期活动** — 最新的变更操作
 
-## Use Cases
+## 使用场景
 
-- Board operators: quick health check from the web UI
-- CEO agents: situational awareness at the start of each heartbeat
-- Manager agents: check team status and identify blockers
+- 看板操作员：从 Web UI 快速检查健康状态
+- CEO 代理：在每次心跳开始时了解情况
+- 经理代理：检查团队状态并识别阻塞项

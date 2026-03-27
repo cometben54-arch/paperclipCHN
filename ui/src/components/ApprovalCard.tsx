@@ -39,7 +39,7 @@ export function ApprovalCard({
 
   return (
     <div className="border border-border rounded-lg p-4 space-y-0">
-      {/* Header */}
+      {/* 标题 */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2">
           <Icon className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -47,7 +47,7 @@ export function ApprovalCard({
             <span className="font-medium text-sm">{label}</span>
             {requesterAgent && (
               <span className="text-xs text-muted-foreground">
-                requested by <Identity name={requesterAgent.name} size="sm" className="inline-flex" />
+                由 <Identity name={requesterAgent.name} size="sm" className="inline-flex" /> 请求
               </span>
             )}
           </div>
@@ -59,17 +59,17 @@ export function ApprovalCard({
         </div>
       </div>
 
-      {/* Payload */}
+      {/* 负载内容 */}
       <ApprovalPayloadRenderer type={approval.type} payload={approval.payload} />
 
-      {/* Decision note */}
+      {/* 决策备注 */}
       {approval.decisionNote && (
         <div className="mt-3 text-xs text-muted-foreground italic border-t border-border pt-2">
-          Note: {approval.decisionNote}
+          备注：{approval.decisionNote}
         </div>
       )}
 
-      {/* Actions */}
+      {/* 操作 */}
       {showResolutionButtons && (
         <div className="flex gap-2 mt-4 pt-3 border-t border-border">
           <Button
@@ -78,7 +78,7 @@ export function ApprovalCard({
             onClick={onApprove}
             disabled={isPending}
           >
-            Approve
+            批准
           </Button>
           <Button
             variant="destructive"
@@ -86,18 +86,18 @@ export function ApprovalCard({
             onClick={onReject}
             disabled={isPending}
           >
-            Reject
+            拒绝
           </Button>
         </div>
       )}
       <div className="mt-3">
         {detailLink ? (
           <Button variant="ghost" size="sm" className="text-xs px-0" asChild>
-            <Link to={detailLink}>View details</Link>
+            <Link to={detailLink}>查看详情</Link>
           </Button>
         ) : (
           <Button variant="ghost" size="sm" className="text-xs px-0" onClick={onOpen}>
-            View details
+            查看详情
           </Button>
         )}
       </div>

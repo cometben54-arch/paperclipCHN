@@ -1,38 +1,38 @@
 ---
-title: Storage
-summary: Local disk vs S3-compatible storage
+title: 存储
+summary: 本地磁盘 vs S3 兼容存储
 ---
 
-Paperclip stores uploaded files (issue attachments, images) using a configurable storage provider.
+Paperclip 使用可配置的存储提供者来存储上传的文件（问题附件、图片）。
 
-## Local Disk (Default)
+## 本地磁盘（默认）
 
-Files are stored at:
+文件存储在：
 
 ```
 ~/.paperclip/instances/default/data/storage
 ```
 
-No configuration required. Suitable for local development and single-machine deployments.
+无需配置。适用于本地开发和单机部署。
 
-## S3-Compatible Storage
+## S3 兼容存储
 
-For production or multi-node deployments, use S3-compatible object storage (AWS S3, MinIO, Cloudflare R2, etc.).
+对于生产环境或多节点部署，使用 S3 兼容的对象存储（AWS S3、MinIO、Cloudflare R2 等）。
 
-Configure via CLI:
+通过 CLI 配置：
 
 ```sh
 pnpm paperclipai configure --section storage
 ```
 
-## Configuration
+## 配置
 
-| Provider | Best For |
+| 提供者 | 适用场景 |
 |----------|----------|
-| `local_disk` | Local development, single-machine deployments |
-| `s3` | Production, multi-node, cloud deployments |
+| `local_disk` | 本地开发、单机部署 |
+| `s3` | 生产环境、多节点、云部署 |
 
-Storage configuration is stored in the instance config file:
+存储配置保存在实例配置文件中：
 
 ```
 ~/.paperclip/instances/default/config.json

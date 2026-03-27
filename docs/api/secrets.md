@@ -1,19 +1,19 @@
 ---
-title: Secrets
-summary: Secrets CRUD
+title: 密钥
+summary: 密钥 CRUD
 ---
 
-Manage encrypted secrets that agents reference in their environment configuration.
+管理代理在其环境配置中引用的加密密钥。
 
-## List Secrets
+## 列出密钥
 
 ```
 GET /api/companies/{companyId}/secrets
 ```
 
-Returns secret metadata (not decrypted values).
+返回密钥元数据（不包含解密后的值）。
 
-## Create Secret
+## 创建密钥
 
 ```
 POST /api/companies/{companyId}/secrets
@@ -23,9 +23,9 @@ POST /api/companies/{companyId}/secrets
 }
 ```
 
-The value is encrypted at rest. Only the secret ID and metadata are returned.
+值在存储时加密。只返回密钥 ID 和元数据。
 
-## Update Secret
+## 更新密钥
 
 ```
 PATCH /api/secrets/{secretId}
@@ -34,11 +34,11 @@ PATCH /api/secrets/{secretId}
 }
 ```
 
-Creates a new version of the secret. Agents referencing `"version": "latest"` automatically get the new value on next heartbeat.
+创建密钥的新版本。引用 `"version": "latest"` 的代理会在下次心跳时自动获取新值。
 
-## Using Secrets in Agent Config
+## 在代理配置中使用密钥
 
-Reference secrets in agent adapter config instead of inline values:
+在代理适配器配置中引用密钥，而非内联值：
 
 ```json
 {
@@ -52,4 +52,4 @@ Reference secrets in agent adapter config instead of inline values:
 }
 ```
 
-The server resolves and decrypts secret references at runtime, injecting the real value into the agent process environment.
+服务器在运行时解析并解密密钥引用，将实际值注入代理进程环境。

@@ -11,13 +11,13 @@ import { Button } from "@/components/ui/button";
 import { Check, Copy, GitBranch, FolderOpen, Pencil, X } from "lucide-react";
 
 /* -------------------------------------------------------------------------- */
-/*  Utility helpers (mirrored from IssueProperties for self-containment)      */
+/*  工具辅助函数（从 IssueProperties 镜像复制以保持自包含）                       */
 /* -------------------------------------------------------------------------- */
 
 const EXECUTION_WORKSPACE_OPTIONS = [
-  { value: "shared_workspace", label: "Project default" },
-  { value: "isolated_workspace", label: "New isolated workspace" },
-  { value: "reuse_existing", label: "Reuse existing workspace" },
+  { value: "shared_workspace", label: "项目默认" },
+  { value: "isolated_workspace", label: "新建隔离工作区" },
+  { value: "reuse_existing", label: "复用现有工作区" },
 ] as const;
 
 function issueModeForExistingWorkspace(mode: string | null | undefined) {
@@ -45,7 +45,7 @@ function defaultExecutionWorkspaceModeForProject(project: { executionWorkspacePo
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Sub-components                                                             */
+/*  子组件                                                                     */
 /* -------------------------------------------------------------------------- */
 
 function BreakablePath({ text }: { text: string }) {
@@ -80,7 +80,7 @@ function CopyableInline({ value, label, mono }: { value: string; label?: string;
         type="button"
         className="shrink-0 p-0.5 rounded hover:bg-accent/50 transition-colors text-muted-foreground hover:text-foreground opacity-0 group-hover/copy:opacity-100 focus:opacity-100"
         onClick={handleCopy}
-        title={copied ? "Copied!" : "Copy"}
+        title={copied ? "已复制！" : "复制"}
       >
         {copied ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
       </button>
@@ -90,11 +90,11 @@ function CopyableInline({ value, label, mono }: { value: string; label?: string;
 
 function workspaceModeLabel(mode: string | null | undefined) {
   switch (mode) {
-    case "isolated_workspace": return "Isolated workspace";
-    case "operator_branch": return "Operator branch";
-    case "cloud_sandbox": return "Cloud sandbox";
-    case "adapter_managed": return "Adapter managed";
-    default: return "Workspace";
+    case "isolated_workspace": return "隔离工作区";
+    case "operator_branch": return "操作者分支";
+    case "cloud_sandbox": return "云沙箱";
+    case "adapter_managed": return "适配器管理";
+    default: return "工作区";
   }
 }
 
@@ -104,13 +104,13 @@ function configuredWorkspaceLabel(
 ) {
   switch (selection) {
     case "isolated_workspace":
-      return "New isolated workspace";
+      return "新建隔离工作区";
     case "reuse_existing":
       return reusableWorkspace?.mode === "isolated_workspace"
-        ? "Existing isolated workspace"
-        : "Reuse existing workspace";
+        ? "现有隔离工作区"
+        : "复用现有工作区";
     default:
-      return "Project default";
+      return "项目默认";
   }
 }
 
@@ -129,7 +129,7 @@ function statusBadge(status: string) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*  Main component                                                             */
+/*  主组件                                                                     */
 /* -------------------------------------------------------------------------- */
 
 interface IssueWorkspaceCardProps {
@@ -242,7 +242,7 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
 
   return (
     <div className="rounded-lg border border-border p-3 space-y-2">
-      {/* Header row */}
+      {/* 标题行 */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 text-sm font-medium text-foreground">
           <GitBranch className="h-3.5 w-3.5 text-muted-foreground" />
@@ -260,7 +260,7 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
                 className="h-6 px-2 text-xs text-muted-foreground"
                 onClick={handleCancel}
               >
-                <X className="h-3 w-3 mr-1" />Cancel
+                <X className="h-3 w-3 mr-1" />取消
               </Button>
               <Button
                 size="sm"
@@ -268,7 +268,7 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
                 onClick={handleSave}
                 disabled={!canSaveWorkspaceConfig}
               >
-                Save
+                保存
               </Button>
             </>
           ) : (
@@ -278,13 +278,13 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
               className="h-6 px-2 text-xs text-muted-foreground"
               onClick={() => setEditing(true)}
             >
-              <Pencil className="h-3 w-3 mr-1" />Edit
+              <Pencil className="h-3 w-3 mr-1" />编辑
             </Button>
           )}
         </div>
       </div>
 
-      {/* Read-only info */}
+      {/* 只读信息 */}
       {!editing && (
         <div className="space-y-1.5 text-xs">
           {workspace?.branchName && (
@@ -301,22 +301,22 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
           )}
           {workspace?.repoUrl && (
             <div className="flex items-center gap-1.5 text-muted-foreground">
-              <span className="text-[11px]">Repo:</span>
+              <span className="text-[11px]">仓库：</span>
               <CopyableInline value={workspace.repoUrl} mono />
             </div>
           )}
           {!workspace && (
             <div className="text-muted-foreground">
               {currentSelection === "isolated_workspace"
-                ? "A fresh isolated workspace will be created when this issue runs."
+                ? "此任务运行时将创建一个全新的隔离工作区。"
                 : currentSelection === "reuse_existing"
-                  ? "This issue will reuse an existing workspace when it runs."
-                  : "This issue will use the project default workspace configuration when it runs."}
+                  ? "此任务运行时将复用现有工作区。"
+                  : "此任务运行时将使用项目默认的工作区配置。"}
             </div>
           )}
           {currentSelection === "reuse_existing" && selectedReusableExecutionWorkspace && (
             <div className="text-muted-foreground" style={{ overflowWrap: "anywhere" }}>
-              Reusing:{" "}
+              复用中：{" "}
               <Link
                 to={`/execution-workspaces/${selectedReusableExecutionWorkspace.id}`}
                 className="hover:text-foreground hover:underline"
@@ -331,14 +331,14 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
                 to={`/execution-workspaces/${workspace.id}`}
                 className="text-[11px] text-muted-foreground hover:text-foreground hover:underline"
               >
-                View workspace details →
+                查看工作区详情 →
               </Link>
             </div>
           )}
         </div>
       )}
 
-      {/* Editing controls */}
+      {/* 编辑控件 */}
       {editing && (
         <div className="space-y-2 pt-1">
           <select
@@ -357,7 +357,7 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
             {EXECUTION_WORKSPACE_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.value === "reuse_existing" && configuredReusableWorkspace?.mode === "isolated_workspace"
-                  ? "Existing isolated workspace"
+                  ? "现有隔离工作区"
                   : option.label}
               </option>
             ))}
@@ -371,7 +371,7 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
                 setDraftExecutionWorkspaceId(e.target.value);
               }}
             >
-              <option value="">Choose an existing workspace</option>
+              <option value="">选择一个现有工作区</option>
               {deduplicatedReusableWorkspaces.map((w) => (
                 <option key={w.id} value={w.id}>
                   {w.name} · {w.status} · {w.branchName ?? w.cwd ?? w.id.slice(0, 8)}
@@ -380,11 +380,11 @@ export function IssueWorkspaceCard({ issue, project, onUpdate }: IssueWorkspaceC
             </select>
           )}
 
-          {/* Current workspace summary when editing */}
+          {/* 编辑时的当前工作区摘要 */}
           {workspace && (
             <div className="text-[11px] text-muted-foreground space-y-0.5 pt-1 border-t border-border/50">
               <div style={{ overflowWrap: "anywhere" }}>
-                Current:{" "}
+                当前：{" "}
                 <Link
                   to={`/execution-workspaces/${workspace.id}`}
                   className="hover:text-foreground hover:underline"

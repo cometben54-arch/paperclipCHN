@@ -42,45 +42,45 @@ const ADVANCED_ADAPTER_OPTIONS: Array<{
     value: "claude_local",
     label: "Claude Code",
     icon: Sparkles,
-    desc: "Local Claude agent",
+    desc: "本地 Claude 智能体",
     recommended: true,
   },
   {
     value: "codex_local",
     label: "Codex",
     icon: Code,
-    desc: "Local Codex agent",
+    desc: "本地 Codex 智能体",
     recommended: true,
   },
   {
     value: "gemini_local",
     label: "Gemini CLI",
     icon: Gem,
-    desc: "Local Gemini agent",
+    desc: "本地 Gemini 智能体",
   },
   {
     value: "opencode_local",
     label: "OpenCode",
     icon: OpenCodeLogoIcon,
-    desc: "Local multi-provider agent",
+    desc: "本地多供应商智能体",
   },
   {
     value: "pi_local",
     label: "Pi",
     icon: Terminal,
-    desc: "Local Pi agent",
+    desc: "本地 Pi 智能体",
   },
   {
     value: "cursor",
     label: "Cursor",
     icon: MousePointer2,
-    desc: "Local Cursor agent",
+    desc: "本地 Cursor 智能体",
   },
   {
     value: "openclaw_gateway",
     label: "OpenClaw Gateway",
     icon: Bot,
-    desc: "Invoke OpenClaw via gateway protocol",
+    desc: "通过网关协议调用 OpenClaw",
   },
 ];
 
@@ -102,8 +102,8 @@ export function NewAgentDialog() {
     closeNewAgent();
     openNewIssue({
       assigneeAgentId: ceoAgent?.id,
-      title: "Create a new agent",
-      description: "(type in what kind of agent you want here)",
+      title: "创建新智能体",
+      description: "（在此输入您想要的智能体类型）",
     });
   }
 
@@ -131,9 +131,9 @@ export function NewAgentDialog() {
         showCloseButton={false}
         className="sm:max-w-md p-0 gap-0 overflow-hidden"
       >
-        {/* Header */}
+        {/* 头部 */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
-          <span className="text-sm text-muted-foreground">Add a new agent</span>
+          <span className="text-sm text-muted-foreground">添加新智能体</span>
           <Button
             variant="ghost"
             size="icon-xs"
@@ -150,30 +150,29 @@ export function NewAgentDialog() {
         <div className="p-6 space-y-6">
           {!showAdvancedCards ? (
             <>
-              {/* Recommendation */}
+              {/* 推荐 */}
               <div className="text-center space-y-3">
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-accent">
                   <Sparkles className="h-6 w-6 text-foreground" />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  We recommend letting your CEO handle agent setup — they know the
-                  org structure and can configure reporting, permissions, and
-                  adapters.
+                  我们建议让您的 CEO 处理智能体设置——他们了解组织结构，
+                  可以配置报告、权限和适配器。
                 </p>
               </div>
 
               <Button className="w-full" size="lg" onClick={handleAskCeo}>
                 <Bot className="h-4 w-4 mr-2" />
-                Ask the CEO to create a new agent
+                让 CEO 创建新智能体
               </Button>
 
-              {/* Advanced link */}
+              {/* 高级配置链接 */}
               <div className="text-center">
                 <button
                   className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
                   onClick={handleAdvancedConfig}
                 >
-                  I want advanced configuration myself
+                  我要自己进行高级配置
                 </button>
               </div>
             </>
@@ -185,10 +184,10 @@ export function NewAgentDialog() {
                   onClick={() => setShowAdvancedCards(false)}
                 >
                   <ArrowLeft className="h-3.5 w-3.5" />
-                  Back
+                  返回
                 </button>
                 <p className="text-sm text-muted-foreground">
-                  Choose your adapter type for advanced setup.
+                  选择适配器类型进行高级设置。
                 </p>
               </div>
 
@@ -203,7 +202,7 @@ export function NewAgentDialog() {
                   >
                     {opt.recommended && (
                       <span className="absolute -top-1.5 right-1.5 bg-green-500 text-white text-[9px] font-semibold px-1.5 py-0.5 rounded-full leading-none">
-                        Recommended
+                        推荐
                       </span>
                     )}
                     <opt.icon className="h-4 w-4" />

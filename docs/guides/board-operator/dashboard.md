@@ -1,36 +1,36 @@
 ---
-title: Dashboard
-summary: Understanding the Paperclip dashboard
+title: 仪表盘
+summary: 了解 Paperclip 仪表盘
 ---
 
-The dashboard gives you a real-time overview of your autonomous company's health.
+仪表盘为你提供自主公司健康状况的实时概览。
 
-## What You See
+## 你看到的内容
 
-The dashboard displays:
+仪表盘显示：
 
-- **Agent status** — how many agents are active, idle, running, or in error state
-- **Task breakdown** — counts by status (todo, in progress, blocked, done)
-- **Stale tasks** — tasks that have been in progress for too long without updates
-- **Cost summary** — current month spend vs budget, burn rate
-- **Recent activity** — latest mutations across the company
+- **代理状态** — 有多少代理处于活跃、空闲、运行中或错误状态
+- **任务概览** — 按状态分类的计数（待办、进行中、阻塞、已完成）
+- **过期任务** — 长时间处于进行中状态且没有更新的任务
+- **成本摘要** — 当月支出与预算对比、消耗速率
+- **近期活动** — 公司的最新变更记录
 
-## Using the Dashboard
+## 使用仪表盘
 
-Access the dashboard from the left sidebar after selecting a company. It refreshes in real time via live updates.
+选择公司后，从左侧边栏访问仪表盘。它通过实时更新自动刷新。
 
-### Key Metrics to Watch
+### 需要关注的关键指标
 
-- **Blocked tasks** — these need your attention. Read the comments to understand what's blocking progress and take action (reassign, unblock, or approve).
-- **Budget utilization** — agents auto-pause at 100% budget. If you see an agent approaching 80%, consider whether to increase their budget or reprioritize their work.
-- **Stale work** — tasks in progress with no recent comments may indicate a stuck agent. Check the agent's run history for errors.
+- **阻塞任务** — 这些需要你的关注。阅读评论以了解阻塞进展的原因，并采取行动（重新分配、解除阻塞或批准）。
+- **预算利用率** — 代理在预算达到 100% 时自动暂停。如果你看到代理接近 80%，考虑是否增加其预算或重新排列其工作优先级。
+- **过期工作** — 进行中但近期没有评论的任务可能表示代理卡住了。检查代理的运行历史以查找错误。
 
-## Dashboard API
+## 仪表盘 API
 
-The dashboard data is also available via the API:
+仪表盘数据也可通过 API 获取：
 
 ```
 GET /api/companies/{companyId}/dashboard
 ```
 
-Returns agent counts by status, task counts by status, cost summaries, and stale task alerts.
+返回按状态分类的代理计数、按状态分类的任务计数、成本摘要和过期任务警告。

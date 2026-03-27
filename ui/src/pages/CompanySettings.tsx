@@ -32,14 +32,14 @@ export function CompanySettings() {
   const { setBreadcrumbs } = useBreadcrumbs();
   const { pushToast } = useToast();
   const queryClient = useQueryClient();
-  // General settings local state
+  // 通用设置本地状态
   const [companyName, setCompanyName] = useState("");
   const [description, setDescription] = useState("");
   const [brandColor, setBrandColor] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
   const [logoUploadError, setLogoUploadError] = useState<string | null>(null);
 
-  // Sync local state from selected company
+  // 从选中的公司同步本地状态
   useEffect(() => {
     if (!selectedCompany) return;
     setCompanyName(selectedCompany.name);
@@ -120,7 +120,7 @@ export function CompanySettings() {
         setSnippetCopyDelightId((prev) => prev + 1);
         setTimeout(() => setSnippetCopied(false), 2000);
       } catch {
-        /* clipboard may not be available */
+        /* 剪贴板可能不可用 */
       }
       queryClient.invalidateQueries({
         queryKey: queryKeys.sidebarBadges(selectedCompanyId!)
@@ -128,7 +128,7 @@ export function CompanySettings() {
     },
     onError: (err) => {
       setInviteError(
-        err instanceof Error ? err.message : "Failed to create invite"
+        err instanceof Error ? err.message : "创建邀请失败"
       );
     }
   });
@@ -199,15 +199,15 @@ export function CompanySettings() {
 
   useEffect(() => {
     setBreadcrumbs([
-      { label: selectedCompany?.name ?? "Company", href: "/dashboard" },
-      { label: "Settings" }
+      { label: selectedCompany?.name ?? "公司", href: "/dashboard" },
+      { label: "设置" }
     ]);
   }, [setBreadcrumbs, selectedCompany?.name]);
 
   if (!selectedCompany) {
     return (
       <div className="text-sm text-muted-foreground">
-        No company selected. Select a company from the switcher above.
+        未选择公司。请从上方的切换器中选择一个公司。
       </div>
     );
   }
@@ -224,16 +224,16 @@ export function CompanySettings() {
     <div className="max-w-2xl space-y-6">
       <div className="flex items-center gap-2">
         <Settings className="h-5 w-5 text-muted-foreground" />
-        <h1 className="text-lg font-semibold">Company Settings</h1>
+        <h1 className="text-lg font-semibold">公司设置</h1>
       </div>
 
-      {/* General */}
+      {/* 通用 */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          General
+          通用
         </div>
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
-          <Field label="Company name" hint="The display name for your company.">
+          <Field label="公司名称" hint="公司的显示名称。">
             <input
               className="w-full rounded-md border border-border bg-transparent px-2.5 py-1.5 text-sm outline-none"
               type="text"
@@ -242,24 +242,24 @@ export function CompanySettings() {
             />
           </Field>
           <Field
-            label="Description"
-            hint="Optional description shown in the company profile."
+            label="描述"
+            hint="在公司简介中显示的可选描述。"
           >
             <input
               className="w-full rounded-md border border-border bg-transparent px-2.5 py-1.5 text-sm outline-none"
               type="text"
               value={description}
-              placeholder="Optional company description"
+              placeholder="可选的公司描述"
               onChange={(e) => setDescription(e.target.value)}
             />
           </Field>
         </div>
       </div>
 
-      {/* Appearance */}
+      {/* 外观 */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Appearance
+          外观
         </div>
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
           <div className="flex items-start gap-4">
@@ -274,7 +274,7 @@ export function CompanySettings() {
             <div className="flex-1 space-y-3">
               <Field
                 label="Logo"
-                hint="Upload a PNG, JPEG, WEBP, GIF, or SVG logo image."
+                hint="上传 PNG、JPEG、WEBP、GIF 或 SVG 格式的 Logo 图片。"
               >
                 <div className="space-y-2">
                   <input
@@ -291,7 +291,7 @@ export function CompanySettings() {
                         onClick={handleClearLogo}
                         disabled={clearLogoMutation.isPending}
                       >
-                        {clearLogoMutation.isPending ? "Removing..." : "Remove logo"}
+                        {clearLogoMutation.isPending ? "移除中..." : "移除 Logo"}
                       </Button>
                     </div>
                   )}
@@ -300,7 +300,7 @@ export function CompanySettings() {
                       {logoUploadError ??
                         (logoUploadMutation.error instanceof Error
                           ? logoUploadMutation.error.message
-                          : "Logo upload failed")}
+                          : "Logo 上传失败")}
                     </span>
                   )}
                   {clearLogoMutation.isError && (
@@ -309,13 +309,13 @@ export function CompanySettings() {
                     </span>
                   )}
                   {logoUploadMutation.isPending && (
-                    <span className="text-xs text-muted-foreground">Uploading logo...</span>
+                    <span className="text-xs text-muted-foreground">上传 Logo 中...</span>
                   )}
                 </div>
               </Field>
               <Field
-                label="Brand color"
-                hint="Sets the hue for the company icon. Leave empty for auto-generated color."
+                label="品牌颜色"
+                hint="设置公司图标的色调。留空则自动生成颜色。"
               >
                 <div className="flex items-center gap-2">
                   <input
@@ -333,7 +333,7 @@ export function CompanySettings() {
                         setBrandColor(v);
                       }
                     }}
-                    placeholder="Auto"
+                    placeholder="自动"
                     className="w-28 rounded-md border border-border bg-transparent px-2.5 py-1.5 text-sm font-mono outline-none"
                   />
                   {brandColor && (
@@ -343,7 +343,7 @@ export function CompanySettings() {
                       onClick={() => setBrandColor("")}
                       className="text-xs text-muted-foreground"
                     >
-                      Clear
+                      清除
                     </Button>
                   )}
                 </div>
@@ -353,7 +353,7 @@ export function CompanySettings() {
         </div>
       </div>
 
-      {/* Save button for General + Appearance */}
+      {/* 通用 + 外观的保存按钮 */}
       {generalDirty && (
         <div className="flex items-center gap-2">
           <Button
@@ -361,47 +361,47 @@ export function CompanySettings() {
             onClick={handleSaveGeneral}
             disabled={generalMutation.isPending || !companyName.trim()}
           >
-            {generalMutation.isPending ? "Saving..." : "Save changes"}
+            {generalMutation.isPending ? "保存中..." : "保存更改"}
           </Button>
           {generalMutation.isSuccess && (
-            <span className="text-xs text-muted-foreground">Saved</span>
+            <span className="text-xs text-muted-foreground">已保存</span>
           )}
           {generalMutation.isError && (
             <span className="text-xs text-destructive">
               {generalMutation.error instanceof Error
                   ? generalMutation.error.message
-                  : "Failed to save"}
+                  : "保存失败"}
             </span>
           )}
         </div>
       )}
 
-      {/* Hiring */}
+      {/* 招聘 */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Hiring
+          招聘
         </div>
         <div className="rounded-md border border-border px-4 py-3">
           <ToggleField
-            label="Require board approval for new hires"
-            hint="New agent hires stay pending until approved by board."
+            label="新招聘需要面板审批"
+            hint="新智能体招聘在面板审批前保持待定状态。"
             checked={!!selectedCompany.requireBoardApprovalForNewAgents}
             onChange={(v) => settingsMutation.mutate(v)}
           />
         </div>
       </div>
 
-      {/* Invites */}
+      {/* 邀请 */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Invites
+          邀请
         </div>
         <div className="space-y-3 rounded-md border border-border px-4 py-4">
           <div className="flex items-center gap-1.5">
             <span className="text-xs text-muted-foreground">
-              Generate an OpenClaw agent invite snippet.
+              生成 OpenClaw 智能体邀请代码片段。
             </span>
-            <HintIcon text="Creates a short-lived OpenClaw agent invite and renders a copy-ready prompt." />
+            <HintIcon text="创建一个短期有效的 OpenClaw 智能体邀请并生成可复制的提示。" />
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <Button
@@ -410,8 +410,8 @@ export function CompanySettings() {
               disabled={inviteMutation.isPending}
             >
               {inviteMutation.isPending
-                ? "Generating..."
-                : "Generate OpenClaw Invite Prompt"}
+                ? "生成中..."
+                : "生成 OpenClaw 邀请提示"}
             </Button>
           </div>
           {inviteError && (
@@ -421,7 +421,7 @@ export function CompanySettings() {
             <div className="rounded-md border border-border bg-muted/30 p-2">
               <div className="flex items-center justify-between gap-2">
                 <div className="text-xs text-muted-foreground">
-                  OpenClaw Invite Prompt
+                  OpenClaw 邀请提示
                 </div>
                 {snippetCopied && (
                   <span
@@ -429,7 +429,7 @@ export function CompanySettings() {
                     className="flex items-center gap-1 text-xs text-green-600 animate-pulse"
                   >
                     <Check className="h-3 w-3" />
-                    Copied
+                    已复制
                   </span>
                 )}
               </div>
@@ -450,11 +450,11 @@ export function CompanySettings() {
                         setSnippetCopyDelightId((prev) => prev + 1);
                         setTimeout(() => setSnippetCopied(false), 2000);
                       } catch {
-                        /* clipboard may not be available */
+                        /* 剪贴板可能不可用 */
                       }
                     }}
                   >
-                    {snippetCopied ? "Copied snippet" : "Copy snippet"}
+                    {snippetCopied ? "片段已复制" : "复制片段"}
                   </Button>
                 </div>
               </div>
@@ -463,21 +463,21 @@ export function CompanySettings() {
         </div>
       </div>
 
-      {/* Import / Export */}
+      {/* 导入 / 导出 */}
       <div className="space-y-4">
         <div className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Company Packages
+          公司包
         </div>
         <div className="rounded-md border border-border px-4 py-4">
           <p className="text-sm text-muted-foreground">
-            Import and export have moved to dedicated pages accessible from the{" "}
-            <a href="/org" className="underline hover:text-foreground">Org Chart</a> header.
+            导入和导出已移至专门页面，可从{" "}
+            <a href="/org" className="underline hover:text-foreground">组织架构图</a> 标题栏访问。
           </p>
           <div className="mt-3 flex items-center gap-2">
             <Button size="sm" variant="outline" asChild>
               <a href="/company/export">
                 <Download className="mr-1.5 h-3.5 w-3.5" />
-                Export
+                导出
               </a>
             </Button>
             <Button size="sm" variant="outline" asChild>

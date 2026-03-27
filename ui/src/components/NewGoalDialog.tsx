@@ -27,10 +27,10 @@ import { MarkdownEditor, type MarkdownEditorRef } from "./MarkdownEditor";
 import { StatusBadge } from "./StatusBadge";
 
 const levelLabels: Record<string, string> = {
-  company: "Company",
-  team: "Team",
-  agent: "Agent",
-  task: "Task",
+  company: "公司",
+  team: "团队",
+  agent: "智能体",
+  task: "任务",
 };
 
 export function NewGoalDialog() {
@@ -119,7 +119,7 @@ export function NewGoalDialog() {
         className={cn("p-0 gap-0", expanded ? "sm:max-w-2xl" : "sm:max-w-lg")}
         onKeyDown={handleKeyDown}
       >
-        {/* Header */}
+        {/* 头部 */}
         <div className="flex items-center justify-between px-4 py-2.5 border-b border-border">
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {selectedCompany && (
@@ -128,7 +128,7 @@ export function NewGoalDialog() {
               </span>
             )}
             <span className="text-muted-foreground/60">&rsaquo;</span>
-            <span>{newGoalDefaults.parentId ? "New sub-goal" : "New goal"}</span>
+            <span>{newGoalDefaults.parentId ? "新建子目标" : "新建目标"}</span>
           </div>
           <div className="flex items-center gap-1">
             <Button
@@ -150,11 +150,11 @@ export function NewGoalDialog() {
           </div>
         </div>
 
-        {/* Title */}
+        {/* 标题 */}
         <div className="px-4 pt-4 pb-2 shrink-0">
           <input
             className="w-full text-lg font-semibold bg-transparent outline-none placeholder:text-muted-foreground/50"
-            placeholder="Goal title"
+            placeholder="目标标题"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onKeyDown={(e) => {
@@ -167,13 +167,13 @@ export function NewGoalDialog() {
           />
         </div>
 
-        {/* Description */}
+        {/* 描述 */}
         <div className="px-4 pb-2">
           <MarkdownEditor
             ref={descriptionEditorRef}
             value={description}
             onChange={setDescription}
-            placeholder="Add description..."
+            placeholder="添加描述..."
             bordered={false}
             contentClassName={cn("text-sm text-muted-foreground", expanded ? "min-h-[220px]" : "min-h-[120px]")}
             imageUploadHandler={async (file) => {
@@ -183,9 +183,9 @@ export function NewGoalDialog() {
           />
         </div>
 
-        {/* Property chips */}
+        {/* 属性标签 */}
         <div className="flex items-center gap-1.5 px-4 py-2 border-t border-border flex-wrap">
-          {/* Status */}
+          {/* 状态 */}
           <Popover open={statusOpen} onOpenChange={setStatusOpen}>
             <PopoverTrigger asChild>
               <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
@@ -208,7 +208,7 @@ export function NewGoalDialog() {
             </PopoverContent>
           </Popover>
 
-          {/* Level */}
+          {/* 级别 */}
           <Popover open={levelOpen} onOpenChange={setLevelOpen}>
             <PopoverTrigger asChild>
               <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
@@ -232,12 +232,12 @@ export function NewGoalDialog() {
             </PopoverContent>
           </Popover>
 
-          {/* Parent goal */}
+          {/* 父目标 */}
           <Popover open={parentOpen} onOpenChange={setParentOpen}>
             <PopoverTrigger asChild>
               <button className="inline-flex items-center gap-1.5 rounded-md border border-border px-2 py-1 text-xs hover:bg-accent/50 transition-colors">
                 <Target className="h-3 w-3 text-muted-foreground" />
-                {currentParent ? currentParent.title : "Parent goal"}
+                {currentParent ? currentParent.title : "父目标"}
               </button>
             </PopoverTrigger>
             <PopoverContent className="w-48 p-1" align="start">
@@ -248,7 +248,7 @@ export function NewGoalDialog() {
                 )}
                 onClick={() => { setParentId(""); setParentOpen(false); }}
               >
-                No parent
+                无父目标
               </button>
               {(goals ?? []).map((g) => (
                 <button
@@ -266,14 +266,14 @@ export function NewGoalDialog() {
           </Popover>
         </div>
 
-        {/* Footer */}
+        {/* 底部 */}
         <div className="flex items-center justify-end px-4 py-2.5 border-t border-border">
           <Button
             size="sm"
             disabled={!title.trim() || createGoal.isPending}
             onClick={handleSubmit}
           >
-            {createGoal.isPending ? "Creating…" : newGoalDefaults.parentId ? "Create sub-goal" : "Create goal"}
+            {createGoal.isPending ? "创建中…" : newGoalDefaults.parentId ? "创建子目标" : "创建目标"}
           </Button>
         </div>
       </DialogContent>

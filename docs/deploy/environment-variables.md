@@ -1,50 +1,50 @@
 ---
-title: Environment Variables
-summary: Full environment variable reference
+title: 环境变量
+summary: 完整的环境变量参考
 ---
 
-All environment variables that Paperclip uses for server configuration.
+Paperclip 用于服务器配置的所有环境变量。
 
-## Server Configuration
+## 服务器配置
 
-| Variable | Default | Description |
+| 变量 | 默认值 | 描述 |
 |----------|---------|-------------|
-| `PORT` | `3100` | Server port |
-| `HOST` | `127.0.0.1` | Server host binding |
-| `DATABASE_URL` | (embedded) | PostgreSQL connection string |
-| `PAPERCLIP_HOME` | `~/.paperclip` | Base directory for all Paperclip data |
-| `PAPERCLIP_INSTANCE_ID` | `default` | Instance identifier (for multiple local instances) |
-| `PAPERCLIP_DEPLOYMENT_MODE` | `local_trusted` | Runtime mode override |
+| `PORT` | `3100` | 服务器端口 |
+| `HOST` | `127.0.0.1` | 服务器主机绑定 |
+| `DATABASE_URL` | （内嵌） | PostgreSQL 连接字符串 |
+| `PAPERCLIP_HOME` | `~/.paperclip` | 所有 Paperclip 数据的基础目录 |
+| `PAPERCLIP_INSTANCE_ID` | `default` | 实例标识符（用于多个本地实例） |
+| `PAPERCLIP_DEPLOYMENT_MODE` | `local_trusted` | 运行模式覆盖 |
 
-## Secrets
+## 密钥
 
-| Variable | Default | Description |
+| 变量 | 默认值 | 描述 |
 |----------|---------|-------------|
-| `PAPERCLIP_SECRETS_MASTER_KEY` | (from file) | 32-byte encryption key (base64/hex/raw) |
-| `PAPERCLIP_SECRETS_MASTER_KEY_FILE` | `~/.paperclip/.../secrets/master.key` | Path to key file |
-| `PAPERCLIP_SECRETS_STRICT_MODE` | `false` | Require secret refs for sensitive env vars |
+| `PAPERCLIP_SECRETS_MASTER_KEY` | （来自文件） | 32 字节加密密钥（base64/hex/原始格式） |
+| `PAPERCLIP_SECRETS_MASTER_KEY_FILE` | `~/.paperclip/.../secrets/master.key` | 密钥文件路径 |
+| `PAPERCLIP_SECRETS_STRICT_MODE` | `false` | 要求敏感环境变量使用密钥引用 |
 
-## Agent Runtime (Injected into agent processes)
+## 代理运行时（注入到代理进程中）
 
-These are set automatically by the server when invoking agents:
+这些变量在调用代理时由服务器自动设置：
 
-| Variable | Description |
+| 变量 | 描述 |
 |----------|-------------|
-| `PAPERCLIP_AGENT_ID` | Agent's unique ID |
-| `PAPERCLIP_COMPANY_ID` | Company ID |
-| `PAPERCLIP_API_URL` | Paperclip API base URL |
-| `PAPERCLIP_API_KEY` | Short-lived JWT for API auth |
-| `PAPERCLIP_RUN_ID` | Current heartbeat run ID |
-| `PAPERCLIP_TASK_ID` | Issue that triggered this wake |
-| `PAPERCLIP_WAKE_REASON` | Wake trigger reason |
-| `PAPERCLIP_WAKE_COMMENT_ID` | Comment that triggered this wake |
-| `PAPERCLIP_APPROVAL_ID` | Resolved approval ID |
-| `PAPERCLIP_APPROVAL_STATUS` | Approval decision |
-| `PAPERCLIP_LINKED_ISSUE_IDS` | Comma-separated linked issue IDs |
+| `PAPERCLIP_AGENT_ID` | 代理的唯一 ID |
+| `PAPERCLIP_COMPANY_ID` | 公司 ID |
+| `PAPERCLIP_API_URL` | Paperclip API 基础 URL |
+| `PAPERCLIP_API_KEY` | 用于 API 认证的短期 JWT |
+| `PAPERCLIP_RUN_ID` | 当前心跳运行 ID |
+| `PAPERCLIP_TASK_ID` | 触发此唤醒的问题 |
+| `PAPERCLIP_WAKE_REASON` | 唤醒触发原因 |
+| `PAPERCLIP_WAKE_COMMENT_ID` | 触发此唤醒的评论 |
+| `PAPERCLIP_APPROVAL_ID` | 已解决的审批 ID |
+| `PAPERCLIP_APPROVAL_STATUS` | 审批决定 |
+| `PAPERCLIP_LINKED_ISSUE_IDS` | 逗号分隔的关联问题 ID |
 
-## LLM Provider Keys (for adapters)
+## LLM 提供商密钥（用于适配器）
 
-| Variable | Description |
+| 变量 | 描述 |
 |----------|-------------|
-| `ANTHROPIC_API_KEY` | Anthropic API key (for Claude Local adapter) |
-| `OPENAI_API_KEY` | OpenAI API key (for Codex Local adapter) |
+| `ANTHROPIC_API_KEY` | Anthropic API 密钥（用于 Claude Local 适配器） |
+| `OPENAI_API_KEY` | OpenAI API 密钥（用于 Codex Local 适配器） |
