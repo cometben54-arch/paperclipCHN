@@ -99,7 +99,7 @@ export function NewProjectDialog() {
 
   const uploadDescriptionImage = useMutation({
     mutationFn: async (file: File) => {
-      if (!selectedCompanyId) throw new Error("No company selected");
+      if (!selectedCompanyId) throw new Error("未选择公司");
       return assetsApi.uploadImage(selectedCompanyId, file, "projects/drafts");
     },
   });
@@ -189,7 +189,7 @@ export function NewProjectDialog() {
       reset();
       closeNewProject();
     } catch {
-      // 通过 createProject.isError 暴露错误
+      // 错误通过 createProject.isError 暴露
     }
   }
 

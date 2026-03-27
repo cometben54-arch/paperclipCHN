@@ -619,9 +619,9 @@ export function OnboardingWizard() {
       }}
     >
       <DialogPortal>
-        {/* Plain div instead of DialogOverlay — Radix's overlay wraps in
-            RemoveScroll which blocks wheel events on our custom (non-DialogContent)
-            scroll container. A plain div preserves the background without scroll-locking. */}
+        {/* 使用普通 div 替代 DialogOverlay — Radix 的遮罩层会包裹
+            RemoveScroll，阻止自定义滚动容器（非 DialogContent）的滚轮事件。
+            普通 div 保留背景效果而不锁定滚动。 */}
         <div className="fixed inset-0 z-50 bg-background" />
         <div className="fixed inset-0 z-50 flex" onKeyDown={handleKeyDown}>
           {/* 关闭按钮 */}

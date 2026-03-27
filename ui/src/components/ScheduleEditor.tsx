@@ -18,7 +18,7 @@ const PRESETS: { value: SchedulePreset; label: string }[] = [
 
 const HOURS = Array.from({ length: 24 }, (_, i) => ({
   value: String(i),
-  label: i === 0 ? "12 AM" : i < 12 ? `${i} AM` : i === 12 ? "12 PM" : `${i - 12} PM`,
+  label: i === 0 ? "上午 12" : i < 12 ? `上午 ${i}` : i === 12 ? "下午 12" : `下午 ${i - 12}`,
 }));
 
 const MINUTES = Array.from({ length: 12 }, (_, i) => ({
@@ -61,32 +61,32 @@ function parseCronToPreset(cron: string): {
 
   const [min, hr, dom, , dow] = parts;
 
-  // Every minute: "* * * * *"
+  // 每分钟: "* * * * *"
   if (min === "*" && hr === "*" && dom === "*" && dow === "*") {
     return { preset: "every_minute", ...defaults };
   }
 
-  // Every hour: "0 * * * *"
+  // 每小时: "0 * * * *"
   if (hr === "*" && dom === "*" && dow === "*") {
     return { preset: "every_hour", ...defaults, minute: min === "*" ? "0" : min };
   }
 
-  // Every day: "M H * * *"
+  // 每天: "M H * * *"
   if (dom === "*" && dow === "*" && hr !== "*") {
     return { preset: "every_day", ...defaults, hour: hr, minute: min === "*" ? "0" : min };
   }
 
-  // Weekdays: "M H * * 1-5"
+  // 工作日: "M H * * 1-5"
   if (dom === "*" && dow === "1-5" && hr !== "*") {
     return { preset: "weekdays", ...defaults, hour: hr, minute: min === "*" ? "0" : min };
   }
 
-  // Weekly: "M H * * D" (single day)
+  // 每周: "M H * * D"（单日）
   if (dom === "*" && /^\d$/.test(dow) && hr !== "*") {
     return { preset: "weekly", ...defaults, hour: hr, minute: min === "*" ? "0" : min, dayOfWeek: dow };
   }
 
-  // Monthly: "M H D * *"
+  // 每月: "M H D * *"
   if (/^\d{1,2}$/.test(dom) && dow === "*" && hr !== "*") {
     return { preset: "monthly", ...defaults, hour: hr, minute: min === "*" ? "0" : min, dayOfMonth: dom };
   }
@@ -116,7 +116,10 @@ function buildCron(preset: SchedulePreset, hour: string, minute: string, dayOfWe
 function describeSchedule(cron: string): string {
   const { preset, hour, minute, dayOfWeek, dayOfMonth } = parseCronToPreset(cron);
   const hourLabel = HOURS.find((h) => h.value === hour)?.label ?? `${hour}`;
-  const timeStr = `${hourLabel.replace(/ (AM|PM)$/, "")}:${minute.padStart(2, "0")} ${hourLabel.match(/(AM|PM)$/)?.[0] ?? ""}`;
+  const periodMatch = hourLabel.match(/^(上午|下午)\s*/);
+  const period = periodMatch?.[1] ?? "";
+  const hourNum = hourLabel.replace(/^(上午|下午)\s*/, "");
+  const timeStr = `${period} ${hourNum}:${minute.padStart(2, "0")}`;
 
   switch (preset) {
     case "every_minute":
@@ -288,6 +291,7 @@ export function ScheduleEditor({
                   ))}
                 </SelectContent>
               </Select>
+              <span className="text-sm text-muted-foreground">分</span>
             </>
           )}
 
@@ -335,6 +339,7 @@ export function ScheduleEditor({
                   ))}
                 </SelectContent>
               </Select>
+              <span className="text-sm text-muted-foreground">日</span>
             </>
           )}
         </div>

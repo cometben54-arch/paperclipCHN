@@ -295,7 +295,7 @@ export function NewIssueDialog() {
   const effectiveCompanyId = dialogCompanyId ?? selectedCompanyId;
   const dialogCompany = companies.find((c) => c.id === effectiveCompanyId) ?? selectedCompany;
 
-  // Popover states
+  // 弹出框状态
   const [statusOpen, setStatusOpen] = useState(false);
   const [priorityOpen, setPriorityOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
@@ -449,7 +449,7 @@ export function NewIssueDialog() {
 
   const uploadDescriptionImage = useMutation({
     mutationFn: async (file: File) => {
-      if (!effectiveCompanyId) throw new Error("No company selected");
+      if (!effectiveCompanyId) throw new Error("未选择公司");
       return assetsApi.uploadImage(effectiveCompanyId, file, "issues/drafts");
     },
   });
@@ -882,12 +882,11 @@ export function NewIssueDialog() {
             event.preventDefault();
             return;
           }
-          // Radix Dialog's modal DismissableLayer calls preventDefault() on
-          // pointerdown events that originate outside the Dialog DOM tree.
-          // Popover portals render at the body level (outside the Dialog), so
-          // touch events on popover content get their default prevented — which
-          // kills scroll gesture recognition on mobile.  Telling Radix "this
-          // event is handled" skips that preventDefault, restoring touch scroll.
+          // Radix Dialog 的模态 DismissableLayer 会对来自 Dialog DOM 树外部的
+          // pointerdown 事件调用 preventDefault()。Popover 门户在 body 级别渲染
+          // （在 Dialog 之外），因此弹出框内容上的触摸事件会被阻止默认行为——
+          // 这会导致移动端无法识别滚动手势。告知 Radix"此事件已处理"可跳过
+          // preventDefault，恢复触摸滚动。
           const target = event.detail.originalEvent.target as HTMLElement | null;
           if (target?.closest("[data-radix-popper-content-wrapper]")) {
             event.preventDefault();

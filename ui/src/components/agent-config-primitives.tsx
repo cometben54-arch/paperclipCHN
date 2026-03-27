@@ -58,19 +58,19 @@ export const help: Record<string, string> = {
 };
 
 export const adapterLabels: Record<string, string> = {
-  claude_local: "Claude (local)",
-  codex_local: "Codex (local)",
-  gemini_local: "Gemini CLI (local)",
-  opencode_local: "OpenCode (local)",
-  openclaw_gateway: "OpenClaw Gateway",
-  cursor: "Cursor (local)",
-  process: "Process",
+  claude_local: "Claude（本地）",
+  codex_local: "Codex（本地）",
+  gemini_local: "Gemini CLI（本地）",
+  opencode_local: "OpenCode（本地）",
+  openclaw_gateway: "OpenClaw 网关",
+  cursor: "Cursor（本地）",
+  process: "进程",
   http: "HTTP",
 };
 
 export const roleLabels = AGENT_ROLE_LABELS as Record<string, string>;
 
-/* ---- Primitive components ---- */
+/* ---- 基础组件 ---- */
 
 export function HintIcon({ text }: { text: string }) {
   return (
@@ -269,8 +269,8 @@ export function AutoExpandTextarea({
 }
 
 /**
- * Text input that manages internal draft state.
- * Calls `onCommit` on blur (and optionally on every change if `immediate` is set).
+ * 管理内部草稿状态的文本输入框。
+ * 在失焦时调用 `onCommit`（如果设置了 `immediate`，则在每次更改时也调用）。
  */
 export function DraftInput({
   value,
@@ -304,7 +304,7 @@ export function DraftInput({
 }
 
 /**
- * Auto-expanding textarea with draft state and blur-commit.
+ * 带草稿状态和失焦提交的自动扩展文本域。
  */
 export function DraftTextarea({
   value,
@@ -355,7 +355,7 @@ export function DraftTextarea({
 }
 
 /**
- * Number input with draft state and blur-commit.
+ * 带草稿状态和失焦提交的数字输入框。
  */
 export function DraftNumberInput({
   value,
@@ -391,8 +391,8 @@ export function DraftNumberInput({
 }
 
 /**
- * "Choose" button that opens a dialog explaining the user must manually
- * type the path due to browser security limitations.
+ * "选择"按钮，打开一个对话框说明由于浏览器安全限制，
+ * 用户必须手动输入路径。
  */
 export function ChoosePathButton() {
   const [open, setOpen] = useState(false);
@@ -460,7 +460,7 @@ export function ChoosePathButton() {
 }
 
 /**
- * Label + input rendered on the same line (inline layout for compact fields).
+ * 标签 + 输入框同行渲染（紧凑字段的内联布局）。
  */
 export function InlineField({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (

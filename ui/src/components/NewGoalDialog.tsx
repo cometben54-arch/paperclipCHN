@@ -49,7 +49,7 @@ export function NewGoalDialog() {
   const [parentOpen, setParentOpen] = useState(false);
   const descriptionEditorRef = useRef<MarkdownEditorRef>(null);
 
-  // Apply defaults when dialog opens
+  // 对话框打开时应用默认值
   const appliedParentId = parentId || newGoalDefaults.parentId || "";
 
   const { data: goals } = useQuery({
@@ -70,7 +70,7 @@ export function NewGoalDialog() {
 
   const uploadDescriptionImage = useMutation({
     mutationFn: async (file: File) => {
-      if (!selectedCompanyId) throw new Error("No company selected");
+      if (!selectedCompanyId) throw new Error("未选择公司");
       return assetsApi.uploadImage(selectedCompanyId, file, "goals/drafts");
     },
   });

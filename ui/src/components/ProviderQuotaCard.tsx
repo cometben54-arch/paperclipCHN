@@ -19,7 +19,7 @@ const ROLLING_WINDOWS = ["5h", "24h", "7d"] as const;
 interface ProviderQuotaCardProps {
   provider: string;
   rows: CostByProviderModel[];
-  /** 公司月度预算（美分，0 表示无限制） */
+  /** 公司月度预算（美分），0 表示无限制 */
   budgetMonthlyCents: number;
   /** 本期间所有供应商的公司总支出（美分） */
   totalCompanySpendCents: number;
@@ -48,9 +48,9 @@ export function ProviderQuotaCard({
   quotaSource = null,
   quotaLoading = false,
 }: ProviderQuotaCardProps) {
-  // single-pass aggregation over rows — memoized so the 8 derived values are not
-  // recomputed on every parent render tick (providers tab polls every 30s, and each
-  // card is mounted twice: once in the "all" tab grid and once in its per-provider tab).
+  // 对行进行单次聚合 — 已记忆化，避免在每次父级渲染时重新计算
+  // （供应商标签页每 30 秒轮询一次，且每个卡片挂载两次：
+  // 一次在"全部"标签页网格中，一次在其对应的供应商标签页中）。
   const totals = useMemo(() => {
     let inputTokens = 0, outputTokens = 0, costCents = 0;
     let apiRunCount = 0, subRunCount = 0, subInputTokens = 0, subOutputTokens = 0;
@@ -65,7 +65,7 @@ export function ProviderQuotaCard({
     }
     const totalTokens = inputTokens + outputTokens;
     const subTokens = subInputTokens + subOutputTokens;
-    // denominator: api-billed tokens (from cost_events) + subscription tokens (from heartbeat_runs)
+    // 分母：API 计费 token（来自 cost_events）+ 订阅 token（来自 heartbeat_runs）
     const allTokens = totalTokens + subTokens;
     return {
       totalInputTokens: inputTokens,
@@ -94,9 +94,9 @@ export function ProviderQuotaCard({
     subSharePct,
   } = totals;
 
-  // budget bars: use this provider's own spend vs its pro-rata share of budget
-  // pro-rata: if a provider is 40% of total spend, it gets 40% of the budget allocated.
-  // falls back to raw provider spend vs total budget when totalCompanySpend is 0.
+  // 预算条：使用该供应商自身支出与其按比例分配的预算份额对比
+  // 按比例：如果一个供应商占总支出的 40%，则分配 40% 的预算。
+  // 当 totalCompanySpend 为 0 时，回退到供应商原始支出与总预算的对比。
   const providerBudgetShare =
     budgetMonthlyCents > 0 && totalCompanySpendCents > 0
       ? (totalCostCents / totalCompanySpendCents) * budgetMonthlyCents
@@ -107,14 +107,14 @@ export function ProviderQuotaCard({
       ? Math.min(100, (totalCostCents / providerBudgetShare) * 100)
       : 0;
 
-  // 4.33 = average weeks per calendar month (52 / 12)
+  // 4.33 = 每个日历月的平均周数 (52 / 12)
   const weeklyBudgetShare = providerBudgetShare > 0 ? providerBudgetShare / 4.33 : 0;
   const weekPct =
     weeklyBudgetShare > 0 ? Math.min(100, (weekSpendCents / weeklyBudgetShare) * 100) : 0;
 
   const hasBudget = budgetMonthlyCents > 0;
 
-  // memoized so the Map and max are not reconstructed on every parent render tick
+  // 已记忆化，避免在每次父级渲染时重新构建 Map 和 max
   const windowMap = useMemo(
     () => new Map(windowRows.map((r) => [r.window, r])),
     [windowRows],
@@ -178,7 +178,7 @@ export function ProviderQuotaCard({
           </div>
         )}
 
-        {/* rolling window consumption — always shown when data is available */}
+        {/* 滚动窗口消耗 — 有数据时始终显示 */}
         {windowRows.length > 0 && (
           <>
             <div className="border-t border-border" />
@@ -189,7 +189,7 @@ export function ProviderQuotaCard({
               <div className="space-y-2.5">
                 {ROLLING_WINDOWS.map((w) => {
                   const row = windowMap.get(w);
-                  // omit windows with no data rather than showing false $0.00 zeros
+                  // 省略无数据的窗口，避免显示虚假的 $0.00
                   if (!row) return null;
                   const cents = row.costCents;
                   const tokens = row.inputTokens + row.outputTokens;
@@ -217,7 +217,7 @@ export function ProviderQuotaCard({
           </>
         )}
 
-        {/* subscription usage — shown when any subscription-billed runs exist */}
+        {/* 订阅用量 — 存在订阅计费运行时显示 */}
         {totalSubRuns > 0 && (
           <>
             <div className="border-t border-border" />
@@ -255,7 +255,7 @@ export function ProviderQuotaCard({
           </>
         )}
 
-        {/* model breakdown — always shown, with token-share bars */}
+        {/* 模型明细 — 始终显示，带 token 份额条 */}
         {rows.length > 0 && (
           <>
             <div className="border-t border-border" />
@@ -266,7 +266,7 @@ export function ProviderQuotaCard({
                 const costPct = totalCostCents > 0 ? (row.costCents / totalCostCents) * 100 : 0;
                 return (
                   <div key={`${row.provider}:${row.model}`} className="space-y-1.5">
-                    {/* model name and cost */}
+                    {/* 模型名称和费用 */}
                     <div className="flex items-center justify-between gap-2">
                       <div className="min-w-0">
                         <span className="text-xs text-muted-foreground truncate font-mono block">
@@ -283,14 +283,14 @@ export function ProviderQuotaCard({
                         <span className="font-medium">{formatCents(row.costCents)}</span>
                       </div>
                     </div>
-                    {/* token share bar */}
+                    {/* token 份额条 */}
                     <div className="relative h-2 w-full border border-border overflow-hidden">
                       <div
                         className="absolute inset-y-0 left-0 bg-primary/60 transition-[width] duration-150"
                         style={{ width: `${tokenPct}%` }}
                         title={`占供应商 token 的 ${Math.round(tokenPct)}%`}
                       />
-                      {/* cost share overlay — narrower, opaque, shows relative cost weight */}
+                      {/* 费用份额叠加层 — 更窄、不透明，显示相对费用权重 */}
                       <div
                         className="absolute inset-y-0 left-0 bg-primary/85 transition-[width] duration-150"
                         style={{ width: `${costPct}%` }}
@@ -304,7 +304,7 @@ export function ProviderQuotaCard({
           </>
         )}
 
-        {/* subscription quota windows from provider api — shown when data is available */}
+        {/* 来自供应商 API 的订阅配额窗口 — 有数据时显示 */}
         {showSubscriptionQuotaSection && (
           <>
             <div className="border-t border-border" />
