@@ -25,7 +25,7 @@ import { Tabs } from "@/components/ui/tabs";
 import { PluginLauncherOutlet } from "@/plugins/launchers";
 import { PluginSlotMount, PluginSlotOutlet, usePluginSlots } from "@/plugins/slots";
 
-/* ── Top-level tab types ── */
+/* ── 顶层选项卡类型 ── */
 
 type ProjectBaseTab = "overview" | "list" | "configuration" | "budget";
 type ProjectPluginTab = `plugin:${string}`;
@@ -47,7 +47,7 @@ function resolveProjectTab(pathname: string, projectId: string): ProjectTab | nu
   return null;
 }
 
-/* ── Overview tab content ── */
+/* ── 概览选项卡内容 ── */
 
 function OverviewContent({
   project,
@@ -65,7 +65,7 @@ function OverviewContent({
         onSave={(description) => onUpdate({ description })}
         as="p"
         className="text-sm text-muted-foreground"
-        placeholder="Add a description..."
+        placeholder="添加描述..."
         multiline
         imageUploadHandler={imageUploadHandler}
       />

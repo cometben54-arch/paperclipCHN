@@ -365,7 +365,7 @@ export function IssuesList({
 
   return (
     <div className="space-y-4">
-      {/* Toolbar */}
+      {/* 工具栏 */}
       <div className="flex items-center justify-between gap-2 sm:gap-3">
         <div className="flex min-w-0 items-center gap-2 sm:gap-3">
           <Button size="sm" variant="outline" onClick={() => openNewIssue(newIssueDefaults())}>

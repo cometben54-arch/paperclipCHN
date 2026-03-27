@@ -693,31 +693,31 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  COMMAND                                                      */}
       {/* ============================================================ */}
-      <Section title="Command (CMDK)">
+      <Section title="命令面板 (CMDK)">
         <div className="rounded-md border border-border">
           <Command>
-            <CommandInput placeholder="Type a command or search..." />
+            <CommandInput placeholder="输入命令或搜索..." />
             <CommandList>
-              <CommandEmpty>No results found.</CommandEmpty>
-              <CommandGroup heading="Pages">
+              <CommandEmpty>未找到结果。</CommandEmpty>
+              <CommandGroup heading="页面">
                 <CommandItem>
                   <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
+                  仪表板
                 </CommandItem>
                 <CommandItem>
                   <CircleDot className="h-4 w-4" />
-                  Issues
+                  问题
                 </CommandItem>
               </CommandGroup>
               <CommandSeparator />
-              <CommandGroup heading="Actions">
+              <CommandGroup heading="操作">
                 <CommandItem>
                   <CommandIcon className="h-4 w-4" />
-                  Open command palette
+                  打开命令面板
                 </CommandItem>
                 <CommandItem>
                   <Plus className="h-4 w-4" />
-                  Create new issue
+                  创建新问题
                 </CommandItem>
               </CommandGroup>
             </CommandList>
@@ -728,11 +728,11 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  BREADCRUMB                                                   */}
       {/* ============================================================ */}
-      <Section title="Breadcrumb">
+      <Section title="面包屑">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink href="#">Projects</BreadcrumbLink>
+              <BreadcrumbLink href="#">项目</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -740,7 +740,7 @@ export function DesignGuide() {
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>Issue List</BreadcrumbPage>
+              <BreadcrumbPage>问题列表</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
@@ -749,29 +749,29 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  CARDS                                                        */}
       {/* ============================================================ */}
-      <Section title="Cards">
-        <SubSection title="Standard Card">
+      <Section title="卡片">
+        <SubSection title="标准卡片">
           <Card>
             <CardHeader>
-              <CardTitle>Card Title</CardTitle>
-              <CardDescription>Card description with supporting text.</CardDescription>
+              <CardTitle>卡片标题</CardTitle>
+              <CardDescription>卡片描述及辅助文本。</CardDescription>
             </CardHeader>
             <CardContent>
-              <p className="text-sm">Card content goes here. This is the main body area.</p>
+              <p className="text-sm">卡片内容在此处。这是主体区域。</p>
             </CardContent>
             <CardFooter className="gap-2">
-              <Button size="sm">Action</Button>
-              <Button variant="outline" size="sm">Cancel</Button>
+              <Button size="sm">操作</Button>
+              <Button variant="outline" size="sm">取消</Button>
             </CardFooter>
           </Card>
         </SubSection>
 
-        <SubSection title="Metric Cards">
+        <SubSection title="指标卡片">
           <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-            <MetricCard icon={Bot} value={12} label="Active Agents" description="+3 this week" />
-            <MetricCard icon={CircleDot} value={48} label="Open Issues" />
-            <MetricCard icon={DollarSign} value="$1,234" label="Monthly Cost" description="Under budget" />
-            <MetricCard icon={Zap} value="99.9%" label="Uptime" />
+            <MetricCard icon={Bot} value={12} label="活跃智能体" description="本周 +3" />
+            <MetricCard icon={CircleDot} value={48} label="待处理问题" />
+            <MetricCard icon={DollarSign} value="$1,234" label="月度成本" description="低于预算" />
+            <MetricCard icon={Zap} value="99.9%" label="运行时间" />
           </div>
         </SubSection>
       </Section>
@@ -779,45 +779,45 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  TABS                                                         */}
       {/* ============================================================ */}
-      <Section title="Tabs">
-        <SubSection title="Default (pill) variant">
+      <Section title="标签页">
+        <SubSection title="默认（药丸）变体">
           <Tabs defaultValue="overview">
             <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="runs">Runs</TabsTrigger>
-              <TabsTrigger value="config">Config</TabsTrigger>
-              <TabsTrigger value="costs">Costs</TabsTrigger>
+              <TabsTrigger value="overview">概览</TabsTrigger>
+              <TabsTrigger value="runs">运行</TabsTrigger>
+              <TabsTrigger value="config">配置</TabsTrigger>
+              <TabsTrigger value="costs">成本</TabsTrigger>
             </TabsList>
             <TabsContent value="overview">
-              <p className="text-sm text-muted-foreground py-4">Overview tab content.</p>
+              <p className="text-sm text-muted-foreground py-4">概览标签页内容。</p>
             </TabsContent>
             <TabsContent value="runs">
-              <p className="text-sm text-muted-foreground py-4">Runs tab content.</p>
+              <p className="text-sm text-muted-foreground py-4">运行标签页内容。</p>
             </TabsContent>
             <TabsContent value="config">
-              <p className="text-sm text-muted-foreground py-4">Config tab content.</p>
+              <p className="text-sm text-muted-foreground py-4">配置标签页内容。</p>
             </TabsContent>
             <TabsContent value="costs">
-              <p className="text-sm text-muted-foreground py-4">Costs tab content.</p>
+              <p className="text-sm text-muted-foreground py-4">成本标签页内容。</p>
             </TabsContent>
           </Tabs>
         </SubSection>
 
-        <SubSection title="Line variant">
+        <SubSection title="线条变体">
           <Tabs defaultValue="summary">
             <TabsList variant="line">
-              <TabsTrigger value="summary">Summary</TabsTrigger>
-              <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="comments">Comments</TabsTrigger>
+              <TabsTrigger value="summary">摘要</TabsTrigger>
+              <TabsTrigger value="details">详情</TabsTrigger>
+              <TabsTrigger value="comments">评论</TabsTrigger>
             </TabsList>
             <TabsContent value="summary">
-              <p className="text-sm text-muted-foreground py-4">Summary content with underline tabs.</p>
+              <p className="text-sm text-muted-foreground py-4">带下划线标签页的摘要内容。</p>
             </TabsContent>
             <TabsContent value="details">
-              <p className="text-sm text-muted-foreground py-4">Details content.</p>
+              <p className="text-sm text-muted-foreground py-4">详情内容。</p>
             </TabsContent>
             <TabsContent value="comments">
-              <p className="text-sm text-muted-foreground py-4">Comments content.</p>
+              <p className="text-sm text-muted-foreground py-4">评论内容。</p>
             </TabsContent>
           </Tabs>
         </SubSection>
@@ -826,7 +826,7 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  ENTITY ROWS                                                  */}
       {/* ============================================================ */}
-      <Section title="Entity Rows">
+      <Section title="实体行">
         <div className="border border-border rounded-md">
           <EntityRow
             leading={
@@ -836,8 +836,8 @@ export function DesignGuide() {
               </>
             }
             identifier="PAP-001"
-            title="Implement authentication flow"
-            subtitle="Assigned to Agent Alpha"
+            title="实现身份验证流程"
+            subtitle="已分配给 Agent Alpha"
             trailing={<StatusBadge status="in_progress" />}
             onClick={() => {}}
           />
@@ -849,8 +849,8 @@ export function DesignGuide() {
               </>
             }
             identifier="PAP-002"
-            title="Set up CI/CD pipeline"
-            subtitle="Completed 2 days ago"
+            title="搭建 CI/CD 流水线"
+            subtitle="2 天前完成"
             trailing={<StatusBadge status="done" />}
             onClick={() => {}}
           />
@@ -862,7 +862,7 @@ export function DesignGuide() {
               </>
             }
             identifier="PAP-003"
-            title="Write API documentation"
+            title="编写 API 文档"
             trailing={<StatusBadge status="todo" />}
             onClick={() => {}}
           />
@@ -874,8 +874,8 @@ export function DesignGuide() {
               </>
             }
             identifier="PAP-004"
-            title="Deploy to production"
-            subtitle="Blocked by PAP-001"
+            title="部署到生产环境"
+            subtitle="被 PAP-001 阻塞"
             trailing={<StatusBadge status="blocked" />}
             selected
           />
@@ -885,7 +885,7 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  FILTER BAR                                                   */}
       {/* ============================================================ */}
-      <Section title="Filter Bar">
+      <Section title="筛选栏">
         <FilterBar
           filters={filters}
           onRemove={(key) => setFilters((f) => f.filter((x) => x.key !== key))}
@@ -897,12 +897,12 @@ export function DesignGuide() {
             size="sm"
             onClick={() =>
               setFilters([
-                { key: "status", label: "Status", value: "Active" },
-                { key: "priority", label: "Priority", value: "High" },
+                { key: "status", label: "状态", value: "活跃" },
+                { key: "priority", label: "优先级", value: "高" },
               ])
             }
           >
-            Reset filters
+            重置筛选
           </Button>
         )}
       </Section>
@@ -910,8 +910,8 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  AVATARS                                                      */}
       {/* ============================================================ */}
-      <Section title="Avatars">
-        <SubSection title="Sizes">
+      <Section title="头像">
+        <SubSection title="尺寸">
           <div className="flex items-center gap-3">
             <Avatar size="sm"><AvatarFallback>SM</AvatarFallback></Avatar>
             <Avatar><AvatarFallback>DF</AvatarFallback></Avatar>
@@ -919,7 +919,7 @@ export function DesignGuide() {
           </div>
         </SubSection>
 
-        <SubSection title="Group">
+        <SubSection title="组合">
           <AvatarGroup>
             <Avatar><AvatarFallback>A1</AvatarFallback></Avatar>
             <Avatar><AvatarFallback>A2</AvatarFallback></Avatar>
@@ -932,8 +932,8 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  IDENTITY                                                     */}
       {/* ============================================================ */}
-      <Section title="Identity">
-        <SubSection title="Sizes">
+      <Section title="身份标识">
+        <SubSection title="尺寸">
           <div className="flex items-center gap-6">
             <Identity name="Agent Alpha" size="sm" />
             <Identity name="Agent Alpha" />
@@ -941,7 +941,7 @@ export function DesignGuide() {
           </div>
         </SubSection>
 
-        <SubSection title="Initials derivation">
+        <SubSection title="首字母推导">
           <div className="flex flex-col gap-2">
             <Identity name="CEO Agent" size="sm" />
             <Identity name="Alpha" size="sm" />
@@ -949,7 +949,7 @@ export function DesignGuide() {
           </div>
         </SubSection>
 
-        <SubSection title="Custom initials">
+        <SubSection title="自定义首字母">
           <Identity name="Backend Service" initials="BS" size="sm" />
         </SubSection>
       </Section>
@@ -957,19 +957,19 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  TOOLTIPS                                                     */}
       {/* ============================================================ */}
-      <Section title="Tooltips">
+      <Section title="工具提示">
         <div className="flex items-center gap-4">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="sm">Hover me</Button>
+              <Button variant="outline" size="sm">悬停查看</Button>
             </TooltipTrigger>
-            <TooltipContent>This is a tooltip</TooltipContent>
+            <TooltipContent>这是一个工具提示</TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="ghost" size="icon-sm"><Settings /></Button>
             </TooltipTrigger>
-            <TooltipContent>Settings</TooltipContent>
+            <TooltipContent>设置</TooltipContent>
           </Tooltip>
         </div>
       </Section>
@@ -977,31 +977,31 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  DIALOG                                                       */}
       {/* ============================================================ */}
-      <Section title="Dialog">
+      <Section title="对话框">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline">Open Dialog</Button>
+            <Button variant="outline">打开对话框</Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Dialog Title</DialogTitle>
+              <DialogTitle>对话框标题</DialogTitle>
               <DialogDescription>
-                This is a sample dialog showing the standard layout with header, content, and footer.
+                这是一个示例对话框，展示了包含标题、内容和底部的标准布局。
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-3">
               <div>
-                <Label>Name</Label>
-                <Input placeholder="Enter a name" className="mt-1.5" />
+                <Label>名称</Label>
+                <Input placeholder="输入名称" className="mt-1.5" />
               </div>
               <div>
-                <Label>Description</Label>
-                <Textarea placeholder="Describe..." className="mt-1.5" />
+                <Label>描述</Label>
+                <Textarea placeholder="请描述..." className="mt-1.5" />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline">Cancel</Button>
-              <Button>Save</Button>
+              <Button variant="outline">取消</Button>
+              <Button>保存</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
@@ -1010,12 +1010,12 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  EMPTY STATE                                                  */}
       {/* ============================================================ */}
-      <Section title="Empty State">
+      <Section title="空状态">
         <div className="border border-border rounded-md">
           <EmptyState
             icon={Inbox}
-            message="No items to show. Create your first one to get started."
-            action="Create Item"
+            message="没有可显示的项目。创建您的第一个项目以开始使用。"
+            action="创建项目"
             onAction={() => {}}
           />
         </div>
@@ -1024,12 +1024,12 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  PROGRESS BARS                                                */}
       {/* ============================================================ */}
-      <Section title="Progress Bars (Budget)">
+      <Section title="进度条（预算）">
         <div className="space-y-3">
           {[
-            { label: "Under budget (40%)", pct: 40, color: "bg-green-400" },
-            { label: "Warning (75%)", pct: 75, color: "bg-yellow-400" },
-            { label: "Over budget (95%)", pct: 95, color: "bg-red-400" },
+            { label: "低于预算 (40%)", pct: 40, color: "bg-green-400" },
+            { label: "警告 (75%)", pct: 75, color: "bg-yellow-400" },
+            { label: "超出预算 (95%)", pct: 95, color: "bg-red-400" },
           ].map(({ label, pct, color }) => (
             <div key={label} className="space-y-1">
               <div className="flex items-center justify-between">
@@ -1050,21 +1050,21 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  LOG VIEWER                                                   */}
       {/* ============================================================ */}
-      <Section title="Log Viewer">
+      <Section title="日志查看器">
         <div className="bg-neutral-950 rounded-lg p-3 font-mono text-xs max-h-80 overflow-y-auto">
-          <div className="text-foreground">[12:00:01] INFO  Agent started successfully</div>
-          <div className="text-foreground">[12:00:02] INFO  Processing task PAP-001</div>
-          <div className="text-yellow-400">[12:00:05] WARN  Rate limit approaching (80%)</div>
-          <div className="text-foreground">[12:00:08] INFO  Task PAP-001 completed</div>
-          <div className="text-red-400">[12:00:12] ERROR Connection timeout to upstream service</div>
-          <div className="text-blue-300">[12:00:12] SYS   Retrying connection in 5s...</div>
-          <div className="text-foreground">[12:00:17] INFO  Reconnected successfully</div>
+          <div className="text-foreground">[12:00:01] INFO  智能体已成功启动</div>
+          <div className="text-foreground">[12:00:02] INFO  正在处理任务 PAP-001</div>
+          <div className="text-yellow-400">[12:00:05] WARN  速率限制即将达到 (80%)</div>
+          <div className="text-foreground">[12:00:08] INFO  任务 PAP-001 已完成</div>
+          <div className="text-red-400">[12:00:12] ERROR 连接上游服务超时</div>
+          <div className="text-blue-300">[12:00:12] SYS   5秒后重试连接...</div>
+          <div className="text-foreground">[12:00:17] INFO  已成功重新连接</div>
           <div className="flex items-center gap-1.5">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full rounded-full bg-cyan-400 animate-pulse" />
               <span className="inline-flex h-full w-full rounded-full bg-cyan-400" />
             </span>
-            <span className="text-cyan-400">Live</span>
+            <span className="text-cyan-400">实时</span>
           </div>
         </div>
       </Section>
@@ -1072,25 +1072,25 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  PROPERTY ROW PATTERN                                         */}
       {/* ============================================================ */}
-      <Section title="Property Row Pattern">
+      <Section title="属性行模式">
         <div className="border border-border rounded-md p-4 space-y-1 max-w-sm">
           <div className="flex items-center justify-between py-1.5">
-            <span className="text-xs text-muted-foreground">Status</span>
+            <span className="text-xs text-muted-foreground">状态</span>
             <StatusBadge status="active" />
           </div>
           <div className="flex items-center justify-between py-1.5">
-            <span className="text-xs text-muted-foreground">Priority</span>
+            <span className="text-xs text-muted-foreground">优先级</span>
             <PriorityIcon priority="high" />
           </div>
           <div className="flex items-center justify-between py-1.5">
-            <span className="text-xs text-muted-foreground">Assignee</span>
+            <span className="text-xs text-muted-foreground">负责人</span>
             <div className="flex items-center gap-1.5">
               <Avatar size="sm"><AvatarFallback>A</AvatarFallback></Avatar>
               <span className="text-xs">Agent Alpha</span>
             </div>
           </div>
           <div className="flex items-center justify-between py-1.5">
-            <span className="text-xs text-muted-foreground">Created</span>
+            <span className="text-xs text-muted-foreground">创建时间</span>
             <span className="text-xs">Jan 15, 2025</span>
           </div>
         </div>
@@ -1099,40 +1099,40 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  NAVIGATION PATTERNS                                          */}
       {/* ============================================================ */}
-      <Section title="Navigation Patterns">
-        <SubSection title="Sidebar nav items">
+      <Section title="导航模式">
+        <SubSection title="侧边栏导航项">
           <div className="w-60 border border-border rounded-md p-3 space-y-0.5 bg-card">
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium bg-accent text-accent-foreground">
               <LayoutDashboard className="h-4 w-4" />
-              Dashboard
+              仪表板
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground cursor-pointer">
               <CircleDot className="h-4 w-4" />
-              Issues
+              问题
               <span className="ml-auto text-xs bg-primary text-primary-foreground rounded-full px-1.5 py-0.5">
                 12
               </span>
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground cursor-pointer">
               <Bot className="h-4 w-4" />
-              Agents
+              智能体
             </div>
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:bg-accent/50 hover:text-accent-foreground cursor-pointer">
               <Hexagon className="h-4 w-4" />
-              Projects
+              项目
             </div>
           </div>
         </SubSection>
 
-        <SubSection title="View toggle">
+        <SubSection title="视图切换">
           <div className="flex items-center border border-border rounded-md w-fit">
             <button className="px-3 py-1.5 text-xs font-medium bg-accent text-foreground rounded-l-md">
               <ListTodo className="h-3.5 w-3.5 inline mr-1" />
-              List
+              列表
             </button>
             <button className="px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-accent/50 rounded-r-md">
               <Target className="h-3.5 w-3.5 inline mr-1" />
-              Org
+              组织
             </button>
           </div>
         </SubSection>
@@ -1141,24 +1141,24 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  GROUPED LIST (Issues pattern)                                */}
       {/* ============================================================ */}
-      <Section title="Grouped List (Issues pattern)">
+      <Section title="分组列表（问题模式）">
         <div>
           <div className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-t-md">
             <StatusIcon status="in_progress" />
-            <span className="text-sm font-medium">In Progress</span>
+            <span className="text-sm font-medium">进行中</span>
             <span className="text-xs text-muted-foreground ml-1">2</span>
           </div>
           <div className="border border-border rounded-b-md">
             <EntityRow
               leading={<PriorityIcon priority="high" />}
               identifier="PAP-101"
-              title="Build agent heartbeat system"
+              title="构建智能体心跳系统"
               onClick={() => {}}
             />
             <EntityRow
               leading={<PriorityIcon priority="medium" />}
               identifier="PAP-102"
-              title="Add cost tracking dashboard"
+              title="添加成本追踪仪表板"
               onClick={() => {}}
             />
           </div>
@@ -1168,28 +1168,28 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  COMMENT THREAD PATTERN                                       */}
       {/* ============================================================ */}
-      <Section title="Comment Thread Pattern">
+      <Section title="评论主题模式">
         <div className="space-y-3 max-w-2xl">
-          <h3 className="text-sm font-semibold">Comments (2)</h3>
+          <h3 className="text-sm font-semibold">评论 (2)</h3>
           <div className="space-y-3">
             <div className="rounded-md border border-border p-3">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-muted-foreground">Agent</span>
+                <span className="text-xs font-medium text-muted-foreground">智能体</span>
                 <span className="text-xs text-muted-foreground">Jan 15, 2025</span>
               </div>
-              <p className="text-sm">Started working on the authentication module. Will need API keys configured.</p>
+              <p className="text-sm">已开始处理身份验证模块。需要配置 API 密钥。</p>
             </div>
             <div className="rounded-md border border-border p-3">
               <div className="flex items-center justify-between mb-1">
-                <span className="text-xs font-medium text-muted-foreground">Human</span>
+                <span className="text-xs font-medium text-muted-foreground">人类</span>
                 <span className="text-xs text-muted-foreground">Jan 16, 2025</span>
               </div>
-              <p className="text-sm">API keys have been added to the vault. Please proceed.</p>
+              <p className="text-sm">API 密钥已添加到保管库。请继续。</p>
             </div>
           </div>
           <div className="space-y-2">
-            <Textarea placeholder="Leave a comment..." rows={3} />
-            <Button size="sm">Comment</Button>
+            <Textarea placeholder="留下评论..." rows={3} />
+            <Button size="sm">评论</Button>
           </div>
         </div>
       </Section>
@@ -1197,14 +1197,14 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  COST TABLE PATTERN                                           */}
       {/* ============================================================ */}
-      <Section title="Cost Table Pattern">
+      <Section title="成本表格模式">
         <div className="border border-border rounded-lg overflow-hidden">
           <table className="w-full text-xs">
             <thead className="border-b border-border bg-accent/20">
               <tr>
-                <th className="text-left px-3 py-2 font-medium text-muted-foreground">Model</th>
-                <th className="text-left px-3 py-2 font-medium text-muted-foreground">Tokens</th>
-                <th className="text-left px-3 py-2 font-medium text-muted-foreground">Cost</th>
+                <th className="text-left px-3 py-2 font-medium text-muted-foreground">模型</th>
+                <th className="text-left px-3 py-2 font-medium text-muted-foreground">令牌数</th>
+                <th className="text-left px-3 py-2 font-medium text-muted-foreground">费用</th>
               </tr>
             </thead>
             <tbody>
@@ -1219,7 +1219,7 @@ export function DesignGuide() {
                 <td className="px-3 py-2 font-mono">$1.25</td>
               </tr>
               <tr>
-                <td className="px-3 py-2 font-medium">Total</td>
+                <td className="px-3 py-2 font-medium">总计</td>
                 <td className="px-3 py-2 font-mono">1.7M</td>
                 <td className="px-3 py-2 font-mono font-medium">$19.25</td>
               </tr>
@@ -1231,8 +1231,8 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  SKELETONS                                                    */}
       {/* ============================================================ */}
-      <Section title="Skeletons">
-        <SubSection title="Individual">
+      <Section title="骨架屏">
+        <SubSection title="单独">
           <div className="space-y-2">
             <Skeleton className="h-4 w-48" />
             <Skeleton className="h-8 w-full max-w-sm" />
@@ -1240,13 +1240,13 @@ export function DesignGuide() {
           </div>
         </SubSection>
 
-        <SubSection title="Page Skeleton (list)">
+        <SubSection title="页面骨架屏（列表）">
           <div className="border border-border rounded-md p-4">
             <PageSkeleton variant="list" />
           </div>
         </SubSection>
 
-        <SubSection title="Page Skeleton (detail)">
+        <SubSection title="页面骨架屏（详情）">
           <div className="border border-border rounded-md p-4">
             <PageSkeleton variant="detail" />
           </div>
@@ -1256,14 +1256,14 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  SEPARATOR                                                    */}
       {/* ============================================================ */}
-      <Section title="Separator">
+      <Section title="分隔线">
         <div className="space-y-4">
-          <p className="text-sm text-muted-foreground">Horizontal</p>
+          <p className="text-sm text-muted-foreground">水平</p>
           <Separator />
           <div className="flex items-center gap-4 h-8">
-            <span className="text-sm">Left</span>
+            <span className="text-sm">左</span>
             <Separator orientation="vertical" />
-            <span className="text-sm">Right</span>
+            <span className="text-sm">右</span>
           </div>
         </div>
       </Section>
@@ -1271,7 +1271,7 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  ICON REFERENCE                                               */}
       {/* ============================================================ */}
-      <Section title="Common Icons (Lucide)">
+      <Section title="常用图标 (Lucide)">
         <div className="grid grid-cols-4 md:grid-cols-6 gap-4">
           {[
             ["Inbox", Inbox],
@@ -1306,15 +1306,15 @@ export function DesignGuide() {
       {/* ============================================================ */}
       {/*  KEYBOARD SHORTCUTS                                           */}
       {/* ============================================================ */}
-      <Section title="Keyboard Shortcuts">
+      <Section title="键盘快捷键">
         <div className="border border-border rounded-md divide-y divide-border text-sm">
           {[
-            ["Cmd+K / Ctrl+K", "Open Command Palette"],
-            ["C", "New Issue (outside inputs)"],
-            ["[", "Toggle Sidebar"],
-            ["]", "Toggle Properties Panel"],
+            ["Cmd+K / Ctrl+K", "打开命令面板"],
+            ["C", "新建问题（输入框外）"],
+            ["[", "切换侧边栏"],
+            ["]", "切换属性面板"],
 
-            ["Cmd+Enter / Ctrl+Enter", "Submit markdown comment"],
+            ["Cmd+Enter / Ctrl+Enter", "提交 Markdown 评论"],
           ].map(([key, desc]) => (
             <div key={key} className="flex items-center justify-between px-4 py-2">
               <span className="text-muted-foreground">{desc}</span>

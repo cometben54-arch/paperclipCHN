@@ -9,14 +9,14 @@ import {
   FolderOpen,
 } from "lucide-react";
 
-// ── Tree types ────────────────────────────────────────────────────────
+// ── 树类型 ────────────────────────────────────────────────────────
 
 export type FileTreeNode = {
   name: string;
   path: string;
   kind: "dir" | "file";
   children: FileTreeNode[];
-  /** Optional per-node metadata (e.g. import action) */
+  /** 可选的每节点元数据（例如导入操作） */
   action?: string | null;
 };
 
@@ -24,7 +24,7 @@ const TREE_BASE_INDENT = 16;
 const TREE_STEP_INDENT = 24;
 const TREE_ROW_HEIGHT_CLASS = "min-h-9";
 
-// ── Helpers ───────────────────────────────────────────────────────────
+// ── 辅助函数 ───────────────────────────────────────────────────────────
 
 export function buildFileTree(
   files: Record<string, unknown>,
@@ -57,7 +57,7 @@ export function buildFileTree(
 
   function sortNode(node: FileTreeNode) {
     node.children.sort((a, b) => {
-      // Files before directories so PROJECT.md appears above tasks/
+      // 文件排在目录前面，使 PROJECT.md 显示在 tasks/ 上方
       if (a.kind !== b.kind) return a.kind === "file" ? -1 : 1;
       return a.name.localeCompare(b.name);
     });
@@ -94,7 +94,7 @@ function fileIcon(name: string) {
   return FileText;
 }
 
-// ── Frontmatter helpers ───────────────────────────────────────────────
+// ── Frontmatter 辅助函数 ───────────────────────────────────────────────
 
 export type FrontmatterData = Record<string, string | string[]>;
 
@@ -150,21 +150,21 @@ export function parseFrontmatter(content: string): { data: FrontmatterData; body
 }
 
 export const FRONTMATTER_FIELD_LABELS: Record<string, string> = {
-  name: "Name",
-  title: "Title",
-  kind: "Kind",
-  reportsTo: "Reports to",
-  skills: "Skills",
-  status: "Status",
-  description: "Description",
-  priority: "Priority",
-  assignee: "Assignee",
-  project: "Project",
-  recurring: "Recurring",
-  targetDate: "Target date",
+  name: "名称",
+  title: "标题",
+  kind: "类型",
+  reportsTo: "上级",
+  skills: "技能",
+  status: "状态",
+  description: "描述",
+  priority: "优先级",
+  assignee: "负责人",
+  project: "项目",
+  recurring: "周期性",
+  targetDate: "目标日期",
 };
 
-// ── File tree component ───────────────────────────────────────────────
+// ── 文件树组件 ───────────────────────────────────────────────────────
 
 export function PackageFileTree({
   nodes,
@@ -186,9 +186,9 @@ export function PackageFileTree({
   onToggleDir: (path: string) => void;
   onSelectFile: (path: string) => void;
   onToggleCheck?: (path: string, kind: "file" | "dir") => void;
-  /** Optional extra content rendered at the end of each file row (e.g. action badge) */
+  /** 在每个文件行末尾渲染的可选额外内容（例如操作徽章） */
   renderFileExtra?: (node: FileTreeNode, checked: boolean) => ReactNode;
-  /** Optional additional className for file rows */
+  /** 文件行的可选附加 className */
   fileRowClassName?: (node: FileTreeNode, checked: boolean) => string | undefined;
   showCheckboxes?: boolean;
   depth?: number;

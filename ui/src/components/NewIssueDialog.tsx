@@ -1425,13 +1425,13 @@ export function NewIssueDialog() {
               </button>
               <button className="flex items-center gap-2 w-full px-2 py-1.5 text-xs rounded hover:bg-accent/50 text-muted-foreground">
                 <Calendar className="h-3 w-3" />
-                Due date
+                截止日期
               </button>
             </PopoverContent>
           </Popover>
         </div>
 
-        {/* Footer */}
+        {/* 底部 */}
         <div className="flex items-center justify-between px-4 py-2.5 border-t border-border shrink-0">
           <Button
             variant="ghost"
@@ -1440,14 +1440,14 @@ export function NewIssueDialog() {
             onClick={discardDraft}
             disabled={createIssue.isPending || !canDiscardDraft}
           >
-            Discard Draft
+            丢弃草稿
           </Button>
           <div className="flex items-center gap-3">
             <div className="min-h-5 text-right">
               {createIssue.isPending ? (
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                   <Loader2 className="h-3 w-3 animate-spin" />
-                  Creating issue...
+                  正在创建事项...
                 </span>
               ) : createIssue.isError ? (
                 <span className="text-xs text-destructive">{createIssueErrorMessage}</span>
@@ -1462,7 +1462,7 @@ export function NewIssueDialog() {
             >
               <span className="inline-flex items-center justify-center gap-1.5">
                 {createIssue.isPending ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : null}
-                <span>{createIssue.isPending ? "Creating..." : "Create Issue"}</span>
+                <span>{createIssue.isPending ? "创建中..." : "创建事项"}</span>
               </span>
             </Button>
           </div>

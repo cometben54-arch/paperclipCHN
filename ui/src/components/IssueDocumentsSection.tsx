@@ -653,7 +653,7 @@ export function IssueDocumentsSection({
                       href={`#document-${encodeURIComponent(doc.key)}`}
                       className="truncate text-[11px] text-muted-foreground transition-colors hover:text-foreground hover:underline"
                     >
-                      rev {doc.latestRevisionNumber} • updated {relativeTime(doc.updatedAt)}
+                      版本 {doc.latestRevisionNumber} • 更新于 {relativeTime(doc.updatedAt)}
                     </a>
                   </div>
                   {showTitle && <p className="mt-2 text-sm font-medium">{doc.title}</p>}

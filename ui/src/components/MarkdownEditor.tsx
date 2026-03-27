@@ -385,8 +385,8 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
 
   const selectMention = useCallback(
     (option: MentionOption) => {
-      // Read from ref to avoid stale-closure issues (selectionchange can
-      // update state between the last render and this callback firing).
+      // 从 ref 读取以避免过期闭包问题（selectionchange 可能
+      // 在上次渲染和此回调触发之间更新状态）。
       const state = mentionStateRef.current;
       if (!state) return;
       const current = latestValueRef.current;
@@ -474,7 +474,7 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
         className,
       )}
       onKeyDownCapture={(e) => {
-        // Cmd/Ctrl+Enter to submit
+        // Cmd/Ctrl+Enter 提交
         if (onSubmit && e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
           e.preventDefault();
           e.stopPropagation();
@@ -482,15 +482,15 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
           return;
         }
 
-        // Mention keyboard handling
+        // 提及键盘处理
         if (mentionActive) {
-          // Space dismisses the popup (let the character be typed normally)
+          // 空格关闭弹出框（让字符正常输入）
           if (e.key === " ") {
             mentionStateRef.current = null;
             setMentionState(null);
             return;
           }
-          // Escape always dismisses
+          // Escape 总是关闭
           if (e.key === "Escape") {
             e.preventDefault();
             e.stopPropagation();
@@ -498,7 +498,7 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
             setMentionState(null);
             return;
           }
-          // Arrow / Enter / Tab only when there are filtered results
+          // 仅在有过滤结果时响应方向键 / Enter / Tab
           if (filteredMentions.length > 0) {
             if (e.key === "ArrowDown") {
               e.preventDefault();
@@ -559,7 +559,7 @@ export const MarkdownEditor = forwardRef<MarkdownEditorRef, MarkdownEditorProps>
         plugins={plugins}
       />
 
-      {/* Mention dropdown — rendered via portal so it isn't clipped by overflow containers */}
+      {/* 提及下拉框 — 通过 portal 渲染，避免被溢出容器裁剪 */}
       {mentionActive && filteredMentions.length > 0 &&
         createPortal(
           <div
