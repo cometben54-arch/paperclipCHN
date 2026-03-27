@@ -23,12 +23,12 @@ interface ProviderQuotaCardProps {
   budgetMonthlyCents: number;
   /** 本期间所有供应商的公司总支出（美分） */
   totalCompanySpendCents: number;
-  /** spend in the current calendar week in cents, this provider only */
+  /** 本日历周该供应商的支出（美分） */
   weekSpendCents: number;
-  /** rolling window rows for this provider: 5h, 24h, 7d */
+  /** 该供应商的滚动窗口行：5h、24h、7d */
   windowRows: CostWindowSpendRow[];
   showDeficitNotch: boolean;
-  /** live subscription quota windows from the provider's own api */
+  /** 来自供应商自身 API 的实时订阅配额窗口 */
   quotaWindows?: QuotaWindow[];
   quotaError?: string | null;
   quotaSource?: string | null;
