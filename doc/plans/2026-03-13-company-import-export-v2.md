@@ -90,23 +90,23 @@ Paperclip 代码库中已具备可移植性基础原语：
   - 临时工作空间
 - 在团队可移植性发布之前，不需要优先建立运行时 `teams` 表。
 
-## 4. Current State In Repo
+## 4. 代码库现状
 
-Current implementation exists here:
+当前实现位于以下位置：
 
-- shared types: `packages/shared/src/types/company-portability.ts`
-- shared validators: `packages/shared/src/validators/company-portability.ts`
-- server routes: `server/src/routes/companies.ts`
-- server service: `server/src/services/company-portability.ts`
-- CLI commands: `cli/src/commands/client/company.ts`
+- 共享类型：`packages/shared/src/types/company-portability.ts`
+- 共享验证器：`packages/shared/src/validators/company-portability.ts`
+- 服务端路由：`server/src/routes/companies.ts`
+- 服务端服务：`server/src/services/company-portability.ts`
+- CLI 命令：`cli/src/commands/client/company.ts`
 
-Current product limitations:
+当前产品局限性：
 
-1. Import/export UX still needs deeper tree-selection and skill/package management polish.
-2. Adapter-specific skill sync remains uneven across adapters and must degrade cleanly when unsupported.
-3. Projects and starter tasks should stay opt-in on export rather than default package content.
-4. Import/export still needs stronger coverage around attribution, pin verification, and executable-package warnings.
-5. The current markdown frontmatter parser is intentionally lightweight and should stay constrained to the documented shape.
+1. 导入/导出界面仍需深化树形选择及 skill/包管理的精细度。
+2. 适配器专属 skill 同步在各适配器之间仍不一致，在不支持时必须能优雅降级。
+3. 项目和初始任务在导出时应保持为可选项，而非默认包内容。
+4. 导入/导出在归因、固定验证和可执行包警告方面仍需更强的覆盖。
+5. 当前的 markdown frontmatter 解析器有意保持轻量级，应限制在已记录的结构内。
 
 ## 5. Canonical Package Direction
 

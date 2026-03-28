@@ -1,37 +1,37 @@
 # `@paperclipai/plugin-sdk`
 
-Official TypeScript SDK for Paperclip plugin authors.
+面向 Paperclip 插件作者的官方 TypeScript SDK。
 
-- **Worker SDK:** `@paperclipai/plugin-sdk` — `definePlugin`, context, lifecycle
-- **UI SDK:** `@paperclipai/plugin-sdk/ui` — React hooks and slot props
-- **Testing:** `@paperclipai/plugin-sdk/testing` — in-memory host harness
-- **Bundlers:** `@paperclipai/plugin-sdk/bundlers` — esbuild/rollup presets
-- **Dev server:** `@paperclipai/plugin-sdk/dev-server` — static UI server + SSE reload
+- **Worker SDK：** `@paperclipai/plugin-sdk` — `definePlugin`、上下文、生命周期
+- **UI SDK：** `@paperclipai/plugin-sdk/ui` — React hooks 与插槽属性
+- **测试：** `@paperclipai/plugin-sdk/testing` — 内存宿主测试夹具
+- **打包工具：** `@paperclipai/plugin-sdk/bundlers` — esbuild/rollup 预设
+- **开发服务器：** `@paperclipai/plugin-sdk/dev-server` — 静态 UI 服务器 + SSE 热重载
 
-Reference: `doc/plugins/PLUGIN_SPEC.md`
+参考文档：`doc/plugins/PLUGIN_SPEC.md`
 
-## Package surface
+## 包接口概览
 
-| Import | Purpose |
+| 导入路径 | 用途 |
 |--------|--------|
-| `@paperclipai/plugin-sdk` | Worker entry: `definePlugin`, `runWorker`, context types, protocol helpers |
-| `@paperclipai/plugin-sdk/ui` | UI entry: `usePluginData`, `usePluginAction`, `usePluginStream`, `useHostContext`, slot prop types |
-| `@paperclipai/plugin-sdk/ui/hooks` | Hooks only |
-| `@paperclipai/plugin-sdk/ui/types` | UI types and slot prop interfaces |
-| `@paperclipai/plugin-sdk/testing` | `createTestHarness` for unit/integration tests |
-| `@paperclipai/plugin-sdk/bundlers` | `createPluginBundlerPresets` for worker/manifest/ui builds |
-| `@paperclipai/plugin-sdk/dev-server` | `startPluginDevServer`, `getUiBuildSnapshot` |
-| `@paperclipai/plugin-sdk/protocol` | JSON-RPC protocol types and helpers (advanced) |
-| `@paperclipai/plugin-sdk/types` | Worker context and API types (advanced) |
+| `@paperclipai/plugin-sdk` | Worker 入口：`definePlugin`、`runWorker`、上下文类型、协议辅助函数 |
+| `@paperclipai/plugin-sdk/ui` | UI 入口：`usePluginData`、`usePluginAction`、`usePluginStream`、`useHostContext`、插槽属性类型 |
+| `@paperclipai/plugin-sdk/ui/hooks` | 仅 Hooks |
+| `@paperclipai/plugin-sdk/ui/types` | UI 类型与插槽属性接口 |
+| `@paperclipai/plugin-sdk/testing` | `createTestHarness`，用于单元/集成测试 |
+| `@paperclipai/plugin-sdk/bundlers` | `createPluginBundlerPresets`，用于 worker/manifest/ui 构建 |
+| `@paperclipai/plugin-sdk/dev-server` | `startPluginDevServer`、`getUiBuildSnapshot` |
+| `@paperclipai/plugin-sdk/protocol` | JSON-RPC 协议类型与辅助函数（高级） |
+| `@paperclipai/plugin-sdk/types` | Worker 上下文与 API 类型（高级） |
 
-## Manifest entrypoints
+## Manifest 入口点
 
-In your plugin manifest you declare:
+在插件 manifest 中声明：
 
-- **`entrypoints.worker`** (required) — Path to the worker bundle (e.g. `dist/worker.js`). The host loads this and calls `setup(ctx)`.
-- **`entrypoints.ui`** (required if you use UI) — Path to the UI bundle directory. The host loads components from here for slots and launchers.
+- **`entrypoints.worker`**（必填）— Worker bundle 路径（如 `dist/worker.js`）。宿主加载此文件并调用 `setup(ctx)`。
+- **`entrypoints.ui`**（使用 UI 时必填）— UI bundle 目录路径。宿主从此处为插槽和启动器加载组件。
 
-## Install
+## 安装
 
 ```bash
 pnpm add @paperclipai/plugin-sdk

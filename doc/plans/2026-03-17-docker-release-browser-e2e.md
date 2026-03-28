@@ -47,40 +47,40 @@ HOST_PORT=3233 DATA_DIR=./data/release-smoke-stable PAPERCLIPAI_VERSION=latest .
 
 将现有 Docker 冒烟脚本改造为机器友好的测试框架，添加专用的 Playwright 发布冒烟规范，驱动已认证的浏览器流程针对已发布的 Docker 安装运行，并在 GitHub Actions 中分别对 `canary` 和 `latest` 执行该测试。
 
-## What We Have Today
+## 现有基础
 
-### Existing local browser coverage
+### 现有本地浏览器覆盖
 
-`tests/e2e/onboarding.spec.ts` already proves the onboarding wizard can:
+`tests/e2e/onboarding.spec.ts` 已经验证引导向导能够：
 
-- create a company
-- create a CEO agent
-- create an initial issue
-- optionally observe task progress
+- 创建公司
+- 创建 CEO 智能体
+- 创建初始问题
+- 可选地观察任务进度
 
-That is a good base, but it does not validate the public npm package, Docker path, authenticated login flow, or release dist-tags.
+这是一个良好的基础，但它不能验证公开 npm 包、Docker 路径、已认证登录流程或发布 dist-tag。
 
-### Existing Docker smoke coverage
+### 现有 Docker 冒烟覆盖
 
-`scripts/docker-onboard-smoke.sh` already does useful setup work:
+`scripts/docker-onboard-smoke.sh` 已经完成了有价值的设置工作：
 
-- builds `Dockerfile.onboard-smoke`
-- runs `paperclipai@${PAPERCLIPAI_VERSION}` inside Docker
-- waits for health
-- signs up or signs in a smoke admin user
-- generates and accepts the bootstrap CEO invite in authenticated mode
-- verifies a board session and `/api/companies`
+- 构建 `Dockerfile.onboard-smoke`
+- 在 Docker 内运行 `paperclipai@${PAPERCLIPAI_VERSION}`
+- 等待健康检查通过
+- 注册或登录冒烟管理员用户
+- 在已认证模式下生成并接受引导 CEO 邀请
+- 验证 board 会话以及 `/api/companies`
 
-That means the hard bootstrap problem is mostly solved already. The main gap is that the script is human-oriented and never hands control to a browser test.
+这意味着困难的引导问题已基本解决。主要缺口在于该脚本面向人工操作，从未将控制权移交给浏览器测试。
 
-### Existing CI shape
+### 现有 CI 结构
 
-The repo already has:
+代码仓库已有：
 
-- `.github/workflows/e2e.yml` for manual Playwright runs against local source
-- `.github/workflows/release.yml` for canary publish on `master` and manual stable promotion
+- `.github/workflows/e2e.yml`：用于针对本地源代码手动运行 Playwright
+- `.github/workflows/release.yml`：用于在 `master` 上发布 canary 以及手动晋升稳定版
 
-So the right move is to extend the current test/release system, not create a parallel one.
+因此，正确的做法是扩展现有的测试/发布体系，而非另起炉灶。
 
 ## Product Decision
 

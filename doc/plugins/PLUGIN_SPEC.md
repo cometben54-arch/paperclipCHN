@@ -60,33 +60,33 @@
 - 第一个插件版本中的任意第三方 Schema 迁移
 - 第一个插件版本中基于 iframe 沙箱的插件 UI（插件以 ES 模块形式在主机扩展槽中渲染）
 
-## 2. Core Assumptions
+## 2. 核心假设
 
-Paperclip plugin design is based on the following assumptions:
+Paperclip 插件设计基于以下假设：
 
-1. Paperclip is single-tenant and self-hosted.
-2. Plugin installation is global to the instance.
-3. "Companies" remain core Paperclip business objects, but they are not plugin trust boundaries.
-4. Board governance, approval gates, budget hard-stops, and core task invariants remain owned by Paperclip core.
-5. Projects already have a real workspace model via `project_workspaces`, and local/runtime plugins should build on that instead of inventing a separate workspace abstraction.
+1. Paperclip 是单租户且自托管的。
+2. 插件安装对整个实例全局生效。
+3. "公司"仍是 Paperclip 的核心业务对象，但不是插件信任边界。
+4. 董事会治理、审批关卡、预算硬性限制以及核心任务不变量仍由 Paperclip 核心所有。
+5. 项目已通过 `project_workspaces` 拥有真实的工作区模型，本地/运行时插件应基于该模型构建，而不是另起一套工作区抽象。
 
-## 3. Goals
+## 3. 目标
 
-The plugin system must:
+插件系统必须：
 
-1. Let operators install global instance-wide plugins.
-2. Let plugins add major capabilities without editing Paperclip core.
-3. Keep core governance and auditing intact.
-4. Support both local/runtime plugins and external SaaS connectors.
-5. Support future plugin categories such as:
-   - new agent adapters
-   - revenue tracking
-   - knowledge base
-   - issue tracker sync
-   - metrics/dashboards
-   - file/project tooling
-6. Use simple, explicit, typed contracts.
-7. Keep failures isolated so one plugin does not crash the entire instance.
+1. 允许运营者安装全局实例范围的插件。
+2. 允许插件在不修改 Paperclip 核心的情况下添加重要功能。
+3. 保持核心治理与审计机制完整。
+4. 同时支持本地/运行时插件和外部 SaaS 连接器。
+5. 支持未来的插件类别，例如：
+   - 新的 Agent 适配器
+   - 收入追踪
+   - 知识库
+   - 问题追踪器同步
+   - 指标/仪表板
+   - 文件/项目工具
+6. 使用简单、明确、有类型的合约。
+7. 保持故障隔离，使单个插件不会导致整个实例崩溃。
 
 ## 4. Non-Goals
 

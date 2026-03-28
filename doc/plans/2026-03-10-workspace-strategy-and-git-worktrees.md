@@ -20,29 +20,29 @@
 - 并非每个适配器都与 Paperclip 运行在同一台机器上
 - Claude 和 Codex 暴露了不同的内置功能，因此 Paperclip 不应过度适配某一工具
 
-## Core Product Decision
+## 核心产品决策
 
-Paperclip should model **execution workspaces**, not **worktrees**.
+Paperclip 应建模**执行工作区（execution workspaces）**，而非 **worktrees**。
 
-More specifically:
+更具体地说：
 
-- the durable anchor is the **project workspace** or repo checkout
-- an issue may derive a temporary **execution workspace** from that project workspace
-- one implementation of an execution workspace is a **git worktree**
-- adapters decide whether and how to use that derived workspace
+- 持久锚点是**项目工作区（project workspace）**或仓库检出
+- 一个问题可以从该项目工作区派生出一个临时的**执行工作区（execution workspace）**
+- 执行工作区的一种实现方式是 **git worktree**
+- 适配器决定是否以及如何使用该派生工作区
 
-This keeps the abstraction portable:
+这保持了抽象的可移植性：
 
-- `project workspace` is the repo/project-level concept
-- `execution workspace` is the runtime checkout/cwd for a run
-- `git worktree` is one strategy for creating that execution workspace
-- `workspace runtime services` are long-lived processes or previews attached to that workspace
+- `project workspace` 是仓库/项目层面的概念
+- `execution workspace` 是一次运行时的运行时检出/cwd
+- `git worktree` 是创建该执行工作区的一种策略
+- `workspace runtime services` 是附属于该工作区的长期运行进程或预览
 
-This also keeps the abstraction valid for non-local adapters:
+这也使抽象对非本地适配器保持有效：
 
-- local adapters may receive a real filesystem cwd produced by Paperclip
-- remote or cloud adapters may receive the same execution intent in structured form and realize it inside their own environment
-- Paperclip should not assume that every adapter can see or use a host filesystem path directly
+- 本地适配器可以接收 Paperclip 生成的真实文件系统 cwd
+- 远程或云适配器可以以结构化形式接收相同的执行意图，并在其自己的环境中实现
+- Paperclip 不应假设每个适配器都能看到或直接使用宿主文件系统路径
 
 ## Answer to the Main Framing Questions
 

@@ -52,25 +52,25 @@
 3. 对不发出费用数据的 provider 进行完美费用核算。
 4. 超出基本保留期的长期日志归档策略。
 
-## 4. Baseline and Gaps (As of 2026-02-17)
+## 4. 基线与差距（截至 2026-02-17）
 
-Current code already has:
+当前代码已具备：
 
-- `agents` with `adapterType` + `adapterConfig`.
-- `heartbeat_runs` with basic status tracking.
-- in-process `heartbeatService` that invokes `process` and `http`.
-- cancellation endpoints for active runs.
+- 带有 `adapterType` + `adapterConfig` 的 `agents`。
+- 带有基本状态跟踪的 `heartbeat_runs`。
+- 进程内 `heartbeatService`，可调用 `process` 和 `http`。
+- 活跃运行的取消端点。
 
-Current gaps this spec addresses:
+本规格说明所解决的当前差距：
 
-1. No persistent per-agent runtime state for session resume.
-2. No queue/wakeup abstraction (invoke is immediate).
-3. No assignment-triggered or timer-triggered centralized wakeups.
-4. No websocket/SSE push path to browser.
-5. No persisted run event timeline or external full-log storage contract.
-6. No typed local adapter contracts for Claude/Codex session and usage extraction.
-7. No prompt-template variable/pill system in agent setup.
-8. No deployment-aware adapter for full run log storage (disk/object store/etc).
+1. 缺少用于 session 恢复的按 agent 持久化运行时状态。
+2. 缺少队列/唤醒抽象（调用为即时触发）。
+3. 缺少分配触发或定时器触发的集中式唤醒。
+4. 缺少向浏览器的 websocket/SSE 推送路径。
+5. 缺少持久化的运行事件时间线或外部完整日志存储合约。
+6. 缺少用于 Claude/Codex session 和用量提取的类型化本地适配器合约。
+7. Agent 设置中缺少提示词模板变量/pill 系统。
+8. 缺少感知部署环境的完整运行日志存储适配器（磁盘/对象存储等）。
 
 ## 5. Architecture Overview
 
