@@ -295,52 +295,52 @@ V1 发布时，适配器标识为显式：
 }
 ```
 
-### Invocation
+### 调用方式
 
-- Base command: `codex exec --json <prompt>`
-- Resume form: `codex exec --json resume <sessionId> <prompt>`
-- Unsandboxed mode: add `--dangerously-bypass-approvals-and-sandbox` when enabled
-- Optional search mode: add `--search`
+- 基础命令：`codex exec --json <prompt>`
+- 恢复形式：`codex exec --json resume <sessionId> <prompt>`
+- 非沙盒模式：启用时添加 `--dangerously-bypass-approvals-and-sandbox`
+- 可选搜索模式：添加 `--search`
 
-### Output parsing
+### 输出解析
 
-Codex emits JSONL events. Parse line-by-line and extract:
+Codex 输出 JSONL 事件。逐行解析并提取：
 
 1. `thread.started.thread_id` -> session ID
-2. `item.completed` where item type is `agent_message` -> output text
-3. `turn.completed.usage`:
+2. `item.completed`（item 类型为 `agent_message`）-> 输出文本
+3. `turn.completed.usage`：
    - `input_tokens`
    - `cached_input_tokens`
    - `output_tokens`
 
-Codex JSONL currently may not include cost; store token usage and leave cost null/unknown unless available.
+Codex JSONL 当前可能不包含费用；存储 token 用量，除非有数据否则费用留为 null/未知。
 
-## 7.3 Common local adapter process handling
+## 7.3 本地适配器通用进程处理
 
-Both local adapters must:
+两个本地适配器均须：
 
-1. Use `spawn(command, args, { shell: false, stdio: "pipe" })`.
-2. Capture stdout/stderr in stream chunks and forward to `RunLogStore`.
-3. Maintain rolling stdout/stderr tail excerpts in memory for DB diagnostic fields.
-4. Emit live log events to websocket subscribers (optional to throttle/chunk).
-5. Support graceful cancel: `SIGTERM`, then `SIGKILL` after `graceSec`.
-6. Enforce timeout using adapter `timeoutSec`.
-7. Return exit code + parsed result + diagnostic stderr.
+1. 使用 `spawn(command, args, { shell: false, stdio: "pipe" })`。
+2. 以流块形式捕获 stdout/stderr 并转发至 `RunLogStore`。
+3. 在内存中维护滚动的 stdout/stderr 尾部摘录，用于 DB 诊断字段。
+4. 向 websocket 订阅者发出实时日志事件（可选择节流/分块）。
+5. 支持优雅取消：`SIGTERM`，然后在 `graceSec` 后发送 `SIGKILL`。
+6. 使用适配器 `timeoutSec` 强制执行超时。
+7. 返回退出码 + 解析结果 + 诊断 stderr。
 
-## 8. Heartbeat and Wakeup Coordinator
+## 8. Heartbeat 与唤醒协调器
 
-## 8.1 Wakeup sources
+## 8.1 唤醒来源
 
-Supported sources:
+支持的来源：
 
-1. `timer`: periodic heartbeat per agent.
-2. `assignment`: issue assigned/reassigned to agent.
-3. `on_demand`: explicit wake request path (board/manual click or API ping).
-4. `automation`: non-interactive wake path (external callback or internal system automation).
+1. `timer`：按 agent 周期性 heartbeat。
+2. `assignment`：issue 被分配/重新分配给 agent。
+3. `on_demand`：显式唤醒请求路径（看板/手动点击或 API ping）。
+4. `automation`：非交互式唤醒路径（外部回调或内部系统自动化）。
 
-## 8.2 Central API
+## 8.2 中央 API
 
-All sources call one internal service:
+所有来源调用同一个内部服务：
 
 ```ts
 enqueueWakeup({

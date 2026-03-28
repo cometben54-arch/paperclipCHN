@@ -265,96 +265,96 @@ Paperclip 应在包元数据中支持以下来源引用字段：
 
 界面和 CLI 应在应用前清晰展示此信息。
 
-## 8. Import Behavior
+## 8. 导入行为
 
-### 8.1 Supported Sources
+### 8.1 支持的来源
 
-- local folder
-- local package root file
-- GitHub repo URL
-- GitHub subtree URL
-- direct URL to markdown/package root
+- 本地文件夹
+- 本地包根文件
+- GitHub 仓库 URL
+- GitHub 子树 URL
+- 直接指向 markdown/包根的 URL
 
-Registry-based discovery may be added later, but must remain optional.
+基于注册中心的发现功能可在后续添加，但必须保持可选。
 
-### 8.2 Import Targets
+### 8.2 导入目标
 
-- new company
-- existing company
+- 新建公司
+- 已有公司
 
-For existing company imports, the preview must support:
+对于导入到已有公司的情况，预览界面必须支持：
 
-- collision handling
-- attach-point selection for team imports
-- selective entity import
+- 冲突处理
+- 团队导入的挂载点选择
+- 选择性实体导入
 
-### 8.3 Collision Strategy
+### 8.3 冲突策略
 
-Current `rename | skip | replace` support remains, but matching should improve over time.
+当前的 `rename | skip | replace` 支持保留，但匹配逻辑应随时间持续改进。
 
-Preferred matching order:
+首选匹配顺序：
 
-1. prior install provenance
-2. stable package entity identity
+1. 先前安装的来源信息
+2. 稳定的包实体标识
 3. slug
-4. human name as weak fallback
+4. 人类可读名称作为弱回退
 
-Slug-only matching is acceptable only as a transitional strategy.
+仅使用 slug 匹配仅作为过渡策略可接受。
 
-### 8.4 Required Preview Output
+### 8.4 必需的预览输出
 
-Every import preview should surface:
+每次导入预览应展示：
 
-- target company action
-- entity-level create/update/skip plan
-- referenced external content
-- missing files
-- hash mismatch or pinning issues
-- env inputs, including required vs optional and default values when present
-- unsupported content types
-- trust/licensing warnings
+- 目标公司操作
+- 实体级创建/更新/跳过计划
+- 引用的外部内容
+- 缺失文件
+- 哈希不匹配或版本固定问题
+- 环境变量输入，包括必填项与可选项，以及存在时的默认值
+- 不支持的内容类型
+- 信任/许可证警告
 
-### 8.5 Adapter Skill Sync Surface
+### 8.5 适配器 Skill 同步界面
 
-People want skill management in the UI, but skills are adapter-dependent.
+用户希望在界面中管理 skill，但 skill 依赖于适配器。
 
-That means portability and UI planning must include an adapter capability model for skills.
+这意味着可移植性和界面规划必须包含适配器能力模型。
 
-Paperclip should define a new adapter surface area around skills:
+Paperclip 应围绕 skill 定义新的适配器接口范围：
 
-- list currently enabled skills for an agent
-- report how those skills are represented by the adapter
-- install or enable a skill
-- disable or remove a skill
-- report sync state between desired package config and actual adapter state
+- 列出 agent 当前已启用的 skill
+- 报告适配器如何表示这些 skill
+- 安装或启用某个 skill
+- 禁用或移除某个 skill
+- 报告期望包配置与实际适配器状态之间的同步状态
 
-Examples:
+示例：
 
-- Claude Code / Codex style adapters may manage skills as local filesystem packages or adapter-owned skill directories
-- OpenClaw-style adapters may expose currently enabled skills through an API or a reflected config surface
-- some adapters may be read-only and only report what they have
+- Claude Code / Codex 风格的适配器可能将 skill 作为本地文件系统包或适配器自有的 skill 目录进行管理
+- OpenClaw 风格的适配器可能通过 API 或反射配置界面暴露当前已启用的 skill
+- 某些适配器可能是只读的，仅报告其所拥有的内容
 
-Planned adapter capability shape:
+规划中的适配器能力字段：
 
 - `supportsSkillRead`
 - `supportsSkillWrite`
 - `supportsSkillRemove`
 - `supportsSkillSync`
-- `skillStorageKind` such as `filesystem`, `remote_api`, `inline_config`, or `unknown`
+- `skillStorageKind`，如 `filesystem`、`remote_api`、`inline_config` 或 `unknown`
 
-Baseline adapter interface:
+基础适配器接口：
 
 - `listSkills(agent)`
 - `applySkills(agent, desiredSkills)`
-- `removeSkill(agent, skillId)` optional
-- `getSkillSyncState(agent, desiredSkills)` optional
+- `removeSkill(agent, skillId)` 可选
+- `getSkillSyncState(agent, desiredSkills)` 可选
 
-Planned Paperclip behavior:
+规划中的 Paperclip 行为：
 
-- if an adapter supports read, Paperclip should show current skills in the UI
-- if an adapter supports write, Paperclip should let the user enable/disable imported skills
-- if an adapter supports sync, Paperclip should compute desired vs actual state and offer reconcile actions
-- if an adapter does not support these capabilities, the UI should still show the package-level desired skills but mark them unmanaged
+- 如果适配器支持读取，Paperclip 应在界面中展示当前 skill
+- 如果适配器支持写入，Paperclip 应允许用户启用/禁用已导入的 skill
+- 如果适配器支持同步，Paperclip 应计算期望状态与实际状态之间的差异并提供协调操作
+- 如果适配器不支持这些能力，界面仍应展示包级别的期望 skill，但标记为未托管
 
 ## 9. Export Behavior
 

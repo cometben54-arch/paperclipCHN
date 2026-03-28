@@ -244,48 +244,48 @@ HOST_PORT=3233 DATA_DIR=./data/release-smoke-stable PAPERCLIPAI_VERSION=latest .
 - 从 `release.yml` 调用它
 - 对 `canary` 和 `latest` 复用同一个作业
 
-## 4. Integrate it into release automation incrementally
+## 4. 逐步集成到发布自动化中
 
-### Phase A: Manual workflow only
+### 阶段 A：仅限手动工作流
 
-First ship the workflow as manual-only so the harness and test can be stabilized without blocking releases.
+首先将工作流作为纯手动方式发布，以便在不阻塞发布的情况下稳定框架和测试。
 
-### Phase B: Run automatically after canary publish
+### 阶段 B：在 canary 发布后自动运行
 
-After `publish_canary` succeeds in `.github/workflows/release.yml`, call the reusable release-smoke workflow with:
+当 `.github/workflows/release.yml` 中的 `publish_canary` 成功后，调用可复用的发布冒烟工作流，参数为：
 
 - `paperclip_version=canary`
 
-This proves the just-published public canary really boots and onboards.
+这将证明刚发布的公开 canary 确实能正常启动并完成引导流程。
 
-### Phase C: Run automatically after stable publish
+### 阶段 C：在稳定版发布后自动运行
 
-After `publish_stable` succeeds, call the same workflow with:
+当 `publish_stable` 成功后，以如下参数调用同一工作流：
 
 - `paperclip_version=latest`
 
-This gives us post-publish confirmation that the stable dist-tag is healthy.
+这为我们提供了稳定版 dist-tag 健康状况的发布后确认。
 
-### Important nuance
+### 重要说明
 
-Testing `latest` from npm cannot happen before stable publish, because the package under test does not exist under `latest` yet. So the `latest` smoke is a post-publish verification, not a pre-publish gate.
+在稳定版发布之前无法测试来自 npm 的 `latest`，因为待测包在 `latest` 标签下尚不存在。因此，`latest` 冒烟是发布后验证，而非发布前门禁。
 
-If we later want a true pre-publish stable gate, that should be a separate source-ref or locally built package smoke job.
+如果之后需要真正的发布前稳定版门禁，应使用独立的 source-ref 或本地构建的包冒烟作业来实现。
 
-## 5. Make diagnostics first-class
+## 5. 将诊断信息提升为一等公民
 
-This workflow is only valuable if failures are fast to debug.
+只有当失败能被快速调试时，这个工作流才真正有价值。
 
-Always capture:
+始终捕获：
 
-- Playwright HTML report
-- Playwright trace on failure
-- final screenshot on failure
-- full `docker logs` output
-- emitted smoke metadata
-- optional `curl /api/health` snapshot
+- Playwright HTML 报告
+- 失败时的 Playwright 追踪记录
+- 失败时的最终截图
+- 完整的 `docker logs` 输出
+- 输出的冒烟元数据
+- 可选的 `curl /api/health` 快照
 
-Without that, the test will become a flaky black box and people will stop trusting it.
+否则，测试将变成一个不稳定的黑盒，大家最终会失去对它的信任。
 
 ## Implementation Plan
 

@@ -343,35 +343,35 @@ issue 级别的执行行为选择。
 - `executionWorkspaceSettings`
   - keep advanced per-issue override fields here
 
-### Rules
+### 规则
 
-- if the project has no workspace automation, these fields may all be null
-- if the project has one primary workspace, issue creation should default to it silently
-- `reuse_existing` is advanced-only and should target active execution workspaces, not the whole workspace universe
-- existing issues without these fields should behave as `inherit` during migration
+- 如果项目没有工作区自动化，这些字段可以都为 null
+- 如果项目有一个主工作区，issue 创建应默认静默使用它
+- `reuse_existing` 仅限高级用户，应针对活跃的执行工作区，而非整个工作区宇宙
+- 没有这些字段的现有 issue 在迁移期间应表现为 `inherit`
 
-## 5. Execution Workspace
+## 5. 执行工作区（Execution Workspace）
 
-A durable record for a shared or derived runtime workspace.
+共享或派生运行时工作区的持久化记录。
 
-This is the missing object that makes cleanup, previews, PRs, and branch reuse tractable.
+这是使清理、预览、PR 和分支复用变得可处理的缺失对象。
 
-### Motivation
+### 动机
 
-Without an explicit `execution workspace` record, Paperclip has nowhere stable to attach:
+没有明确的 `execution workspace` 记录，Paperclip 就没有稳定的地方来附加：
 
-- derived branch/worktree identity
-- active preview ownership
-- PR linkage
-- cleanup state
-- "reuse this existing integration branch" behavior
-- remote provider session identity
+- 派生分支/worktree 身份
+- 活跃预览所有权
+- PR 链接
+- 清理状态
+- "复用此现有集成分支"行为
+- 远程提供商会话身份
 
-### Proposed new object
+### 提议的新对象
 
 `execution_workspaces`
 
-### Proposed fields
+### 提议字段
 
 - `id`
 - `companyId`

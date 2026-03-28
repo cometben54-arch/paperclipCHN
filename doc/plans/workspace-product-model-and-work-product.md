@@ -173,19 +173,19 @@ Paperclip 不能假设它与代码运行在同一台机器上。
 
 避免让用户认为"工作区"总是意味着"我机器上的 git worktree"。
 
-## Product Object Model
+## 产品对象模型
 
 ## 1. Project
 
-Existing object. No fundamental change in role.
+现有对象。角色没有根本性变化。
 
-### Required behavior
+### 必需行为
 
-- can exist without code/workspace configuration
-- can have zero or more project workspaces
-- can define execution defaults that new issues inherit
+- 可以在没有代码/工作区配置的情况下存在
+- 可以有零个或多个项目工作区
+- 可以定义新 issue 继承的执行默认值
 
-### Proposed fields
+### 建议字段
 
 - `id`
 - `companyId`
@@ -201,24 +201,24 @@ Existing object. No fundamental change in role.
 
 ## 2. Project Workspace
 
-Durable, configured, project-scoped codebase/root object.
+持久、已配置、项目范围的代码库/根目录对象。
 
-This should evolve from the current `project_workspaces` table into a more explicit product object.
+这应该从当前的 `project_workspaces` 表演进为更明确的产品对象。
 
-### Motivation
+### 动机
 
-This separates:
+这将以下两者分离：
 
-- "what codebase/root does this project use?"
+- "该项目使用哪个代码库/根目录？"
 
-from:
+与：
 
-- "what temporary execution environment did this issue run in?"
+- "该 issue 在哪个临时执行环境中运行？"
 
-That keeps the model simple for solo users while still supporting advanced automation.
-It also lets cloud-hosted Paperclip deployments point at codebases and remotes without pretending the Paperclip host has direct filesystem access.
+这让模型对单人用户保持简单，同时仍然支持高级自动化。
+这也使云托管的 Paperclip 部署能够指向代码库和远程仓库，而无需假装 Paperclip 主机具有直接的文件系统访问权限。
 
-### Proposed fields
+### 建议字段
 
 - `id`
 - `companyId`
@@ -242,12 +242,12 @@ It also lets cloud-hosted Paperclip deployments point at codebases and remotes w
 - `createdAt`
 - `updatedAt`
 
-### Notes
+### 注意事项
 
-- `sourceType=non_git_path` is important so non-git projects are first-class.
-- `setupCommand` and `cleanupCommand` should be allowed here for workspace-root bootstrap, even when isolated execution is not used.
-- For a monorepo, multiple project workspaces may point at different roots or packages under one repo.
-- `sourceType=remote_managed` is important for cloud deployments where the durable codebase is defined by provider/repo metadata rather than a local checkout path.
+- `sourceType=non_git_path` 很重要，使非 git 项目成为一等公民。
+- 即使不使用隔离执行，这里也应该允许 `setupCommand` 和 `cleanupCommand` 用于工作区根目录引导。
+- 对于单体仓库，多个项目工作区可以指向同一仓库下的不同根目录或包。
+- `sourceType=remote_managed` 对于云部署很重要，其中持久代码库由提供商/仓库元数据定义，而非本地检出路径。
 
 ## 3. Project Execution Workspace Policy
 

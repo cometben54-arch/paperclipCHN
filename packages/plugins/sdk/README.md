@@ -131,40 +131,40 @@ runWorker(plugin, import.meta.url);
 
 **公司上下文：** 事件仍携带 `companyId` 用于公司作用域数据，但在当前运行时中，插件的安装和激活是实例级别的。
 
-## Scheduled (recurring) jobs
+## 定时（周期性）作业
 
-Plugins can declare **scheduled jobs** that the host runs on a cron schedule. Use this for recurring tasks like syncs, digest reports, or cleanup.
+插件可以声明**定时作业**，由宿主按 cron 计划运行。适用于同步、摘要报告或清理等周期性任务。
 
-1. **Capability:** Add `jobs.schedule` to `manifest.capabilities`.
-2. **Declare jobs** in `manifest.jobs`: each entry has `jobKey`, `displayName`, optional `description`, and `schedule` (a 5-field cron expression).
-3. **Register a handler** in `setup()` with `ctx.jobs.register(jobKey, async (job) => { ... })`.
+1. **能力：** 将 `jobs.schedule` 添加到 `manifest.capabilities`。
+2. **声明作业**，在 `manifest.jobs` 中：每个条目包含 `jobKey`、`displayName`、可选的 `description` 以及 `schedule`（5 字段 cron 表达式）。
+3. **注册处理器**，在 `setup()` 中使用 `ctx.jobs.register(jobKey, async (job) => { ... })`。
 
-**Cron format** (5 fields: minute, hour, day-of-month, month, day-of-week):
+**Cron 格式**（5 个字段：分钟、小时、月中的天、月、周中的天）：
 
-| Field        | Values   | Example |
+| 字段 | 取值范围 | 示例 |
 |-------------|----------|---------|
-| minute      | 0–59     | `0`, `*/15` |
-| hour        | 0–23     | `2`, `*` |
-| day of month | 1–31   | `1`, `*` |
-| month       | 1–12     | `*` |
-| day of week | 0–6 (Sun=0) | `*`, `1-5` |
+| 分钟 | 0–59     | `0`, `*/15` |
+| 小时 | 0–23     | `2`, `*` |
+| 月中的天 | 1–31   | `1`, `*` |
+| 月 | 1–12     | `*` |
+| 周中的天 | 0–6（周日=0） | `*`, `1-5` |
 
-Examples: `"0 * * * *"` = every hour at minute 0; `"*/5 * * * *"` = every 5 minutes; `"0 2 * * *"` = daily at 2:00.
+示例：`"0 * * * *"` = 每小时第 0 分钟；`"*/5 * * * *"` = 每 5 分钟；`"0 2 * * *"` = 每天 2:00。
 
-**Job handler context** (`PluginJobContext`):
+**作业处理器上下文**（`PluginJobContext`）：
 
-| Field        | Type     | Description |
+| 字段 | 类型 | 说明 |
 |-------------|----------|-------------|
-| `jobKey`    | string   | Matches the manifest declaration. |
-| `runId`     | string   | UUID for this run. |
-| `trigger`   | `"schedule" \| "manual" \| "retry"` | What caused this run. |
-| `scheduledAt` | string | ISO 8601 time when the run was scheduled. |
+| `jobKey`    | string   | 与 manifest 声明匹配。 |
+| `runId`     | string   | 本次运行的 UUID。 |
+| `trigger`   | `"schedule" \| "manual" \| "retry"` | 触发本次运行的原因。 |
+| `scheduledAt` | string | ISO 8601 格式的计划运行时间。 |
 
-Runs can be triggered by the **schedule**, **manually** from the UI/API, or as a **retry** (when an operator re-runs a job after a failure). Re-throw from the handler to mark the run as failed; the host records the failure. The host does not automatically retry—operators can trigger another run manually from the UI or API.
+运行可由**计划**触发、从 UI/API **手动**触发，或作为**重试**触发（当操作员在失败后重新运行作业时）。在处理器中重新抛出异常可将运行标记为失败；宿主会记录该失败。宿主不会自动重试——操作员可从 UI 或 API 手动触发另一次运行。
 
-Example:
+示例：
 
-**Manifest** — include `jobs.schedule` and declare the job:
+**Manifest** — 添加 `jobs.schedule` 并声明作业：
 
 ```ts
 // In your manifest (e.g. manifest.ts):
@@ -183,7 +183,7 @@ const manifest = {
 };
 ```
 
-**Worker** — register the handler in `setup()`:
+**Worker** — 在 `setup()` 中注册处理器：
 
 ```ts
 ctx.jobs.register("heartbeat", async (job) => {

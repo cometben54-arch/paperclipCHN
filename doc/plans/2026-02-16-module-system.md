@@ -181,29 +181,29 @@ interface ModuleAPI {
 
 ---
 
-## Hook System
+## 钩子系统
 
-### Core Hook Points
+### 核心钩子点
 
-Hooks are the primary integration point. The core emits events at well-defined moments. Modules subscribe in their `register` function.
+钩子是主要的集成点。核心在明确定义的时机触发事件，模块在其 `register` 函数中订阅。
 
-| Hook | Payload | When |
+| 钩子 | 载荷 | 触发时机 |
 |------|---------|------|
-| `server:started` | `{ port }` | After the Express server begins listening |
-| `agent:created` | `{ agent }` | After a new agent is inserted |
-| `agent:updated` | `{ agent, changes }` | After an agent record is modified |
-| `agent:deleted` | `{ agent }` | After an agent is removed |
-| `agent:heartbeat` | `{ agentId, timestamp, meta }` | When an agent checks in. `meta` carries tokens_used, cost, latency, etc. |
-| `agent:status_changed` | `{ agent, from, to }` | When agent status transitions (idle→active, active→error, etc.) |
-| `issue:created` | `{ issue }` | After a new issue is inserted |
-| `issue:status_changed` | `{ issue, from, to }` | When issue moves between statuses |
-| `issue:assigned` | `{ issue, agent }` | When an issue is assigned to an agent |
-| `goal:created` | `{ goal }` | After a new goal is inserted |
-| `goal:completed` | `{ goal }` | When a goal's status becomes complete |
-| `budget:spend_recorded` | `{ agentId, amount, total }` | After spend is incremented |
-| `budget:threshold_crossed` | `{ agentId, budget, spent, percent }` | When an agent crosses 80%, 90%, or 100% of budget |
+| `server:started` | `{ port }` | Express 服务器开始监听之后 |
+| `agent:created` | `{ agent }` | 新智能体插入之后 |
+| `agent:updated` | `{ agent, changes }` | 智能体记录修改之后 |
+| `agent:deleted` | `{ agent }` | 智能体删除之后 |
+| `agent:heartbeat` | `{ agentId, timestamp, meta }` | 智能体签到时。`meta` 携带 tokens_used、cost、latency 等信息 |
+| `agent:status_changed` | `{ agent, from, to }` | 智能体状态发生转换时（idle→active、active→error 等） |
+| `issue:created` | `{ issue }` | 新 issue 插入之后 |
+| `issue:status_changed` | `{ issue, from, to }` | issue 在状态间流转时 |
+| `issue:assigned` | `{ issue, agent }` | issue 被分配给智能体时 |
+| `goal:created` | `{ goal }` | 新目标插入之后 |
+| `goal:completed` | `{ goal }` | 目标状态变为完成时 |
+| `budget:spend_recorded` | `{ agentId, amount, total }` | 支出递增之后 |
+| `budget:threshold_crossed` | `{ agentId, budget, spent, percent }` | 智能体达到预算的 80%、90% 或 100% 时 |
 
-### Hook Execution Model
+### 钩子执行模型
 
 ```typescript
 // In the core — hook emitter

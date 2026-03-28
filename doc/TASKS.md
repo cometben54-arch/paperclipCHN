@@ -277,16 +277,16 @@ Issue 支持父子嵌套。
 
 ---
 
-## Comments
+## 评论
 
-| Field        | Type           | Notes                      |
+| 字段         | 类型           | 说明                       |
 | ------------ | -------------- | -------------------------- |
 | `id`         | uuid           |                            |
 | `body`       | text/markdown  |                            |
 | `issueId`    | uuid FK        |                            |
-| `authorId`   | uuid FK        | Can be a user or agent     |
-| `parentId`   | uuid FK (self) | For threaded replies       |
-| `resolvedAt` | timestamp      | If the thread was resolved |
+| `authorId`   | uuid FK        | 可以是用户或 agent         |
+| `parentId`   | uuid FK (self) | 用于线程式回复             |
+| `resolvedAt` | timestamp      | 若线程已解决则设置此时间   |
 | `createdAt`  | timestamp      |                            |
 | `updatedAt`  | timestamp      |                            |
 
@@ -294,20 +294,18 @@ Issue 支持父子嵌套。
 
 ## Initiatives
 
-The highest-level planning construct. Groups projects toward a strategic
-objective. Initiatives have strategic owners, and are typically measured by outcomes/OKRs, not “done/not done.”
+最高层级的规划结构。将多个 project 归组到一个战略目标中。Initiative 有战略负责人，通常以结果/OKR 衡量，而非”完成/未完成”。
 
-| Field         | Type    | Notes                            |
+| 字段          | 类型    | 说明                             |
 | ------------- | ------- | -------------------------------- |
 | `id`          | uuid    |                                  |
 | `name`        | string  |                                  |
 | `description` | text    |                                  |
-| `ownerId`     | uuid FK | Single owner                     |
+| `ownerId`     | uuid FK | 单一负责人                       |
 | `status`      | enum    | `planned`, `active`, `completed` |
 | `targetDate`  | date    |                                  |
 
-Initiatives contain projects (many-to-many) and provide a rollup view of
-progress across all contained projects.
+Initiative 包含多个 project（多对多），并提供所有关联 project 进度的汇总视图。
 
 ---
 

@@ -281,17 +281,17 @@ Paperclip 应添加以下 CLI 命令：
 - UI 槽 ID 会自动以插件 ID 命名空间化（例如 `@paperclip/plugin-linear:sync-health-widget`），因此跨插件冲突在结构上是不可能发生的
 - 如果单个插件在其清单中声明了重复的槽 ID，主机必须在安装时拒绝
 
-## 10. Package Contract
+## 10. 包合约
 
-Each plugin package must export a manifest, a worker entrypoint, and optionally a UI bundle.
+每个插件包必须导出一个清单、一个 worker 入口点，以及可选的 UI 包。
 
-Suggested package layout:
+建议的包布局：
 
 - `dist/manifest.js`
 - `dist/worker.js`
-- `dist/ui/` (optional, contains the plugin's frontend bundle)
+- `dist/ui/`（可选，包含插件的前端包）
 
-Suggested `package.json` keys:
+建议的 `package.json` 键：
 
 ```json
 {
@@ -305,9 +305,9 @@ Suggested `package.json` keys:
 }
 ```
 
-## 10.1 Manifest Shape
+## 10.1 清单结构
 
-Normative manifest shape:
+规范性清单结构：
 
 ```ts
 export interface PaperclipPluginManifestV1 {

@@ -396,41 +396,41 @@ V1 不需要独立的队列基础设施。
 - `pending -> approved | rejected | cancelled`
 - 决策后进入终止状态
 
-## 9. Auth and Permissions
+## 9. 认证与权限
 
-## 9.1 Board Auth
+## 9.1 董事会认证
 
-- Session-based auth for human operator
-- Board has full read/write across all companies in deployment
-- Every board mutation writes to `activity_log`
+- 人类运营者使用基于会话的认证
+- 董事会对部署中所有公司拥有完整的读写权限
+- 每次董事会变更操作均写入 `activity_log`
 
-## 9.2 Agent Auth
+## 9.2 智能体认证
 
-- Bearer API key mapped to one agent and company
-- Agent key scope:
-  - read org/task/company context for own company
-  - read/write own assigned tasks and comments
-  - create tasks/comments for delegation
-  - report heartbeat status
-  - report cost events
-- Agent cannot:
-  - bypass approval gates
-  - modify company-wide budgets directly
-  - mutate auth/keys
+- Bearer API 密钥映射到一个智能体和公司
+- 智能体密钥范围：
+  - 读取本公司的组织/任务/公司上下文
+  - 读写自己受理的任务和评论
+  - 创建任务/评论用于委派
+  - 上报心跳状态
+  - 上报成本事件
+- 智能体不能：
+  - 绕过审批关卡
+  - 直接修改公司级预算
+  - 变更认证/密钥
 
-## 9.3 Permission Matrix (V1)
+## 9.3 权限矩阵（V1）
 
-| Action | Board | Agent |
+| 操作 | 董事会 | 智能体 |
 |---|---|---|
-| Create company | yes | no |
-| Hire/create agent | yes (direct) | request via approval |
-| Pause/resume agent | yes | no |
-| Create/update task | yes | yes |
-| Force reassign task | yes | limited |
-| Approve strategy/hire requests | yes | no |
-| Report cost | yes | yes |
-| Set company budget | yes | no |
-| Set subordinate budget | yes | yes (manager subtree only) |
+| 创建公司 | 是 | 否 |
+| 招聘/创建智能体 | 是（直接） | 通过审批申请 |
+| 暂停/恢复智能体 | 是 | 否 |
+| 创建/更新任务 | 是 | 是 |
+| 强制重新分配任务 | 是 | 受限 |
+| 审批战略/招聘申请 | 是 | 否 |
+| 上报成本 | 是 | 是 |
+| 设置公司预算 | 是 | 否 |
+| 设置下属预算 | 是 | 是（仅限管理子树） |
 
 ## 10. API Contract (REST)
 

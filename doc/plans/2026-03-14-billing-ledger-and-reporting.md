@@ -342,41 +342,41 @@ Bedrock 支持将使用：
 - `biller` 默认为 `provider`
 - `billingType` 默认为 `unknown`
 
-## Reporting Changes
+## 报告变更
 
-### Server
+### 服务端
 
-Refactor reporting queries to use `cost_events` only.
+重构报告查询，仅使用 `cost_events`。
 
 #### `summary`
 
-- sum `cost_cents`
+- 对 `cost_cents` 求和
 
 #### `by-agent`
 
-- sum costs and token fields from `cost_events`
-- use `count(distinct heartbeat_run_id)` filtered by billing type for run counts
-- use token sums filtered by billing type for subscription usage
+- 从 `cost_events` 汇总费用和 token 字段
+- 按计费类型过滤后使用 `count(distinct heartbeat_run_id)` 统计运行次数
+- 按计费类型过滤后使用 token 总量统计订阅用量
 
 #### `by-provider`
 
-- group by `provider`, `model`
-- sum costs and token fields directly from the ledger
-- derive billing-type slices from `cost_events.billing_type`
-- never pro-rate from unrelated `heartbeat_runs`
+- 按 `provider`、`model` 分组
+- 直接从账本汇总费用和 token 字段
+- 从 `cost_events.billing_type` 派生计费类型切片
+- 绝不从无关的 `heartbeat_runs` 中按比例分配
 
-#### future `by-biller`
+#### 未来的 `by-biller`
 
-- group by `biller`
-- this is the right view for invoice and subscription accountability
+- 按 `biller` 分组
+- 这是发票和订阅核查的正确视图
 
 #### `window-spend`
 
-- continue to use `cost_events`
+- 继续使用 `cost_events`
 
-#### project attribution
+#### 项目归因
 
-Keep current project attribution logic for now, but prefer `cost_events.heartbeat_run_id` as the join anchor whenever possible.
+暂时保留当前的项目归因逻辑，但尽可能优先使用 `cost_events.heartbeat_run_id` 作为联接锚点。
 
 ## UI Changes
 
