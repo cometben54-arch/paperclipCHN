@@ -65,111 +65,111 @@ Related:
 5. Agent 与技能的关联应尽可能以人类可读的 shortname 为基础。
 6. 不受支持的适配器也应有可用的 UI，而不是仅仅显示死胡同。
 
-## 4. User Model
+## 4. 用户模型
 
-Paperclip should treat skills at two scopes:
+Paperclip 应在两个范围内处理技能：
 
-### 4.1 Company skills
+### 4.1 公司技能
 
-These are reusable skills known to the company.
+这些是公司已知的可复用技能。
 
-Examples:
+示例：
 
-- imported from a GitHub repo
-- added from a local folder
-- installed from a `skills.sh`-compatible repo
-- created locally inside Paperclip later
+- 从 GitHub 仓库导入
+- 从本地文件夹添加
+- 从兼容 `skills.sh` 的仓库安装
+- 日后在 Paperclip 内部本地创建
 
-These should have:
+这些技能应包含：
 
-- name
-- description
-- slug or package identity
-- source/provenance
-- trust level
-- compatibility status
+- 名称
+- 描述
+- slug 或软件包标识
+- 来源/溯源信息
+- 信任级别
+- 兼容性状态
 
-### 4.2 Agent skills
+### 4.2 Agent 技能
 
-These are skill attachments for a specific agent.
+这些是针对特定 Agent 的技能附加项。
 
-Each attachment should have:
+每个附加项应包含：
 
 - shortname
-- desired state in Paperclip
-- actual state in the adapter when readable
-- sync status
-- origin
+- Paperclip 中的期望状态
+- 适配器中可读取到的实际状态
+- 同步状态
+- 来源
 
-Agent attachments should normally reference skills by shortname or slug, for example:
+Agent 附加项通常应通过 shortname 或 slug 引用技能，例如：
 
 - `review`
 - `react-best-practices`
 
-not by noisy relative file path.
+而不是使用冗长的相对文件路径。
 
-## 4.3 Primary user jobs
+## 4.3 主要用户任务
 
-The UI should support these jobs cleanly:
+UI 应清晰支持以下任务：
 
-1. “Show me what skills this company has.”
-2. “Import a skill from GitHub or a local folder.”
-3. “See whether a skill is safe, compatible, and who uses it.”
-4. “Attach skills to an agent.”
-5. “See whether the adapter actually has those skills.”
-6. “Reconcile desired vs actual skill state.”
-7. “Understand what Paperclip knows vs what the adapter knows.”
+1. “显示这家公司拥有哪些技能。”
+2. “从 GitHub 或本地文件夹导入技能。”
+3. “查看某项技能是否安全、是否兼容，以及谁在使用它。”
+4. “将技能附加到 Agent。”
+5. “查看适配器是否实际拥有这些技能。”
+6. “协调期望技能状态与实际技能状态之间的差异。”
+7. “了解 Paperclip 所知道的内容与适配器所知道的内容之间的区别。”
 
-## 5. Core UI Surfaces
+## 5. 核心 UI 界面
 
-The product should have two primary skill surfaces.
+产品应有两个主要的技能界面。
 
-### 5.1 Company Skills page
+### 5.1 公司技能页面
 
-Add a company-level page, likely:
-
-- `/companies/:companyId/skills`
-
-Purpose:
-
-- manage the company skill library
-- import and inspect skill packages
-- understand provenance and trust
-- see which agents use which skills
-
-#### Route
+添加一个公司级页面，建议路径为：
 
 - `/companies/:companyId/skills`
 
-#### Primary actions
+目的：
 
-- import skill
-- inspect skill
-- attach to agents
-- detach from agents
-- export selected skills later
+- 管理公司技能库
+- 导入和检查技能软件包
+- 了解溯源信息和信任状态
+- 查看哪些 Agent 使用了哪些技能
 
-#### Empty state
+#### 路由
 
-When the company has no managed skills:
+- `/companies/:companyId/skills`
 
-- explain what skills are
-- explain `skills.sh` / Agent Skills compatibility
-- offer `Import from GitHub` and `Import from folder`
-- optionally show adapter-discovered skills as a secondary “not managed yet” section
+#### 主要操作
 
-#### A. Skill library list
+- 导入技能
+- 检查技能
+- 附加到 Agent
+- 从 Agent 分离
+- 日后导出所选技能
 
-Each skill row should show:
+#### 空状态
 
-- name
-- short description
-- source badge
-- trust badge
-- compatibility badge
-- number of attached agents
+当公司没有已托管技能时：
 
-Suggested source states:
+- 解释技能是什么
+- 解释 `skills.sh` / Agent Skills 兼容性
+- 提供 `Import from GitHub` 和 `Import from folder` 入口
+- 可选地将适配器发现的技能作为次级”尚未托管”区块显示
+
+#### A. 技能库列表
+
+每行技能应显示：
+
+- 名称
+- 简短描述
+- 来源徽标
+- 信任徽标
+- 兼容性徽标
+- 已附加 Agent 数量
+
+建议的来源状态：
 
 - local
 - github
@@ -177,187 +177,187 @@ Suggested source states:
 - external reference
 - adapter-discovered only
 
-Suggested compatibility states:
+建议的兼容性状态：
 
 - compatible
 - paperclip-extension
 - unknown
 - invalid
 
-Suggested trust states:
+建议的信任状态：
 
 - markdown-only
 - assets
 - scripts/executables
 
-Suggested list affordances:
+建议的列表操作功能：
 
-- search by name or slug
-- filter by source
-- filter by trust level
-- filter by usage
-- sort by name, recent import, usage count
+- 按名称或 slug 搜索
+- 按来源筛选
+- 按信任级别筛选
+- 按使用情况筛选
+- 按名称、最近导入时间、使用次数排序
 
-#### B. Import actions
+#### B. 导入操作
 
-Allow:
+允许：
 
-- import from local folder
-- import from GitHub URL
-- import from direct URL
+- 从本地文件夹导入
+- 从 GitHub URL 导入
+- 从直接 URL 导入
 
-Future:
+未来计划：
 
-- install from `companies.sh`
-- install from `skills.sh`
+- 从 `companies.sh` 安装
+- 从 `skills.sh` 安装
 
-V1 requirement:
+V1 要求：
 
-- importing from a `skills.sh`-compatible source should work without requiring a Paperclip-specific package layout
+- 从兼容 `skills.sh` 的来源导入时，无需要求 Paperclip 特定的软件包布局
 
-#### C. Skill detail drawer or page
+#### C. 技能详情抽屉或页面
 
-Each skill should have a detail view showing:
+每个技能应有详情视图，显示：
 
-- rendered `SKILL.md`
-- package source and pinning
-- included files
-- trust and licensing warnings
-- who uses it
-- adapter compatibility notes
+- 渲染后的 `SKILL.md`
+- 软件包来源与版本固定信息
+- 包含的文件
+- 信任与许可证警告
+- 使用者信息
+- 适配器兼容性说明
 
-Recommended route:
+推荐路由：
 
 - `/companies/:companyId/skills/:skillId`
 
-Recommended sections:
+推荐章节：
 
-- Overview
-- Contents
-- Usage
-- Source
-- Trust / licensing
+- Overview（概览）
+- Contents（内容）
+- Usage（使用情况）
+- Source（来源）
+- Trust / licensing（信任与许可证）
 
-#### D. Usage view
+#### D. 使用情况视图
 
-Each company skill should show which agents use it.
+每个公司技能应显示哪些 Agent 在使用它。
 
-Suggested columns:
+建议的列：
 
-- agent
-- desired state
-- actual state
-- adapter
-- sync mode
-- last sync status
+- agent（Agent）
+- desired state（期望状态）
+- actual state（实际状态）
+- adapter（适配器）
+- sync mode（同步模式）
+- last sync status（最近同步状态）
 
-### 5.2 Agent Skills tab
+### 5.2 Agent 技能标签页
 
-Keep and evolve the existing `AgentDetail` skill sync UI, but move it out of configuration.
+保留并演进现有的 `AgentDetail` 技能同步 UI，但将其从配置中移出。
 
-Purpose:
+目的：
 
-- attach/detach company skills to one agent
-- inspect adapter reality for that agent
-- reconcile desired vs actual state
-- keep the association format readable and aligned with `AGENTS.md`
+- 为单个 Agent 附加/分离公司技能
+- 检查该 Agent 的适配器实际状态
+- 协调期望状态与实际状态
+- 保持关联格式可读，并与 `AGENTS.md` 保持一致
 
-#### Route
+#### 路由
 
 - `/agents/:agentId/skills`
 
-#### Agent tabs
+#### Agent 标签页
 
-The intended agent-level tab model becomes:
+预期的 Agent 级标签页模型变为：
 
 - `dashboard`
 - `configuration`
 - `skills`
 - `runs`
 
-This is preferable to hiding skills inside configuration because:
+这比将技能隐藏在配置中更好，原因是：
 
-- skills are not just adapter config
-- skills need their own sync/status language
-- skills are a reusable company asset, not merely one agent field
-- the screen needs room for desired vs actual state, warnings, and external skill adoption
+- 技能不仅仅是适配器配置
+- 技能需要独立的同步/状态语言
+- 技能是可复用的公司资产，不仅仅是 Agent 的一个字段
+- 该界面需要空间来展示期望状态与实际状态的差异、警告以及外部技能采纳功能
 
-#### Tab layout
+#### 标签页布局
 
-The `Skills` tab should have three stacked sections:
+`Skills` 标签页应包含三个堆叠区块：
 
-1. Summary
-2. Managed skills
-3. External / discovered skills
+1. 摘要
+2. 已托管技能
+3. 外部/已发现技能
 
-Summary should show:
+摘要应显示：
 
-- adapter sync support
-- sync mode
-- number of managed skills
-- number of external skills
-- drift or warning count
+- 适配器同步支持情况
+- 同步模式
+- 已托管技能数量
+- 外部技能数量
+- 漂移或警告数量
 
-#### A. Desired skills
+#### A. 期望技能
 
-Show company-managed skills attached to the agent.
+显示附加到该 Agent 的公司托管技能。
 
-Each row should show:
+每行应显示：
 
-- skill name
+- 技能名称
 - shortname
-- sync state
-- source
-- last adapter observation if available
+- 同步状态
+- 来源
+- 最近适配器观测结果（如可获取）
 
-Each row should support:
+每行应支持：
 
-- enable / disable
-- open skill detail
-- see source badge
-- see sync badge
+- 启用/禁用
+- 打开技能详情
+- 查看来源徽标
+- 查看同步徽标
 
-#### B. External or discovered skills
+#### B. 外部或已发现技能
 
-Show skills reported by the adapter that are not company-managed.
+显示适配器上报的、非公司托管的技能。
 
-This matters because Codex and similar adapters may already have local skills that Paperclip did not install.
+这一点很重要，因为 Codex 等适配器可能已有 Paperclip 未安装的本地技能。
 
-These should be clearly marked:
+这些技能应清晰标注为：
 
-- external
-- not managed by Paperclip
+- external（外部）
+- not managed by Paperclip（未被 Paperclip 托管）
 
-Each external row should support:
+每个外部技能行应支持：
 
-- inspect
-- adopt into company library later
-- attach as managed skill later if appropriate
+- 检查
+- 日后采纳进公司库
+- 日后在适当情况下作为已托管技能附加
 
-#### C. Sync controls
+#### C. 同步控制
 
-Support:
+支持：
 
-- sync
-- reset draft
-- detach
+- sync（同步）
+- reset draft（重置草稿）
+- detach（分离）
 
-Future:
+未来计划：
 
-- import external skill into company library
-- promote ad hoc local skill into a managed company skill
+- 将外部技能导入公司库
+- 将临时本地技能升级为公司托管技能
 
-Recommended footer actions:
+推荐的底部操作按钮：
 
 - `Sync skills`
 - `Reset`
 - `Refresh adapter state`
 
-## 6. Skill State Model In The UI
+## 6. UI 中的技能状态模型
 
-Each skill attachment should have a user-facing state.
+每个技能附加项应有面向用户的状态。
 
-Suggested states:
+建议的状态：
 
 - `in_sync`
 - `desired_only`
@@ -366,16 +366,16 @@ Suggested states:
 - `unmanaged`
 - `unknown`
 
-Definitions:
+定义：
 
-- `in_sync`: desired and actual match
-- `desired_only`: Paperclip wants it, adapter does not show it yet
-- `external`: adapter has it but Paperclip does not manage it
-- `drifted`: adapter has a conflicting or unexpected version/location
-- `unmanaged`: adapter does not support sync, Paperclip only tracks desired state
-- `unknown`: adapter read failed or state cannot be trusted
+- `in_sync`：期望状态与实际状态一致
+- `desired_only`：Paperclip 期望存在，但适配器尚未显示
+- `external`：适配器已有，但 Paperclip 未托管
+- `drifted`：适配器存在版本或位置冲突或异常
+- `unmanaged`：适配器不支持同步，Paperclip 仅跟踪期望状态
+- `unknown`：适配器读取失败或状态不可信
 
-Suggested badge copy:
+建议的徽标文案：
 
 - `In sync`
 - `Needs sync`
@@ -384,131 +384,131 @@ Suggested badge copy:
 - `Unmanaged`
 - `Unknown`
 
-## 7. Adapter Presentation Rules
+## 7. 适配器展示规则
 
-The UI should not describe all adapters the same way.
+UI 不应对所有适配器使用相同的描述方式。
 
-### 7.1 Persistent adapters
+### 7.1 持久化适配器
 
-Example:
+示例：
 
 - Codex local
 
-Language:
+语言表述：
 
-- installed
-- synced into adapter home
-- external skills detected
+- installed（已安装）
+- synced into adapter home（已同步到适配器主目录）
+- external skills detected（检测到外部技能）
 
-### 7.2 Ephemeral adapters
+### 7.2 临时适配器
 
-Example:
+示例：
 
 - Claude local
 
-Language:
+语言表述：
 
-- will be mounted on next run
-- effective runtime skills
-- not globally installed
+- will be mounted on next run（将在下次运行时挂载）
+- effective runtime skills（运行时生效的技能）
+- not globally installed（未全局安装）
 
-### 7.3 Unsupported adapters
+### 7.3 不受支持的适配器
 
-Language:
+语言表述：
 
-- this adapter does not implement skill sync yet
-- Paperclip can still track desired skills
-- actual adapter state is unavailable
+- this adapter does not implement skill sync yet（该适配器尚未实现技能同步）
+- Paperclip can still track desired skills（Paperclip 仍可跟踪期望技能）
+- actual adapter state is unavailable（适配器实际状态不可用）
 
-This state should still allow:
+该状态仍应允许：
 
-- attaching company skills to the agent as desired state
-- export/import of those desired attachments
+- 将公司技能作为期望状态附加到 Agent
+- 导出/导入这些期望附加项
 
-## 7.4 Read-only adapters
+## 7.4 只读适配器
 
-Some adapters may be able to list skills but not mutate them.
+某些适配器可能能够列出技能，但无法修改它们。
 
-Language:
+语言表述：
 
-- Paperclip can see adapter skills
-- this adapter does not support applying changes
-- desired state can be tracked, but reconciliation is manual
+- Paperclip can see adapter skills（Paperclip 可以查看适配器技能）
+- this adapter does not support applying changes（该适配器不支持应用变更）
+- desired state can be tracked, but reconciliation is manual（期望状态可被跟踪，但协调需手动完成）
 
-## 8. Information Architecture
+## 8. 信息架构
 
-Recommended navigation:
+推荐的导航结构：
 
-- company nav adds `Skills`
-- agent detail adds `Skills` as its own tab
-- company skill detail gets its own route when the company library ships
+- 公司导航添加 `Skills`
+- Agent 详情添加 `Skills` 作为独立标签页
+- 公司技能详情在公司库上线时获得独立路由
 
-Recommended separation:
+推荐的功能分离：
 
-- Company Skills page answers: “What skills do we have?”
-- Agent Skills tab answers: “What does this agent use, and is it synced?”
+- 公司技能页面回答：”我们拥有哪些技能？”
+- Agent 技能标签页回答：”该 Agent 使用了哪些技能，是否已同步？”
 
-## 8.1 Proposed route map
+## 8.1 路由规划
 
 - `/companies/:companyId/skills`
 - `/companies/:companyId/skills/:skillId`
 - `/agents/:agentId/skills`
 
-## 8.2 Nav and discovery
+## 8.2 导航与发现
 
-Recommended entry points:
+推荐的入口点：
 
-- company sidebar: `Skills`
-- agent page tabs: `Skills`
-- company import preview: link imported skills to company skills page later
-- agent skills rows: link to company skill detail
+- 公司侧边栏：`Skills`
+- Agent 页面标签页：`Skills`
+- 公司导入预览：日后将导入的技能链接到公司技能页面
+- Agent 技能行：链接到公司技能详情
 
-## 9. Import / Export Integration
+## 9. 导入/导出集成
 
-Skill UI and package portability should meet in the company skill library.
+技能 UI 与软件包可移植性应在公司技能库中交汇。
 
-Import behavior:
+导入行为：
 
-- importing a company package with `SKILL.md` content should create or update company skills
-- agent attachments should primarily come from `AGENTS.md` shortname associations
-- `.paperclip.yaml` may add Paperclip-specific fidelity, but should not replace the base shortname association model
-- referenced third-party skills should keep provenance visible
+- 导入包含 `SKILL.md` 内容的公司软件包时，应创建或更新公司技能
+- Agent 附加项应主要来自 `AGENTS.md` 中的 shortname 关联
+- `.paperclip.yaml` 可以增加 Paperclip 特定的保真度，但不应替代基础的 shortname 关联模型
+- 引用的第三方技能应保持溯源可见
 
-Export behavior:
+导出行为：
 
-- exporting a company should include company-managed skills when selected
-- `AGENTS.md` should emit skill associations by shortname or slug
-- `.paperclip.yaml` may add Paperclip-specific skill fidelity later if needed, but should not be required for ordinary agent-to-skill association
-- adapter-only external skills should not be silently exported as managed company skills
+- 导出公司时，若勾选，应包含公司托管技能
+- `AGENTS.md` 应以 shortname 或 slug 输出技能关联
+- 如有需要，`.paperclip.yaml` 日后可以添加 Paperclip 特定的技能保真度，但对于普通的 Agent 与技能关联不应作为必要条件
+- 仅适配器持有的外部技能不应被静默地导出为托管公司技能
 
-## 9.1 Import workflows
+## 9.1 导入工作流
 
-V1 workflows should support:
+V1 工作流应支持：
 
-1. import one or more skills from a local folder
-2. import one or more skills from a GitHub repo
-3. import a company package that contains skills
-4. attach imported skills to one or more agents
+1. 从本地文件夹导入一个或多个技能
+2. 从 GitHub 仓库导入一个或多个技能
+3. 导入包含技能的公司软件包
+4. 将导入的技能附加到一个或多个 Agent
 
-Import preview for skills should show:
+技能导入预览应显示：
 
-- skills discovered
-- source and pinning
-- trust level
-- licensing warnings
-- whether an existing company skill will be created, updated, or skipped
+- 已发现的技能
+- 来源与版本固定信息
+- 信任级别
+- 许可证警告
+- 现有公司技能将被创建、更新还是跳过
 
-## 9.2 Export workflows
+## 9.2 导出工作流
 
-V1 should support:
+V1 应支持：
 
-1. export a company with managed skills included when selected
-2. export an agent whose `AGENTS.md` contains shortname skill associations
-3. preserve Agent Skills compatibility for each `SKILL.md`
+1. 导出公司时，若勾选，包含托管技能
+2. 导出 `AGENTS.md` 中包含 shortname 技能关联的 Agent
+3. 为每个 `SKILL.md` 保留 Agent Skills 兼容性
 
-Out of scope for V1:
+V1 范围外：
 
-- exporting adapter-only external skills as managed packages automatically
+- 自动将仅适配器持有的外部技能作为托管软件包导出
 
 ## 10. Data And API Shape
 

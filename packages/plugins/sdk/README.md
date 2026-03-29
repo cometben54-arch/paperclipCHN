@@ -426,7 +426,7 @@ export function ResyncButton({ context }: PluginWidgetProps) {
 
 #### `useHostContext()`
 
-Reads the active company, project, entity, and user context. Use this to scope data fetches and actions.
+读取当前活跃的公司、项目、实体和用户上下文。使用此 hook 将数据获取和操作限定在相应范围内。
 
 ```tsx
 import { useHostContext, usePluginData } from "@paperclipai/plugin-sdk/ui";
@@ -446,7 +446,7 @@ export function IssueLinearLink({ context }: PluginDetailTabProps) {
 
 #### `usePluginStream<T>(channel, options?)`
 
-Subscribes to a real-time event stream pushed from the plugin worker via SSE. The worker pushes events using `ctx.streams.emit(channel, event)` and the hook receives them as they arrive. Returns `{ events, lastEvent, connecting, connected, error, close }`.
+订阅由插件 worker 通过 SSE 推送的实时事件流。Worker 使用 `ctx.streams.emit(channel, event)` 推送事件，hook 在事件到达时接收。返回 `{ events, lastEvent, connecting, connected, error, close }`。
 
 ```tsx
 import { usePluginStream } from "@paperclipai/plugin-sdk/ui";
@@ -470,17 +470,17 @@ export function ChatMessages({ context }: PluginWidgetProps) {
 }
 ```
 
-The SSE connection targets `GET /api/plugins/:pluginId/bridge/stream/:channel?companyId=...`. The host bridge manages the EventSource lifecycle; `close()` terminates the connection.
+SSE 连接目标为 `GET /api/plugins/:pluginId/bridge/stream/:channel?companyId=...`。宿主 bridge 管理 EventSource 的生命周期；`close()` 用于终止连接。
 
-### UI authoring note
+### UI 编写说明
 
-The current host does **not** provide a real shared component library to plugins yet. Use normal React components, your own CSS, or your own small design primitives inside the plugin package.
+当前宿主**尚未**为插件提供真正的共享组件库。请在插件包内使用普通 React 组件、自定义 CSS 或自定义的轻量设计基元。
 
-### Slot component props
+### 插槽组件 Props
 
-Each slot type receives a typed props object with `context: PluginHostContext`. Import from `@paperclipai/plugin-sdk/ui`.
+每种插槽类型均接收一个带有 `context: PluginHostContext` 的类型化 props 对象。从 `@paperclipai/plugin-sdk/ui` 导入。
 
-| Slot type | Props interface | `context` extras |
+| 插槽类型 | Props 接口 | `context` 额外字段 |
 |-----------|----------------|------------------|
 | `page` | `PluginPageProps` | — |
 | `sidebar` | `PluginSidebarProps` | — |
@@ -493,7 +493,7 @@ Each slot type receives a typed props object with `context: PluginHostContext`. 
 | `commentContextMenuItem` | `PluginCommentContextMenuItemProps` | `entityId: string`, `entityType: "comment"`, `parentEntityId: string`, `projectId`, `companyPrefix` |
 | `projectSidebarItem` | `PluginProjectSidebarItemProps` | `entityId: string`, `entityType: "project"` |
 
-Example detail tab with entity context:
+带实体上下文的详情标签页示例：
 
 ```tsx
 import type { PluginDetailTabProps } from "@paperclipai/plugin-sdk/ui";
@@ -521,16 +521,16 @@ export function AgentMetricsTab({ context }: PluginDetailTabProps) {
 }
 ```
 
-## Launcher surfaces and modals
+## 启动器挂载区域与模态框
 
-V1 does not provide a dedicated `modal` slot. Plugins can either:
+V1 不提供专用的 `modal` 插槽。插件可以：
 
-- declare concrete UI mount points in `ui.slots`
-- declare host-rendered entry points in `ui.launchers`
+- 在 `ui.slots` 中声明具体的 UI 挂载点
+- 在 `ui.launchers` 中声明由宿主渲染的入口点
 
-Supported launcher placement zones currently mirror the major host surfaces such as `projectSidebarItem`, `globalToolbarButton`, `toolbarButton`, `detailTab`, `settingsPage`, and `contextMenuItem`. Plugins may still open their own local modal from those entry points when needed.
+目前支持的启动器放置区域与主要宿主界面对应，包括 `projectSidebarItem`、`globalToolbarButton`、`toolbarButton`、`detailTab`、`settingsPage` 和 `contextMenuItem`。插件仍可在需要时从这些入口点打开自有的本地模态框。
 
-Declarative launcher example:
+声明式启动器示例：
 
 ```json
 {
@@ -555,16 +555,13 @@ Declarative launcher example:
 }
 ```
 
-The host returns launcher metadata from `GET /api/plugins/ui-contributions` alongside slot declarations.
+宿主通过 `GET /api/plugins/ui-contributions` 返回启动器元数据以及插槽声明。
 
-When a launcher opens a host-owned overlay or page, `useHostContext()`,
-`usePluginData()`, and `usePluginAction()` receive the current
-`renderEnvironment` through the bridge. Use that to tailor compact modal UI vs.
-full-page layouts without adding custom route parsing in the plugin.
+当启动器打开宿主拥有的叠加层或页面时，`useHostContext()`、`usePluginData()` 和 `usePluginAction()` 会通过 bridge 接收当前的 `renderEnvironment`。使用该值来定制紧凑模态框 UI 与全页面布局，而无需在插件中添加自定义路由解析。
 
-## Project sidebar item
+## 项目侧边栏条目
 
-Plugins can add a link under each project in the sidebar via the `projectSidebarItem` slot. This is the recommended slot-based launcher pattern for project-scoped workflows because it can deep-link into a richer plugin tab. The component is rendered once per project with that project’s id in `context.entityId`. Declare the slot and capability in your manifest:
+插件可以通过 `projectSidebarItem` 插槽在侧边栏中每个项目下方添加链接。这是面向项目作用域工作流的推荐插槽式启动器模式，因为它可以深度链接到更丰富的插件标签页。该组件为每个项目渲染一次，项目 id 在 `context.entityId` 中。在 manifest 中声明插槽和能力：
 
 ```json
 {
@@ -583,7 +580,7 @@ Plugins can add a link under each project in the sidebar via the `projectSidebar
 }
 ```
 
-Minimal React component that links to the project’s plugin tab (see project detail tabs in the spec):
+链接到项目插件标签页的最简 React 组件（参见规范中的项目详情标签页）：
 
 ```tsx
 import type { PluginProjectSidebarItemProps } from "@paperclipai/plugin-sdk/ui";
@@ -600,18 +597,18 @@ export function FilesLink({ context }: PluginProjectSidebarItemProps) {
 }
 ```
 
-Use optional `order` in the slot to sort among other project sidebar items. See §19.5.1 in the plugin spec and project detail plugin tabs (§19.3) for the full flow.
+在插槽中使用可选的 `order` 字段可控制与其他项目侧边栏条目的排序位置。完整流程请参见插件规范 §19.5.1 和项目详情插件标签页（§19.3）。
 
-## Toolbar launcher with a local modal
+## 带本地模态框的工具栏启动器
 
-Two toolbar slot types are available depending on where the button should appear:
+可用的工具栏插槽类型有两种，取决于按钮应出现的位置：
 
-- **`globalToolbarButton`** — renders in the top bar on every page, scoped to the company. No entity context. Use for workspace-wide actions.
-- **`toolbarButton`** — renders on entity detail pages (project, issue, etc.). Receives `entityId` and `entityType`. Declare `entityTypes` to control which pages the button appears on.
+- **`globalToolbarButton`** — 在每个页面的顶部栏渲染，作用域为公司级别。无实体上下文。用于工作区范围的操作。
+- **`toolbarButton`** — 在实体详情页（项目、问题等）的工具栏渲染。接收 `entityId` 和 `entityType`。声明 `entityTypes` 可控制按钮出现在哪些页面。
 
-For short-lived actions, mount the appropriate slot type and open a plugin-owned modal inside the component. Use `useHostContext()` to scope the action to the current company or entity.
+对于短暂的操作，挂载适当的插槽类型并在组件内部打开插件自有的模态框。使用 `useHostContext()` 将操作限定到当前公司或实体。
 
-Project-scoped example (appears only on project detail pages):
+项目作用域示例（仅出现在项目详情页面）：
 
 ```json
 {
@@ -697,15 +694,15 @@ export function SyncToolbarButton() {
 }
 ```
 
-Prefer deep-linkable tabs and pages for primary workflows. Reserve plugin-owned modals for confirmations, pickers, and compact editors.
+对于主要工作流，优先使用可深度链接的标签页和页面。将插件自有的模态框保留用于确认、选择器和紧凑编辑器。
 
-## Real-time streaming (`ctx.streams`)
+## 实时流式传输（`ctx.streams`）
 
-Plugins can push real-time events from the worker to the UI using server-sent events (SSE). This is useful for streaming LLM tokens, live sync progress, or any push-based data.
+插件可以使用服务端推送事件（SSE）将实时事件从 worker 推送到 UI。这对于流式传输 LLM token、实时同步进度或任何基于推送的数据非常有用。
 
-### Worker side
+### Worker 端
 
-In `setup()`, use `ctx.streams` to open a channel, emit events, and close when done:
+在 `setup()` 中，使用 `ctx.streams` 打开频道、发出事件并在完成时关闭：
 
 ```ts
 const plugin = definePlugin({
@@ -725,42 +722,42 @@ const plugin = definePlugin({
 });
 ```
 
-**API:**
+**API：**
 
-| Method | Description |
+| 方法 | 说明 |
 |--------|-------------|
-| `ctx.streams.open(channel, companyId)` | Open a named stream channel and associate it with a company. Sends a `streams.open` notification to the host. |
-| `ctx.streams.emit(channel, event)` | Push an event to the channel. The `companyId` is automatically resolved from the prior `open()` call. |
-| `ctx.streams.close(channel)` | Close the channel and clear the company mapping. Sends a `streams.close` notification. |
+| `ctx.streams.open(channel, companyId)` | 打开一个命名的流频道并将其与某个公司关联。向宿主发送 `streams.open` 通知。 |
+| `ctx.streams.emit(channel, event)` | 向频道推送事件。`companyId` 会自动从之前的 `open()` 调用中解析。 |
+| `ctx.streams.close(channel)` | 关闭频道并清除公司映射。发送 `streams.close` 通知。 |
 
-Stream notifications are fire-and-forget JSON-RPC messages (no `id` field). They are sent via `notifyHost()` synchronously during handler execution.
+流式通知是即发即忘的 JSON-RPC 消息（无 `id` 字段）。它们在处理器执行期间通过 `notifyHost()` 同步发送。
 
-### UI side
+### UI 端
 
-Use the `usePluginStream` hook (see [Hooks reference](#usepluginstreamtchannel-options) above) to subscribe to events from the UI.
+使用 `usePluginStream` hook（参见上方的 [Hooks 参考](#usepluginstreamtchannel-options)）从 UI 订阅事件。
 
-### Host-side architecture
+### 宿主端架构
 
-The host maintains an in-memory `PluginStreamBus` that fans out worker notifications to connected SSE clients:
+宿主维护一个内存中的 `PluginStreamBus`，将 worker 通知扇出到已连接的 SSE 客户端：
 
-1. Worker emits `streams.emit` notification via stdout
-2. Host (`plugin-worker-manager`) receives the notification and publishes to `PluginStreamBus`
-3. SSE endpoint (`GET /api/plugins/:pluginId/bridge/stream/:channel?companyId=...`) subscribes to the bus and writes events to the response
+1. Worker 通过 stdout 发出 `streams.emit` 通知
+2. 宿主（`plugin-worker-manager`）接收通知并发布到 `PluginStreamBus`
+3. SSE 端点（`GET /api/plugins/:pluginId/bridge/stream/:channel?companyId=...`）订阅总线并将事件写入响应
 
-The bus is keyed by `pluginId:channel:companyId`, so multiple UI clients can subscribe to the same stream independently.
+总线以 `pluginId:channel:companyId` 为键，因此多个 UI 客户端可以独立订阅同一个流。
 
-### Streaming agent responses to the UI
+### 向 UI 流式传输代理响应
 
-`ctx.streams` and `ctx.agents.sessions` are complementary. The worker sits between them, relaying agent events to the browser in real time:
+`ctx.streams` 和 `ctx.agents.sessions` 是互补的。Worker 处于两者之间，将代理事件实时中继到浏览器：
 
 ```
 UI ──usePluginAction──▶ Worker ──sessions.sendMessage──▶ Agent
 UI ◀──usePluginStream── Worker ◀──onEvent callback────── Agent
 ```
 
-The agent doesn't know about streams — the worker decides what to relay. Encode the agent ID in the channel name to scope streams per agent.
+代理不了解流的存在——由 worker 决定中继什么内容。在频道名称中编码代理 ID 以按代理限定流的作用域。
 
-**Worker:**
+**Worker：**
 
 ```ts
 ctx.actions.register("ask-agent", async (params) => {
@@ -788,7 +785,7 @@ ctx.actions.register("ask-agent", async (params) => {
 });
 ```
 
-**UI:**
+**UI：**
 
 ```tsx
 import { useState } from "react";
@@ -820,15 +817,15 @@ export function AgentChat({ agentId, companyId }: { agentId: string; companyId: 
 }
 ```
 
-## Agent sessions (two-way chat)
+## 代理会话（双向对话）
 
-Plugins can hold multi-turn conversational sessions with agents:
+插件可以与代理进行多轮对话会话：
 
 ```ts
-// Create a session
+// 创建会话
 const session = await ctx.agents.sessions.create(agentId, companyId);
 
-// Send a message and stream the response
+// 发送消息并流式接收响应
 await ctx.agents.sessions.sendMessage(session.sessionId, companyId, {
   prompt: "Help me triage this issue",
   onEvent: (event) => {
@@ -837,18 +834,18 @@ await ctx.agents.sessions.sendMessage(session.sessionId, companyId, {
   },
 });
 
-// List active sessions
+// 列出活跃会话
 const sessions = await ctx.agents.sessions.list(agentId, companyId);
 
-// Close when done
+// 完成后关闭
 await ctx.agents.sessions.close(session.sessionId, companyId);
 ```
 
-Requires capabilities: `agent.sessions.create`, `agent.sessions.list`, `agent.sessions.send`, `agent.sessions.close`.
+所需能力：`agent.sessions.create`、`agent.sessions.list`、`agent.sessions.send`、`agent.sessions.close`。
 
-Exported types: `AgentSession`, `AgentSessionEvent`, `AgentSessionSendResult`, `PluginAgentSessionsClient`.
+导出类型：`AgentSession`、`AgentSessionEvent`、`AgentSessionSendResult`、`PluginAgentSessionsClient`。
 
-## Testing utilities
+## 测试工具
 
 ```ts
 import { createTestHarness } from "@paperclipai/plugin-sdk/testing";
@@ -860,7 +857,7 @@ await plugin.definition.setup(harness.ctx);
 await harness.emit("issue.created", { issueId: "iss_1" }, { entityId: "iss_1", entityType: "issue" });
 ```
 
-## Bundler presets
+## 打包工具预设
 
 ```ts
 import { createPluginBundlerPresets } from "@paperclipai/plugin-sdk/bundlers";
@@ -870,19 +867,19 @@ const presets = createPluginBundlerPresets({ uiEntry: "src/ui/index.tsx" });
 // presets.rollup.worker / presets.rollup.manifest / presets.rollup.ui
 ```
 
-## Local dev server (hot-reload events)
+## 本地开发服务器（热重载事件）
 
 ```bash
 paperclip-plugin-dev-server --root . --ui-dir dist/ui --port 4177
 ```
 
-Or programmatically:
+或通过编程方式：
 
 ```ts
 import { startPluginDevServer } from "@paperclipai/plugin-sdk/dev-server";
 const server = await startPluginDevServer({ rootDir: process.cwd() });
 ```
 
-Dev server endpoints:
-- `GET /__paperclip__/health` returns `{ ok, rootDir, uiDir }`
-- `GET /__paperclip__/events` streams `reload` SSE events on UI build changes
+开发服务器端点：
+- `GET /__paperclip__/health` 返回 `{ ok, rootDir, uiDir }`
+- `GET /__paperclip__/events` 在 UI 构建变化时流式传输 `reload` SSE 事件
