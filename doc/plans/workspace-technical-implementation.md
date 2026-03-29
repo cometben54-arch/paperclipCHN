@@ -775,107 +775,107 @@ V1 应支持更丰富的 PR 状态追踪，但不构建完整的审查引擎。
 - `executionWorkspacePreference = inherit`
 - 兼容性/共享行为
 
-## 4. Runtime history migration
+## 4. 运行时历史迁移
 
-Do not attempt a perfect historical reconstruction of execution workspaces in the migration itself.
+迁移本身不应尝试对执行 workspace 进行完整的历史重建。
 
-Instead:
+替代方案：
 
-- create execution workspace records forward from first new run
-- optionally add a later backfill tool for recent runtime services if it proves valuable
+- 从第一次新运行起向前创建执行 workspace 记录
+- 若事后证明有价值，可选地为近期运行时服务添加补充回填工具
 
-## Rollout Order
+## 发布顺序
 
-## Phase 1: Schema and shared contracts
+## 阶段一：Schema 与共享契约
 
-1. extend `project_workspaces`
-2. add `execution_workspaces`
-3. add `issue_work_products`
-4. extend `issues`
-5. extend `workspace_runtime_services`
-6. update shared types and validators
+1. 扩展 `project_workspaces`
+2. 新增 `execution_workspaces`
+3. 新增 `issue_work_products`
+4. 扩展 `issues`
+5. 扩展 `workspace_runtime_services`
+6. 更新共享类型与校验器
 
-## Phase 2: Service wiring
+## 阶段二：服务层串联
 
-1. update project workspace CRUD
-2. update issue create/update resolution
-3. refactor workspace realization to persist execution workspaces
-4. attach runtime services to execution workspaces
-5. add work product service and persistence
+1. 更新项目 workspace 的 CRUD
+2. 更新 issue 创建/更新的解析逻辑
+3. 重构 workspace 实例化以持久化执行 workspace
+4. 将运行时服务挂载到执行 workspace
+5. 新增工作产物服务与持久化
 
-## Phase 3: API and UI
+## 阶段三：API 与 UI
 
-1. add execution workspace routes
-2. add work product routes
-3. add instance experimental settings toggle
-4. re-enable and revise project workspace UI behind the flag
-5. add issue create/update controls behind the flag
-6. add issue work product tab
-7. add execution workspace detail page
+1. 新增执行 workspace 路由
+2. 新增工作产物路由
+3. 新增实例实验性功能设置开关
+4. 在功能开关后重新启用并修订项目 workspace UI
+5. 在功能开关后新增 issue 创建/更新控件
+6. 新增 issue 工作产物标签页
+7. 新增执行 workspace 详情页
 
-## Phase 4: Provider integrations
+## 阶段四：Provider 集成
 
-1. GitHub PR reporting
-2. preview URL reporting
-3. runtime-service-to-work-product linking
-4. remote/cloud provider references
+1. GitHub PR 报告
+2. 预览 URL 报告
+3. 运行时服务到工作产物的关联
+4. 远程/云端 provider 引用
 
-## Acceptance Criteria
+## 验收标准
 
-1. Existing installs continue to behave predictably with no required reconfiguration.
-2. Projects can define local, git, non-git, and remote-managed project workspaces.
-3. Issues can explicitly select a project workspace and execution preference.
-4. Each issue can point to one current execution workspace.
-5. Multiple issues can intentionally reuse the same execution workspace.
-6. Execution workspaces are persisted for both local and remote execution flows.
-7. Work products can be attached to issues with optional execution workspace linkage.
-8. GitHub PRs can be represented with richer lifecycle states.
-9. The main UI remains simple when the experimental flag is off.
-10. No top-level workspace navigation is required for this first slice.
+1. 现有安装实例在无需重新配置的情况下继续可预期地运行。
+2. 项目可定义本地、git、非 git 及远程托管等类型的项目 workspace。
+3. Issue 可显式选择项目 workspace 和执行偏好。
+4. 每个 issue 可关联一个当前执行 workspace。
+5. 多个 issue 可有意地复用同一执行 workspace。
+6. 执行 workspace 在本地和远程执行流程中均可持久化。
+7. 工作产物可挂载到 issue，并可选择关联执行 workspace。
+8. GitHub PR 可使用更丰富的生命周期状态来表示。
+9. 当实验性功能开关关闭时，主 UI 保持简洁。
+10. 第一个切片无需顶层 workspace 导航入口。
 
-## Risks and Mitigations
+## 风险与缓解措施
 
-## Risk: too many overlapping workspace concepts
+## 风险：workspace 概念过多且相互重叠
 
-Mitigation:
+缓解措施：
 
-- keep issue UI to `Codebase` and `Execution mode`
-- reserve execution workspace details for advanced pages
+- 将 issue UI 限定于 `Codebase`（代码库）和 `Execution mode`（执行模式）
+- 将执行 workspace 详情保留在高级页面中
 
-## Risk: breaking current projects on upgrade
+## 风险：升级后破坏现有项目
 
-Mitigation:
+缓解措施：
 
-- nullable schema additions
-- in-place `project_workspaces` migration
-- compatibility defaults
+- 新增字段均为可空
+- 对 `project_workspaces` 进行原地迁移
+- 设置兼容性默认值
 
-## Risk: local-only assumptions leaking into cloud mode
+## 风险：本地专属假设泄漏到云端模式
 
-Mitigation:
+缓解措施：
 
-- make `cwd` optional for execution workspaces
-- use `provider_type` and `provider_ref`
-- use `PAPERCLIP_EXECUTION_TOPOLOGY` as a defaulting guardrail
+- 使执行 workspace 的 `cwd` 为可选
+- 使用 `provider_type` 和 `provider_ref`
+- 使用 `PAPERCLIP_EXECUTION_TOPOLOGY` 作为默认值护栏
 
-## Risk: turning PRs into a bespoke subsystem too early
+## 风险：过早将 PR 构建为定制子系统
 
-Mitigation:
+缓解措施：
 
-- represent PRs as work products in V1
-- keep provider-specific details in metadata
-- defer a dedicated PR table unless usage proves it necessary
+- V1 中将 PR 表示为工作产物
+- 将 provider 专属详情保留在 metadata 中
+- 推迟独立 PR 表的建设，除非实际使用证明有必要
 
-## Recommended First Engineering Slice
+## 推荐的首个工程切片
 
-If we want the narrowest useful implementation:
+若追求最小可用实现：
 
-1. extend `project_workspaces`
-2. add `execution_workspaces`
-3. extend `issues` with explicit workspace fields
-4. persist execution workspaces from existing local workspace realization
-5. add `issue_work_products`
-6. show project workspace controls and issue workspace controls behind the experimental flag
-7. add issue `Work Product` tab with PR/preview/runtime service display
+1. 扩展 `project_workspaces`
+2. 新增 `execution_workspaces`
+3. 为 `issues` 新增显式 workspace 字段
+4. 从现有本地 workspace 实例化中持久化执行 workspace
+5. 新增 `issue_work_products`
+6. 在实验性功能开关后展示项目 workspace 控件和 issue workspace 控件
+7. 新增 issue `Work Product` 标签页，展示 PR/预览/运行时服务
 
-This slice is enough to validate the model without yet building every provider integration or cleanup workflow.
+该切片已足以验证模型，无需在此阶段构建所有 provider 集成或清理工作流。
