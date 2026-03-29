@@ -643,57 +643,57 @@ kitchen-sink 插件应明确演示这一点。
 
 此外，还应在插件文档中将其作为"覆盖所有功能的参考插件"加以引用。
 
-## Testing And Verification
+## 测试与验证
 
-Minimum verification:
+最低验证要求：
 
-- package typecheck/build
-- install from bundled example list
-- page loads
-- widget appears
-- project tab appears
-- comment surfaces render
-- settings page loads
-- key actions succeed
+- 包类型检查/构建
+- 从内置示例列表安装
+- 页面可正常加载
+- 组件正常显示
+- 项目标签页正常显示
+- 评论表面正常渲染
+- 设置页面可正常加载
+- 关键操作执行成功
 
-Recommended manual checklist:
+建议的手动核查清单：
 
-- create issue from plugin
-- create goal from plugin
-- emit and receive plugin event
-- stream action output
-- open agent session and receive streamed reply
-- upload an asset
-- write plugin activity log
-- run a safe local process demo
+- 从插件创建工单
+- 从插件创建目标
+- 发送并接收插件事件
+- 流式输出操作结果
+- 打开智能体会话并接收流式回复
+- 上传一个资产
+- 写入插件活动日志
+- 运行一个安全的本地进程演示
 
-## Open Questions
+## 待解决问题
 
-1. Should the process demo remain curated-command-only in the first pass?
-   Recommendation: yes.
+1. 进程演示在第一版中是否应仅限精选命令？
+   建议：是。
 
-2. Should the plugin create throwaway "kitchen sink demo" issues/goals automatically?
-   Recommendation: no. Make creation explicit.
+2. 插件是否应自动创建一次性的"kitchen sink demo"工单/目标？
+   建议：否。创建操作应显式触发。
 
-3. Should we expose unsupported-but-typed surfaces in the UI even if host mounting is not wired?
-   Recommendation: yes, but label them as `SDK-defined / host validation pending`.
+3. 即使宿主挂载尚未接通，是否也应在 UI 中暴露已有类型定义但尚不支持的表面？
+   建议：是，但应标注为 `SDK-defined / host validation pending`（SDK 已定义/宿主验证待完成）。
 
-4. Should agent mutation demos include pause/resume by default?
-   Recommendation: probably yes, but behind a warning block.
+4. 智能体变更演示是否应默认包含暂停/恢复操作？
+   建议：大概率是，但应置于警告提示块之后。
 
-5. Should this plugin be treated as a supported regression harness in CI later?
-   Recommendation: yes. Long term, this should be the plugin-runtime smoke test package.
+5. 该插件后续是否应作为 CI 中受支持的回归测试工具？
+   建议：是。从长远来看，这应当成为插件运行时的冒烟测试包。
 
-## Recommended Next Step
+## 建议的下一步
 
-If this plan looks right, the next implementation pass should start by building only:
+如果本计划方向正确，下一轮实现应仅从以下内容开始：
 
-- package skeleton
-- page
-- settings page
-- dashboard widget
-- one project detail tab
-- one issue detail tab
-- the basic worker/action/data/state/event scaffolding
+- 包骨架
+- 插件页面
+- 设置页面
+- 仪表盘组件
+- 一个项目详情标签页
+- 一个工单详情标签页
+- 基础的 worker/action/data/state/event 脚手架
 
-That is enough to lock the architecture before filling in every demo surface.
+这已足够在填充所有演示表面之前锁定整体架构。

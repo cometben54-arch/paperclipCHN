@@ -514,189 +514,189 @@ PR 行为：
 - 保存报告产物
 - 呈现通过率、两两对比胜出次数和效率的趋势线
 
-## Framework Comparison
+## 框架对比
 
 ## Promptfoo
 
-Best use for Paperclip:
+对 Paperclip 的最佳用途：
 
-- prompt-level micro-evals
-- provider/model comparison
-- quick local CI integration
-- custom JS assertions and custom providers
-- bootstrap-layer evals for one skill or one agent workflow
+- prompt 级别的微型评估
+- provider/模型对比
+- 快速的本地 CI 集成
+- 自定义 JS 断言和自定义 providers
+- 针对单个技能或单个 agent 工作流的引导层评估
 
-What changed in this recommendation:
+本次建议的变化：
 
-- Promptfoo is now the recommended **starting point**
-- especially for “one skill, a handful of cases, compare across models”
+- Promptfoo 现在是推荐的**起点**
+- 尤其适用于”一个技能、少量用例、跨模型对比”的场景
 
-Why it still should not be the only long-term system:
+为什么它仍不应该成为唯一的长期系统：
 
-- its primary abstraction is still prompt/provider/test-case oriented
-- Paperclip needs scenario setup, control-plane state inspection, and multi-step traces as first-class concepts
+- 其主要抽象仍以 prompt/provider/测试用例为导向
+- Paperclip 需要将场景设置、控制面状态检查和多步骤 traces 作为第一优先级概念
 
-Recommendation:
+建议：
 
-- use Promptfoo first
-- store Promptfoo config and cases in-repo under `evals/promptfoo/`
-- use custom JS/TS assertions and, if needed later, a custom provider that calls Paperclip scenario runners
-- do not make Promptfoo YAML the only canonical Paperclip eval format once we outgrow prompt-level evals
+- 先使用 Promptfoo
+- 将 Promptfoo 配置和用例存储在 repo 内的 `evals/promptfoo/` 目录下
+- 使用自定义 JS/TS 断言，如有需要，之后使用调用 Paperclip 场景运行器的自定义 provider
+- 一旦超出 prompt 级别评估的范围，不要将 Promptfoo YAML 作为唯一的规范 Paperclip 评估格式
 
 ## LangSmith
 
-What it gets right:
+做得正确的地方：
 
-- final response evals
-- trajectory evals
-- single-step evals
+- 最终响应评估
+- 轨迹评估
+- 单步评估
 
-Why not the primary system today:
+为什么今天不作为主要系统：
 
-- stronger fit for teams already centered on LangChain/LangGraph
-- introduces hosted/external workflow gravity before our own eval model is stable
+- 更适合已经以 LangChain/LangGraph 为中心的团队
+- 在我们自己的评估模型稳定之前引入了托管/外部工作流的依赖
 
-Recommendation:
+建议：
 
-- copy the trajectory/final/single-step taxonomy
-- do not adopt the platform as the default requirement
+- 借鉴其轨迹/最终/单步分类体系
+- 不要将该平台作为默认要求
 
 ## Braintrust
 
-What it gets right:
+做得正确的地方：
 
-- TypeScript support
-- clean dataset/task/scorer model
-- production logging to datasets
-- experiment comparison over time
+- TypeScript 支持
+- 简洁的 dataset/task/scorer 模型
+- 将生产日志写入数据集
+- 随时间推移的实验对比
 
-Why not the primary system today:
+为什么今天不作为主要系统：
 
-- still externalizes the canonical dataset and review workflow
-- we are not yet at the maturity where hosted experiment management should define the shape of the system
+- 仍然将规范数据集和审查工作流外部化
+- 我们尚未成熟到应该由托管实验管理来定义系统形态的阶段
 
-Recommendation:
+建议：
 
-- borrow its dataset/scorer/experiment mental model
-- revisit once we want hosted review and experiment history at scale
+- 借鉴其 dataset/scorer/experiment 的心智模型
+- 等到我们需要大规模托管审查和实验历史时再重新评估
 
 ## OpenAI Evals / Evals API
 
-What it gets right:
+做得正确的地方：
 
-- strong eval principles
-- emphasis on task-specific evals
-- continuous evaluation mindset
+- 强有力的评估原则
+- 强调任务特定的评估
+- 持续评估的思维方式
 
-Why not the primary system:
+为什么不作为主要系统：
 
-- Paperclip must compare across models/providers
-- we do not want our primary eval runner coupled to one model vendor
+- Paperclip 必须跨模型/provider 进行对比
+- 我们不希望主要评估运行器与单一模型厂商耦合
 
-Recommendation:
+建议：
 
-- use the guidance
-- do not use it as the core Paperclip eval runtime
+- 参考其指导原则
+- 不要将其作为 Paperclip 核心评估运行时
 
-## First Implementation Slice
+## 首批实现切片
 
-The first version should be intentionally small.
+第一版应有意保持精简。
 
-## Phase 0: Promptfoo bootstrap
+## 阶段 0：Promptfoo 引导
 
-Build:
+构建：
 
 - `evals/promptfoo/promptfooconfig.yaml`
-- 5 to 10 focused cases for one skill or one agent workflow
-- model matrix using the providers we care about most
-- mostly deterministic assertions:
+- 针对一个技能或一个 agent 工作流的 5 到 10 个有针对性的用例
+- 使用我们最关心的 providers 的模型矩阵
+- 主要是确定性断言：
   - contains
   - not-contains
   - regex
   - custom JS assertions
 
-Target scope:
+目标范围：
 
-- one skill, or one narrow workflow such as assignment pickup / first status update
-- compare a small set of bundles across several models
+- 一个技能，或一个狭窄的工作流（如任务分配接收/首次状态更新）
+- 跨几个模型对比一小组 bundles
 
-Success criteria:
+成功标准：
 
-- we can run one command and compare outputs across models
-- prompt/skill regressions become visible quickly
-- the team gets signal before building heavier infrastructure
+- 我们可以运行一条命令并跨模型对比输出
+- prompt/技能回归能快速变得可见
+- 团队在构建更重的基础设施之前获得信号
 
-## Phase 1: Skeleton and core cases
+## 阶段 1：骨架与核心用例
 
-Build:
+构建：
 
-- `evals/` scaffold
-- `EvalCase`, `EvalBundle`, `EvalTrace` types
-- scenario runner for seeded local cases
-- 10 hand-authored core cases
-- hard checks only
+- `evals/` 脚手架
+- `EvalCase`、`EvalBundle`、`EvalTrace` 类型定义
+- 用于预置本地用例的场景运行器
+- 10 个手工编写的核心用例
+- 仅含硬性检查
 
-Target cases:
+目标用例：
 
-- assigned issue pickup
-- write progress comment
-- ask for approval when required
-- respect company boundary
-- report blocked state
-- avoid marking done without artifact/comment evidence
+- 已分配 issue 的接收
+- 撰写进度评论
+- 在需要时请求审批
+- 遵守 company 边界
+- 上报阻塞状态
+- 避免在没有 artifact/评论证据的情况下标记为完成
 
-Success criteria:
+成功标准：
 
-- a developer can run a local smoke suite
-- prompt/skill changes can fail the suite deterministically
-- Promptfoo `v0` cases either migrate into or coexist with this layer cleanly
+- 开发者可以运行本地冒烟测试套件
+- prompt/技能变更可以确定性地使套件失败
+- Promptfoo `v0` 用例可以干净地迁移到或与此层并存
 
-## Phase 2: Pairwise and rubric layer
+## 阶段 2：两两对比与评分标准层
 
-Build:
+构建：
 
-- rubric scorer interface
-- pairwise judge runner
-- candidate vs baseline compare command
-- markdown/html report output
+- rubric 评分器接口
+- 两两对比评判运行器
+- 候选方案与基线对比命令
+- markdown/html 报告输出
 
-Success criteria:
+成功标准：
 
-- model/prompt bundle changes produce a readable diff report
-- we can tell “better”, “worse”, or “same” on curated scenarios
+- 模型/prompt bundle 变更产生可读的差异报告
+- 我们能在精心策划的场景上判断”更好”、”更差”或”相同”
 
-## Phase 3: Efficiency integration
+## 阶段 3：效率集成
 
-Build:
+构建：
 
-- normalized token/cost metrics into eval traces
-- cost and latency comparisons
-- efficiency gates for token optimization work
+- 将标准化 token/成本指标纳入评估 traces
+- 成本和延迟对比
+- 针对 token 优化工作的效率门控
 
-Dependency:
+依赖：
 
-- this should align with the telemetry normalization work in `2026-03-13-TOKEN-OPTIMIZATION-PLAN.md`
+- 这应与 `2026-03-13-TOKEN-OPTIMIZATION-PLAN.md` 中的遥测标准化工作对齐
 
-Success criteria:
+成功标准：
 
-- quality and efficiency can be judged together
-- token-reduction work no longer relies on anecdotal improvements
+- 质量和效率可以一起评判
+- token 削减工作不再依赖零散的改进记录
 
-## Phase 4: Production-case ingestion
+## 阶段 4：生产用例摄取
 
-Build:
+构建：
 
-- tooling to promote real runs into new eval cases
-- metadata tagging
-- failure corpus growth process
+- 将真实运行提升为新评估用例的工具
+- 元数据标记
+- 失败用例库的增长流程
 
-Success criteria:
+成功标准：
 
-- the eval suite grows from real product behavior instead of staying synthetic
+- 评估套件从真实产品行为中增长，而不是停留在合成数据上
 
-## Initial Case Categories
+## 初始用例分类
 
-We should start with these categories:
+我们应从以下分类开始：
 
 1. `core.assignment_pickup`
 2. `core.progress_update`
@@ -707,7 +707,7 @@ We should start with these categories:
 7. `threads.long_context_followup`
 8. `efficiency.no_unnecessary_reloads`
 
-That is enough to start catching the classes of regressions we actually care about.
+这足以开始捕获我们真正关心的各类回归。
 
 ## Important Guardrails
 

@@ -510,199 +510,199 @@ V1 范围外：
 
 - 自动将仅适配器持有的外部技能作为托管软件包导出
 
-## 10. Data And API Shape
+## 10. 数据与 API 结构
 
-This plan implies a clean split in backend concepts.
+本计划意味着后端概念需要清晰拆分。
 
-### 10.1 Company skill records
+### 10.1 公司技能记录
 
-Paperclip should have a company-scoped skill model or managed package model representing:
+Paperclip 应有一个公司范围的技能模型或托管软件包模型，包含：
 
-- identity
-- source
-- files
-- provenance
-- trust and licensing metadata
+- 标识信息
+- 来源
+- 文件
+- 溯源信息
+- 信任与许可证元数据
 
-### 10.2 Agent skill attachments
+### 10.2 Agent 技能附加记录
 
-Paperclip should separately store:
+Paperclip 应单独存储：
 
 - agent id
-- skill identity
-- desired enabled state
-- optional ordering or metadata later
+- 技能标识
+- 期望启用状态
+- 日后可选的排序或元数据
 
-### 10.3 Adapter sync snapshot
+### 10.3 适配器同步快照
 
-Adapter reads should return:
+适配器读取应返回：
 
-- supported flag
-- sync mode
-- entries
-- warnings
-- desired skills
+- supported flag（支持标志）
+- sync mode（同步模式）
+- entries（条目）
+- warnings（警告）
+- desired skills（期望技能）
 
-This already exists in rough form and should be the basis for the UI.
+这部分已有雏形，应作为 UI 的基础。
 
-### 10.4 UI-facing API needs
+### 10.4 UI 侧 API 需求
 
-The complete UI implies these API surfaces:
+完整的 UI 意味着需要以下 API 接口：
 
-- list company-managed skills
-- import company skills from path/URL/GitHub
-- get one company skill detail
-- list agents using a given skill
-- attach/detach company skills for an agent
-- list adapter sync snapshot for an agent
-- apply desired skills for an agent
+- 列出公司托管技能
+- 从路径/URL/GitHub 导入公司技能
+- 获取单个公司技能详情
+- 列出使用某技能的 Agent
+- 为 Agent 附加/分离公司技能
+- 获取 Agent 的适配器同步快照列表
+- 为 Agent 应用期望技能
 
-Existing agent-level skill sync APIs can remain the base for the agent tab.
-The company-level library APIs still need to be designed and implemented.
+现有的 Agent 级技能同步 API 可作为 Agent 标签页的基础。
+公司级库 API 仍需进行设计和实现。
 
-## 11. Page-by-page UX
+## 11. 逐页 UX 说明
 
-### 11.1 Company Skills list page
+### 11.1 公司技能列表页
 
-Header:
+页头：
 
-- title
-- short explanation of compatibility with Agent Skills / `skills.sh`
-- import button
+- 标题
+- 关于与 Agent Skills / `skills.sh` 兼容性的简短说明
+- 导入按钮
 
-Body:
+页面主体：
 
-- filters
-- skill table or cards
-- empty state when none
+- 筛选器
+- 技能表格或卡片
+- 无内容时的空状态
 
-Secondary content:
+次级内容：
 
-- warnings panel for untrusted or incompatible skills
+- 不受信任或不兼容技能的警告面板
 
-### 11.2 Company Skill detail page
+### 11.2 公司技能详情页
 
-Header:
+页头：
 
-- skill name
+- 技能名称
 - shortname
-- source badge
-- trust badge
-- compatibility badge
+- 来源徽标
+- 信任徽标
+- 兼容性徽标
 
-Sections:
+章节：
 
-- rendered `SKILL.md`
-- files and references
-- usage by agents
-- source / provenance
-- trust and licensing warnings
+- 渲染后的 `SKILL.md`
+- 文件与引用
+- Agent 使用情况
+- 来源/溯源信息
+- 信任与许可证警告
 
-Actions:
+操作：
 
-- attach to agent
-- remove from company library later
-- export later
+- 附加到 Agent
+- 日后从公司库中移除
+- 日后导出
 
-### 11.3 Agent Skills tab
+### 11.3 Agent 技能标签页
 
-Header:
+页头：
 
-- adapter support summary
-- sync mode
-- refresh and sync actions
+- 适配器支持摘要
+- 同步模式
+- 刷新和同步操作
 
-Body:
+页面主体：
 
-- managed skills list
-- external/discovered skills list
-- warnings / unsupported state block
+- 已托管技能列表
+- 外部/已发现技能列表
+- 警告/不受支持状态区块
 
-## 12. States And Empty Cases
+## 12. 状态与空状态处理
 
-### 12.1 Company Skills page
+### 12.1 公司技能页面
 
-States:
+状态：
 
-- empty
-- loading
-- loaded
-- import in progress
-- import failed
+- empty（空）
+- loading（加载中）
+- loaded（已加载）
+- import in progress（导入中）
+- import failed（导入失败）
 
-### 12.2 Company Skill detail
+### 12.2 公司技能详情
 
-States:
+状态：
 
-- loading
-- not found
-- incompatible
-- loaded
+- loading（加载中）
+- not found（未找到）
+- incompatible（不兼容）
+- loaded（已加载）
 
-### 12.3 Agent Skills tab
+### 12.3 Agent 技能标签页
 
-States:
+状态：
 
-- loading snapshot
-- unsupported adapter
-- read-only adapter
-- sync-capable adapter
-- sync failed
-- stale draft
+- loading snapshot（加载快照中）
+- unsupported adapter（不受支持的适配器）
+- read-only adapter（只读适配器）
+- sync-capable adapter（支持同步的适配器）
+- sync failed（同步失败）
+- stale draft（草稿已过期）
 
-## 13. Permissions And Governance
+## 13. 权限与治理
 
-Suggested V1 policy:
+建议的 V1 策略：
 
-- board users can manage company skills
-- board users can attach skills to agents
-- agents themselves do not mutate company skill library by default
-- later, certain agents may get scoped permissions for skill attachment or sync
+- 管理员用户可以管理公司技能
+- 管理员用户可以将技能附加到 Agent
+- Agent 本身默认不修改公司技能库
+- 日后，某些 Agent 可能会获得技能附加或同步的范围权限
 
-## 14. UI Phases
+## 14. UI 阶段规划
 
-### Phase A: Stabilize current agent skill sync UI
+### 阶段 A：稳定当前 Agent 技能同步 UI
 
-Goals:
+目标：
 
-- move skills to an `AgentDetail` tab
-- improve status language
-- support desired-only state even on unsupported adapters
-- polish copy for persistent vs ephemeral adapters
+- 将技能移至 `AgentDetail` 标签页
+- 改进状态语言表述
+- 在不受支持的适配器上也支持仅期望状态
+- 优化持久化适配器与临时适配器的文案
 
-### Phase B: Add Company Skills page
+### 阶段 B：添加公司技能页面
 
-Goals:
+目标：
 
-- company-level skill library
-- import from GitHub/local folder
-- basic detail view
-- usage counts by agent
-- `skills.sh`-compatible import path
+- 公司级技能库
+- 从 GitHub/本地文件夹导入
+- 基础详情视图
+- 按 Agent 统计使用次数
+- 兼容 `skills.sh` 的导入路径
 
-### Phase C: Connect skills to portability
+### 阶段 C：将技能与可移植性连接
 
-Goals:
+目标：
 
-- importing company packages creates company skills
-- exporting selected skills works cleanly
-- agent attachments round-trip primarily through `AGENTS.md` shortnames
+- 导入公司软件包时创建公司技能
+- 导出所选技能时流程顺畅
+- Agent 附加项主要通过 `AGENTS.md` 中的 shortname 实现往返传递
 
-### Phase D: External skill adoption flow
+### 阶段 D：外部技能采纳流程
 
-Goals:
+目标：
 
-- detect adapter external skills
-- allow importing them into company-managed state where possible
-- make provenance explicit
+- 检测适配器外部技能
+- 允许在适当情况下将其导入为公司托管状态
+- 使溯源信息明确可见
 
-### Phase E: Advanced sync and drift UX
+### 阶段 E：高级同步与漂移 UX
 
-Goals:
+目标：
 
-- desired-vs-actual diffing
-- drift resolution actions
-- multi-agent skill usage and sync reporting
+- 期望状态与实际状态的差异对比
+- 漂移解决操作
+- 多 Agent 技能使用与同步报告
 
 ## 15. Design Risks
 

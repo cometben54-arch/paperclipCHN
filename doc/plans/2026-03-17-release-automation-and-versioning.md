@@ -428,61 +428,61 @@ Paperclip 的发布问题现在是"以一个显式版本发布整个固定包集
 - 无 GitHub Release
 - 无外部公告
 
-## Rollout Plan
+## 推进计划
 
-### Phase 1: Security foundation
+### 第一阶段：安全基础
 
-1. Create `release.yml`
-2. Configure npm trusted publishers for all public packages
-3. Create `npm-canary` and `npm-stable` environments
-4. Add `CODEOWNERS` protection for release files
-5. Verify OIDC publishing works
-6. Disable token-based publishing access and revoke old tokens
+1. 创建 `release.yml`
+2. 为所有公开包配置 npm 可信发布者
+3. 创建 `npm-canary` 和 `npm-stable` 环境
+4. 为发布文件添加 `CODEOWNERS` 保护
+5. 验证 OIDC 发布是否正常工作
+6. 禁用基于令牌的发布访问权限并撤销旧令牌
 
-### Phase 2: Canary automation
+### 第二阶段：Canary 自动化
 
-1. Add canary workflow on `push` to `master`
-2. Add explicit calendar-version computation
-3. Add canary git tagging
-4. Remove changelog requirement from canaries
-5. Update `doc/RELEASING.md`
+1. 添加在 `master` 上 `push` 时触发的 canary 工作流
+2. 添加显式日历版本计算
+3. 添加 canary git 标签创建
+4. 移除 canary 版本的变更日志要求
+5. 更新 `doc/RELEASING.md`
 
-### Phase 3: Stable promotion
+### 第三阶段：稳定版晋升
 
-1. Add manual stable workflow with `source_ref`
-2. Require stable notes file
-3. Publish stable + tag + GitHub Release
-4. Update rollback docs and scripts
-5. Retire release-branch assumptions
+1. 添加带 `source_ref` 参数的手动稳定版工作流
+2. 要求存在稳定版说明文件
+3. 发布稳定版 + 标签 + GitHub Release
+4. 更新回滚文档和脚本
+5. 废弃发布分支相关假设
 
-### Phase 4: Cleanup
+### 第四阶段：清理
 
-1. Remove `release-start.sh` from the primary path
-2. Remove `patch/minor/major` from maintainer docs
-3. Decide whether to keep or remove Changesets from publishing
-4. Document the CalVer compatibility contract publicly
+1. 从主流程中移除 `release-start.sh`
+2. 从维护者文档中移除 `patch/minor/major`
+3. 决定是否在发布流程中保留或移除 Changesets
+4. 公开记录 CalVer 兼容性契约
 
-## Concrete Recommendation
+## 具体建议
 
-Paperclip should adopt this model:
+Paperclip 应采用以下模型：
 
-- stable versions: `YYYY.MDD.P`
-- canary versions: `YYYY.MDD.P-canary.N`
-- canaries auto-published on every push to `master`
-- stables manually promoted from a chosen tested commit or canary tag
-- no release branches in the default path
-- no canary changelog files
-- no canary GitHub Releases
-- no Claude token in GitHub Actions
-- no npm automation token in GitHub Actions
-- npm trusted publishing plus GitHub environments for release security
+- 稳定版格式：`YYYY.MDD.P`
+- canary 版格式：`YYYY.MDD.P-canary.N`
+- 每次推送到 `master` 自动发布 canary 版本
+- 稳定版从选定的已测试提交或 canary 标签手动晋升
+- 默认流程中不使用发布分支
+- 无 canary 变更日志文件
+- 无 canary GitHub Release
+- GitHub Actions 中无 Claude 令牌
+- GitHub Actions 中无 npm 自动化令牌
+- 使用 npm 可信发布与 GitHub 环境保障发布安全
 
-That gets rid of the annoying part of semver without fighting npm, makes canaries cheap, keeps stables deliberate, and materially improves the security posture of the public repository.
+这在不与 npm 对抗的前提下消除了 semver 中令人烦恼的部分，使 canary 版本轻量化，保持稳定版发布的审慎性，并从实质上改善了公开仓库的安全态势。
 
-## External References
+## 外部参考
 
-- npm trusted publishing: https://docs.npmjs.com/trusted-publishers/
-- npm dist-tags: https://docs.npmjs.com/adding-dist-tags-to-packages/
-- npm semantic versioning guidance: https://docs.npmjs.com/about-semantic-versioning/
-- GitHub environments and deployment protection rules: https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments
-- GitHub secrets behavior for forks: https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets
+- npm 可信发布：https://docs.npmjs.com/trusted-publishers/
+- npm dist-tags：https://docs.npmjs.com/adding-dist-tags-to-packages/
+- npm 语义化版本指导：https://docs.npmjs.com/about-semantic-versioning/
+- GitHub 环境与部署保护规则：https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments
+- fork 中的 GitHub secrets 行为：https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets

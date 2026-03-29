@@ -1,4 +1,4 @@
-# Workspace Technical Implementation Spec
+# 工作区技术实现规范
 
 ## 本文档的作用
 
@@ -588,110 +588,109 @@ V1 中，GitHub 是唯一具有更丰富语义的 provider。
 
 若尚无通用的实例设置存储机制，第一个切片可将其存储在 `/instance/settings` 已使用的现有配置/实例设置机制中。
 
-## UI Changes
+## UI 变更
 
 ## 1. `/instance/settings`
 
-Add section:
+新增分区：
 
-- `Experimental`
-  - `Enable Workspaces`
+- `Experimental`（实验性功能）
+  - `Enable Workspaces`（启用 Workspaces）
 
-When off:
+关闭时：
 
-- hide new workspace-specific affordances
-- do not alter existing project or issue behavior
+- 隐藏新的 workspace 专属交互控件
+- 不改变现有的项目或 issue 行为
 
-## 2. Project properties
+## 2. 项目属性
 
-Do not create a separate `Code` tab yet.
-Ship inside existing project properties first.
+暂不新建独立的 `Code` 标签页，优先在现有项目属性中发布。
 
-### Add or re-enable sections
+### 新增或重新启用的分区
 
-- `Project Workspaces`
-- `Execution Defaults`
-- `Provisioning`
-- `Pull Requests`
-- `Previews and Runtime`
-- `Cleanup`
+- `Project Workspaces`（项目 Workspace）
+- `Execution Defaults`（执行默认值）
+- `Provisioning`（资源供给）
+- `Pull Requests`（拉取请求）
+- `Previews and Runtime`（预览与运行时）
+- `Cleanup`（清理）
 
-### Display rules
+### 显示规则
 
-- only show when `experimental.workspaces=true`
-- keep wording generic enough for local and remote setups
-- only show git-specific fields when `sourceType=git_repo`
-- only show local-path-specific fields when not `remote_managed`
+- 仅在 `experimental.workspaces=true` 时显示
+- 措辞应足够通用，同时适用于本地和远程配置
+- 仅在 `sourceType=git_repo` 时显示 git 专属字段
+- 仅在非 `remote_managed` 时显示本地路径专属字段
 
-## 3. Issue create dialog
+## 3. Issue 创建对话框
 
-When the workspace experimental flag is on and the selected project has workspace automation or workspaces:
+当 workspace 实验性功能开关开启，且所选项目具有 workspace 自动化或 workspace 时：
 
-### Basic fields
+### 基本字段
 
-- `Codebase`
-  - select from project workspaces
-  - default to policy default or primary workspace
-- `Execution mode`
-  - `Project default`
-  - `Shared workspace`
-  - `Isolated workspace`
-  - `Operator branch`
+- `Codebase`（代码库）
+  - 从项目 workspace 中选择
+  - 默认为策略默认值或主 workspace
+- `Execution mode`（执行模式）
+  - `Project default`（项目默认）
+  - `Shared workspace`（共享 workspace）
+  - `Isolated workspace`（隔离 workspace）
+  - `Operator branch`（operator 分支）
 
-### Advanced section
+### 高级选项区
 
-- `Reuse existing execution workspace`
+- `Reuse existing execution workspace`（复用现有执行 workspace）
 
-This control should query only:
+该控件的查询范围仅限于：
 
-- same project
-- same codebase if selected
-- active/recent workspaces
-- compact labels with branch or workspace name
+- 同一项目
+- 若已选择代码库，则限同一代码库
+- 活跃或近期使用过的 workspace
+- 以分支名或 workspace 名为简洁标签
 
-Do not expose all execution workspaces in a noisy unfiltered list.
+不应以未经过滤的冗长列表展示所有执行 workspace。
 
-## 4. Issue detail
+## 4. Issue 详情
 
-Add a `Work Product` tab when:
+在以下情况下显示 `Work Product`（工作产物）标签页：
 
-- the experimental flag is on, or
-- the issue already has work products
+- 实验性功能开关开启，或
+- 该 issue 已有工作产物
 
-### Show
+### 展示内容
 
-- current execution workspace summary
-- PR cards
-- preview cards
-- branch/commit rows
-- artifacts/documents
+- 当前执行 workspace 摘要
+- PR 卡片
+- 预览卡片
+- 分支/提交行
+- 构件/文档
 
-Add compact header chips:
+新增头部紧凑标签（chip）：
 
-- codebase
+- 代码库
 - workspace
-- PR count/status
-- preview status
+- PR 数量/状态
+- 预览状态
 
-## 5. Execution workspace detail page
+## 5. 执行 workspace 详情页
 
-Add a detail route but no nav item.
+新增详情路由，但不添加导航入口。
 
-Linked from:
+从以下位置链接跳转：
 
-- issue work product tab
-- project workspace/execution panels
+- issue 工作产物标签页
+- 项目 workspace/执行面板
 
-### Show
+### 展示内容
 
-- identity and status
-- project workspace origin
-- source issue
-- linked issues
-- branch/ref/provider info
-- runtime services
-- work products
-- cleanup state
+- 身份标识与状态
+- 来源项目 workspace
+- 来源 issue
+- 关联 issue
+- 分支/ref/provider 信息
+- 运行时服务
+- 工作产物
+- 清理状态
 
 ## Runtime and Adapter Behavior
 
