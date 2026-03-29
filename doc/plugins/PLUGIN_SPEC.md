@@ -756,11 +756,11 @@ export interface EventFilter {
 2. 运营者必须明确批准新的能力集合
 3. 在批准完成之前，新版本不会进入 `ready` 状态
 
-## 16. Event System
+## 16. 事件系统
 
-The host must emit typed domain events that plugins may subscribe to.
+主机必须发出类型化的领域事件，插件可以订阅这些事件。
 
-Minimum event set:
+最小事件集：
 
 - `company.created`
 - `company.updated`
@@ -784,32 +784,32 @@ Minimum event set:
 - `cost_event.created`
 - `activity.logged`
 
-Each event must include:
+每个事件必须包含：
 
-- event id
-- event type
-- occurred at
-- actor metadata when applicable
-- primary entity metadata
-- typed payload
+- 事件 ID
+- 事件类型
+- 发生时间
+- 适用时的操作者元数据
+- 主要实体元数据
+- 类型化载荷
 
-### 16.1 Event Filtering
+### 16.1 事件过滤
 
-Plugins may provide an optional filter when subscribing to events. The filter is evaluated by the host before dispatching to the worker, so filtered-out events never cross the process boundary.
+插件在订阅事件时可提供可选的过滤器。过滤器在分发给 worker 之前由主机评估，因此被过滤掉的事件永远不会跨越进程边界。
 
-Supported filter fields:
+支持的过滤字段：
 
-- `projectId` — only receive events for a specific project
-- `companyId` — only receive events for a specific company
-- `agentId` — only receive events for a specific agent
+- `projectId` — 仅接收特定项目的事件
+- `companyId` — 仅接收特定公司的事件
+- `agentId` — 仅接收特定 Agent 的事件
 
-Filters are optional. If omitted, the plugin receives all events of the subscribed type. Filters may be combined (e.g. filter by both company and project).
+过滤器是可选的。如果省略，插件将接收所订阅类型的所有事件。过滤器可以组合使用（例如同时按公司和项目过滤）。
 
-### 16.2 Plugin-to-Plugin Events
+### 16.2 插件间事件
 
-Plugins may emit custom events using `ctx.events.emit(name, payload)`. Plugin-emitted events use a namespaced event type: `plugin.<pluginId>.<eventName>`.
+插件可以使用 `ctx.events.emit(name, payload)` 发出自定义事件。插件发出的事件使用命名空间化的事件类型：`plugin.<pluginId>.<eventName>`。
 
-Other plugins may subscribe to these events using the same `ctx.events.on()` API:
+其他插件可以使用相同的 `ctx.events.on()` API 订阅这些事件：
 
 ```ts
 ctx.events.on("plugin.@paperclip/plugin-git.push-detected", async (event) => {

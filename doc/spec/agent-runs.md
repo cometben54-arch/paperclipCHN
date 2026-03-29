@@ -685,9 +685,9 @@ Agent 级控制平面设置（非适配器专属）：
 8. `GET /api/companies/:companyId/events/ws`
    - websocket 流
 
-## 13.2 Mutation logging
+## 13.2 变更日志记录
 
-All wakeup/run state mutations must create `activity_log` entries:
+所有唤醒/运行状态变更必须创建 `activity_log` 条目：
 
 - `wakeup.requested`
 - `wakeup.coalesced`
@@ -697,60 +697,60 @@ All wakeup/run state mutations must create `activity_log` entries:
 - `heartbeat.cancelled`
 - `runtime_state.updated`
 
-## 14. Heartbeat Service Implementation Plan
+## 14. Heartbeat 服务实施计划
 
-## Phase 1: Contracts and schema
+## 第一阶段：合约与 schema
 
-1. Add new DB tables/columns (`agent_runtime_state`, `agent_wakeup_requests`, `heartbeat_run_events`, `heartbeat_runs.log_*` fields).
-2. Add `RunLogStore` interface and configuration wiring.
-3. Add shared types/constants/validators.
-4. Keep existing routes functional during migration.
+1. 添加新 DB 表/列（`agent_runtime_state`、`agent_wakeup_requests`、`heartbeat_run_events`、`heartbeat_runs.log_*` 字段）。
+2. 添加 `RunLogStore` 接口及配置连接。
+3. 添加共享类型/常量/校验器。
+4. 迁移期间保持现有路由可用。
 
-## Phase 2: Wakeup coordinator
+## 第二阶段：唤醒协调器
 
-1. Implement DB-backed wakeup queue.
-2. Convert invoke/wake routes to enqueue with `source=on_demand` and appropriate `triggerDetail`.
-3. Add worker loop to claim and execute queued wakeups.
+1. 实现 DB 支撑的唤醒队列。
+2. 将 invoke/wake 路由转换为以 `source=on_demand` 和相应 `triggerDetail` 入队。
+3. 添加认领并执行排队唤醒的 worker 循环。
 
-## Phase 3: Local adapters
+## 第三阶段：本地适配器
 
-1. Implement `claude-local` adapter.
-2. Implement `codex-local` adapter.
-3. Parse and persist session IDs and token usage.
-4. Wire cancel/timeout/grace behavior.
+1. 实现 `claude-local` 适配器。
+2. 实现 `codex-local` 适配器。
+3. 解析并持久化 session ID 和 token 用量。
+4. 连接取消/超时/优雅停止行为。
 
-## Phase 4: Realtime push
+## 第四阶段：实时推送
 
-1. Implement company websocket hub.
-2. Publish run/agent/issue events.
-3. Update UI pages to subscribe and invalidate/update relevant data.
+1. 实现公司 websocket hub。
+2. 发布运行/agent/issue 事件。
+3. 更新 UI 页面以订阅并使相关数据失效/更新。
 
-## Phase 5: Prompt pills and config UX
+## 第五阶段：提示词 pills 与配置 UX
 
-1. Add adapter-specific config editor with prompt templates.
-2. Add pill insertion and variable validation.
-3. Add sensitive-variable warnings and redaction.
+1. 添加带提示词模板的适配器专属配置编辑器。
+2. 添加 pill 插入和变量校验。
+3. 添加敏感变量警告与脱敏。
 
-## Phase 6: Hardening
+## 第六阶段：加固
 
-1. Add failure/restart recovery sweeps.
-2. Add metadata/full-log retention policies and pruning jobs.
-3. Add integration/e2e coverage for wakeup triggers and live updates.
+1. 添加失败/重启恢复扫描。
+2. 添加元数据/完整日志保留策略和清理任务。
+3. 添加对唤醒触发器和实时更新的集成/端到端覆盖。
 
-## 15. Acceptance Criteria
+## 15. 验收标准
 
-1. Agent with `claude-local` or `codex-local` can run, exit, and persist run result.
-2. Session parameters are persisted per task scope and reused automatically for same-task resumes.
-3. Token usage is persisted per run and accumulated per agent runtime state.
-4. Timer, assignment, on-demand, and automation wakeups all enqueue through one coordinator.
-5. Pause/terminate interrupts running local process and prevents new wakeups.
-6. Browser receives live websocket updates for run status/logs and task/agent changes.
-7. Failed runs expose rich CLI diagnostics in UI with excerpts immediately available and full log retrievable via `RunLogStore`.
-8. All actions remain company-scoped and auditable.
+1. 带有 `claude-local` 或 `codex-local` 的 agent 可以运行、退出并持久化运行结果。
+2. Session 参数按任务范围持久化，并在同任务恢复时自动复用。
+3. Token 用量按运行持久化，并按 agent 运行时状态累计。
+4. 定时器、分配、按需和自动化唤醒均通过一个协调器入队。
+5. 暂停/终止会中断正在运行的本地进程并阻止新唤醒。
+6. 浏览器接收关于运行状态/日志以及任务/agent 变更的实时 websocket 更新。
+7. 失败的运行在 UI 中暴露丰富的 CLI 诊断信息，摘录可立即获取，完整日志可通过 `RunLogStore` 检索。
+8. 所有操作保持公司作用域且可审计。
 
-## 16. Open Questions
+## 16. 待解问题
 
-1. Should timer default be `null` (off until enabled) or `300` seconds by default?
-2. What should the default retention policy be for full log objects vs Postgres metadata?
-3. Should agent API credentials be allowed in prompt templates by default, or require explicit opt-in toggle?
-4. Should websocket be the only realtime channel, or should we also expose SSE for simpler clients?
+1. 定时器默认值应为 `null`（启用前关闭）还是默认 `300` 秒？
+2. 完整日志对象与 Postgres 元数据的默认保留策略应如何？
+3. Agent API 凭据是否默认允许在提示词模板中使用，还是需要显式的选择性启用开关？
+4. Websocket 是否为唯一的实时通道，还是也应为更简单的客户端暴露 SSE？

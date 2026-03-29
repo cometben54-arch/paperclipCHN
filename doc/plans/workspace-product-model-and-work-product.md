@@ -748,21 +748,21 @@ Issue 创建在默认情况下应保持简单。
 - 可选择代码库
 - 可选择执行模式
 
-not:
+而不是：
 
-- choose from a long mixed list of roots, derived worktrees, previews, and branch names
+- 从一个包含根目录、派生 worktree、预览和分支名称的混合长列表中选择
 
-### Migration rule
+### 迁移规则
 
-For existing users, issue creation should continue to look the same until a project explicitly enables richer workspace behavior.
+对于现有用户，issue 创建应继续保持相同的外观，直到项目明确启用更丰富的工作区行为。
 
-## 5. Issue Detail
+## 5. Issue 详情
 
-Issue detail should expose workspace and work product clearly, but without becoming a code host UI.
+Issue 详情应清晰展示工作区和工作成果，但不应变成代码托管 UI。
 
-### Header chips
+### 标题栏标记
 
-Show compact summary chips near the title/status area:
+在标题/状态区域附近显示紧凑的摘要标记：
 
 - `Codebase: Web App`
 - `Workspace: Shared`
@@ -770,16 +770,16 @@ Show compact summary chips near the title/status area:
 - `PR: Open`
 - `Preview: Healthy`
 
-### Tabs
+### 标签页
 
 - `Comments`
 - `Subissues`
 - `Work Product`
 - `Activity`
 
-### `Work Product` tab
+### `Work Product` 标签页
 
-Sections:
+区域：
 
 - `Current workspace`
 - `Previews`
@@ -787,129 +787,129 @@ Sections:
 - `Branches and commits`
 - `Artifacts and documents`
 
-#### Current workspace panel
+#### 当前工作区面板
 
-Fields:
+字段：
 
-- workspace name
-- mode
-- branch
-- base ref
-- last used
-- linked issues count
-- cleanup status
+- 工作区名称
+- 模式
+- 分支
+- 基础 ref
+- 最后使用时间
+- 关联 issue 数量
+- 清理状态
 
-Actions:
+操作：
 
-- `Open workspace details`
-- `Mark in review`
-- `Request cleanup`
+- `打开工作区详情`
+- `标记为审查中`
+- `请求清理`
 
-#### Pull request cards
+#### PR 卡片
 
-Fields:
+字段：
 
-- title
-- provider
-- status
-- review state
-- linked branch
-- open/ready/merged timestamps
+- 标题
+- 提供商
+- 状态
+- 审查状态
+- 关联分支
+- 开启/就绪/合并时间戳
 
-Actions:
+操作：
 
-- `Open PR`
-- `Refresh status`
-- `Request board review`
+- `打开 PR`
+- `刷新状态`
+- `请求看板审查`
 
-#### Preview cards
+#### 预览卡片
 
-Fields:
+字段：
 
-- title
+- 标题
 - URL
-- provider
-- health
-- ownership
-- updated at
+- 提供商
+- 健康状态
+- 所有权
+- 更新时间
 
-Actions:
+操作：
 
-- `Open preview`
-- `Refresh`
-- `Archive`
+- `打开预览`
+- `刷新`
+- `归档`
 
-## 6. Execution Workspace Detail
+## 6. 执行工作区详情
 
-This can be reached from a project code tab or an issue work product tab.
+可以从项目代码标签页或 issue 工作成果标签页进入。
 
-It does not need to be in the main sidebar.
+不需要在主侧边栏中。
 
-### Sections
+### 区域
 
-- identity
-- source issue
-- linked issues
-- branch/ref
-- provider/session identity
-- active runtime services
-- previews
-- PRs
-- cleanup state
-- event/activity history
+- 身份信息
+- 来源 issue
+- 关联 issue
+- 分支/ref
+- 提供商/会话身份
+- 活跃运行时服务
+- 预览
+- PR
+- 清理状态
+- 事件/活动历史
 
-### Motivation
+### 动机
 
-This is where advanced users go when they need to inspect the mechanics. Most users should not need it in normal flow.
+这是高级用户需要检查机制时的去处。大多数用户在正常流程中不需要它。
 
-## 7. Inbox Behavior
+## 7. 收件箱行为
 
-Inbox should surface actionable work product events, not every implementation detail.
+收件箱应展示可操作的工作成果事件，而非每个实现细节。
 
-### Show inbox items for
+### 显示以下收件箱条目
 
-- issue assigned or updated
-- PR needs board review
-- PR opened or marked ready
-- preview unhealthy
-- workspace cleanup failed
-- runtime service failed
-- remote cloud-agent run returned PR or preview that needs review
+- issue 被分配或更新
+- PR 需要看板审查
+- PR 已开启或标记为就绪
+- 预览不健康
+- 工作区清理失败
+- 运行时服务失败
+- 远程云代理运行返回了需要审查的 PR 或预览
 
-### Do not show by default
+### 默认不显示
 
-- every workspace heartbeat
-- every branch update
-- every derived workspace creation
+- 每次工作区心跳
+- 每次分支更新
+- 每次派生工作区创建
 
-### Display style
+### 显示风格
 
-If the inbox item is about a preview or PR, show issue context with it:
+如果收件箱条目是关于预览或 PR 的，一并显示 issue 上下文：
 
-- issue identifier and title
-- parent issue if this is a subissue
-- workspace name if relevant
+- issue 标识符和标题
+- 如果是子 issue 则显示父 issue
+- 相关时显示工作区名称
 
-## 8. Issues List and Kanban
+## 8. Issue 列表和看板
 
-Keep list and board planning-first.
+保持列表和看板以规划为先。
 
-### Default behavior
+### 默认行为
 
-- show top-level issues by default
-- show parent rollups for subissues
-- do not flatten every child execution detail into the main board
+- 默认显示顶级 issue
+- 显示子 issue 的父 issue 汇总
+- 不要将每个子执行细节展平到主看板
 
-### Row/card adornments
+### 行/卡片装饰
 
-For issues with linked work product, show compact badges:
+对于有关联工作成果的 issue，显示紧凑标记：
 
 - `1 PR`
 - `2 previews`
 - `shared workspace`
 - `isolated workspace`
 
-### Optional advanced filters
+### 可选高级过滤器
 
 - `Has PR`
 - `Has preview`

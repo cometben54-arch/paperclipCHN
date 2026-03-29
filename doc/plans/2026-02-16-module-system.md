@@ -625,48 +625,48 @@ pnpm paperclipai store export                  # export current company as templ
 
 ---
 
-## Implementation Plan
+## 实现计划
 
-### Phase 1: Core infrastructure
+### 阶段一：核心基础设施
 
-Add to `@paperclipai/server`:
+添加到 `@paperclipai/server`：
 
-1. **HookBus** — Event emitter with `register()` and `emit()`, using `Promise.allSettled`
-2. **Module loader** — Scans `modules/`, validates manifests, calls `register(api)`
-3. **Module API object** — `registerRoutes()`, `on()`, `registerService()`, logger, core service access
-4. **Module config** — `paperclip.config.json` with per-module config, env var interpolation
-5. **Module migration runner** — Extends `db:migrate` to discover and run module migrations
-6. **Emit hooks from core services** — Add `hookBus.emit()` calls to existing CRUD operations
+1. **HookBus** — 带有 `register()` 和 `emit()` 的事件触发器，使用 `Promise.allSettled`
+2. **模块加载器** — 扫描 `modules/`，验证清单，调用 `register(api)`
+3. **模块 API 对象** — `registerRoutes()`、`on()`、`registerService()`、日志记录器、核心服务访问
+4. **模块配置** — 带有每模块配置和环境变量插值的 `paperclip.config.json`
+5. **模块迁移运行器** — 扩展 `db:migrate` 以发现并运行模块迁移
+6. **从核心服务触发钩子** — 在现有 CRUD 操作中添加 `hookBus.emit()` 调用
 
-Add to `@paperclipai/ui`:
+添加到 `@paperclipai/ui`：
 
-7. **Module page loader** — Reads module manifests, generates lazy routes
-8. **Dashboard widget slots** — Render module-contributed widgets on the Dashboard page
-9. **Sidebar extension** — Dynamically add module nav items
+7. **模块页面加载器** — 读取模块清单，生成懒加载路由
+8. **仪表盘 widget 插槽** — 在仪表盘页面渲染模块贡献的 widget
+9. **侧边栏扩展** — 动态添加模块导航条目
 
-Add new package:
+新增包：
 
-10. **`@paperclipai/module-sdk`** — TypeScript types for `ModuleAPI`, `HookEvent`, `HookHandler`, manifest schema
+10. **`@paperclipai/module-sdk`** — `ModuleAPI`、`HookEvent`、`HookHandler`、清单 schema 的 TypeScript 类型
 
-### Phase 2: First module (observability)
+### 阶段二：第一个模块（可观测性）
 
-11. Build `modules/observability` as the reference implementation
-12. Token metrics table + migration
-13. Heartbeat hook handler recording token usage
-14. Dashboard widget showing burn rate
-15. API routes for querying metrics
+11. 以 `modules/observability` 作为参考实现进行构建
+12. Token 指标表 + 迁移
+13. 记录 token 使用量的心跳钩子处理器
+14. 显示消耗率的仪表盘 widget
+15. 查询指标的 API 路由
 
-### Phase 3: Templates
+### 阶段三：模板
 
-16. Template import endpoint (`POST /api/templates/import`)
-17. Template export endpoint (`GET /api/templates/export`)
-18. First template: "Startup in a Box"
+16. 模板导入端点（`POST /api/templates/import`）
+17. 模板导出端点（`GET /api/templates/export`）
+18. 第一个模板："Startup in a Box"
 
-### Phase 4: Company Store
+### 阶段四：公司商店
 
-19. GitHub-based store index
-20. CLI commands for browse/install/import
-21. UI page for browsing the store
+19. 基于 GitHub 的商店索引
+20. 用于浏览/安装/导入的 CLI 命令
+21. 用于浏览商店的 UI 页面
 
 ---
 

@@ -74,13 +74,13 @@ Paperclip 的 UI 是专业级控制平面，而非玩具式仪表板。它应该
 
 ---
 
-## 3. Sidebar
+## 3. 侧边栏
 
-The sidebar is the primary navigation. It is grouped into logical sections with collapsible headers.
+侧边栏是主要导航区域。它按逻辑分组，每组拥有可折叠的标题。
 
-### 3.1 Company Header
+### 3.1 公司标题栏
 
-Top of sidebar. Always visible.
+位于侧边栏顶部，始终可见。
 
 ```
 ┌─────────────────────────┐
@@ -90,20 +90,20 @@ Top of sidebar. Always visible.
 └─────────────────────────┘
 ```
 
-**Company switcher** is a dropdown button that occupies the full width of the sidebar header. It shows:
-- Company icon (first letter avatar with company color, or uploaded icon)
-- Company name (truncated with ellipsis if long)
-- Chevron-down icon
+**公司切换器（Company switcher）** 是一个占据侧边栏标题全宽的下拉按钮，显示：
+- 公司图标（首字母头像加公司颜色，或上传的图标）
+- 公司名称（过长时用省略号截断）
+- 向下箭头图标
 
-Clicking opens a dropdown with:
-- List of all companies (with status dot: green=active, yellow=paused, gray=archived)
-- Search field at top of dropdown (for users with many companies)
-- Divider
-- `+ Create company` action at the bottom
+点击后展开下拉菜单，包含：
+- 所有公司列表（附状态点：绿色=活跃，黄色=暂停，灰色=已归档）
+- 下拉菜单顶部的搜索框（适用于拥有多个公司的用户）
+- 分隔线
+- 底部的 `+ Create company` 操作
 
-Below the company name, a row of icon buttons:
-- **Search** (magnifying glass icon) — opens Cmd+K search modal
-- **New Issue** (pencil/square-pen icon) — opens new issue modal in the current company context
+公司名称下方有一排图标按钮：
+- **搜索（Search）**（放大镜图标）——打开 Cmd+K 搜索弹窗
+- **新建 Issue（New Issue）**（铅笔/方形笔图标）——在当前公司上下文中打开新建 issue 弹窗
 
 ### 3.2 Personal Section
 

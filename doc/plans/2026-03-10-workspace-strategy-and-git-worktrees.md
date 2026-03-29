@@ -546,64 +546,62 @@ type EffectiveExecutionWorkspaceDecision = {
 };
 ```
 
-## UI Changes
+## UI 变更
 
-### 7. Project settings UI
+### 7. 项目设置 UI
 
-Likely files:
+可能涉及的文件：
 
 - `ui/src/components/ProjectProperties.tsx`
-- project detail/settings pages under `ui/src/pages/`
-- project API client in `ui/src/api/projects.ts`
+- `ui/src/pages/` 下的项目详情/设置页面
+- `ui/src/api/projects.ts` 中的项目 API 客户端
 
-Add a project-owned section:
+添加项目拥有的部分：
 
-- `Execution Workspaces`
-  - enable isolated issue checkouts
-  - default for new issues
-  - implementation type
-  - branch settings
-  - PR settings
-  - cleanup settings
-  - runtime service defaults
+- `执行工作区（Execution Workspaces）`
+  - 启用独立问题检出
+  - 新问题的默认值
+  - 实现类型
+  - 分支设置
+  - PR 设置
+  - 清理设置
+  - 运行时服务默认值
 
-Important UX rule:
+重要的 UX 规则：
 
-- runtime service config should not default to raw JSON
-- if the first cut must use JSON internally, wrap it in a minimal structured form or advanced disclosure
+- 运行时服务配置不应默认为原始 JSON
+- 如果第一步必须在内部使用 JSON，将其包装在最简结构化表单或高级展开区中
 
-### 8. Issue creation/edit UI
+### 8. 问题创建/编辑 UI
 
-Likely files:
+可能涉及的文件：
 
-- issue create UI components and issue detail edit surfaces in `ui/src/pages/`
-- issue API client in `ui/src/api/issues.ts`
+- `ui/src/pages/` 中的问题创建 UI 组件和问题详情编辑界面
+- `ui/src/api/issues.ts` 中的问题 API 客户端
 
-Add:
+添加：
 
-- `Use isolated issue checkout` toggle, only when project policy enables it
-- advanced workspace behavior controls only when expanded
+- `使用独立问题检出（Use isolated issue checkout）` 开关，仅在项目策略启用时显示
+- 仅在展开时显示高级工作区行为控件
 
-Do not show:
+不在默认问题创建流程中显示：
 
-- raw runtime service JSON
-- raw strategy payloads
+- 原始运行时服务 JSON
+- 原始策略载荷
 
-in the default issue creation flow.
+### 9. 代理 UI 清理
 
-### 9. Agent UI cleanup
-
-Files:
+文件：
 
 - `ui/src/adapters/local-workspace-runtime-fields.tsx`
 - `ui/src/adapters/codex-local/config-fields.tsx`
 - `ui/src/adapters/claude-local/config-fields.tsx`
 
-Technical direction:
+技术方向：
 
-- keep the existing config surface as advanced override
-- remove it from the default form flow for local coding agents
-- add explanatory copy that project execution workspace policy is inherited unless overridden
+- 将现有配置界面保持为高级覆盖
+- 将其从本地编码代理的默认表单流程中移除
+- 添加解释性文案，说明项目执行工作区策略将被继承，除非被覆盖
 
 ## Adapter and Orchestration Changes
 

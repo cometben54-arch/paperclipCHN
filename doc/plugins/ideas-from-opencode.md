@@ -506,90 +506,90 @@ Paperclip 已经为项目提供了具体的工作区模型：
 - `project_workspace` 是本地运行时锚点
 - 插件应基于此构建，而不是首先创建一个无关的工作区模型
 
-## 7. Let plugins contribute agent tools
+## 7. 让插件贡献 agent 工具
 
-`opencode` makes tools a first-class extension point. This is one of the highest-value surfaces for Paperclip too.
+`opencode` 将工具视为一等扩展点。对于 Paperclip 而言，这也是价值最高的接口之一。
 
-A Linear plugin should be able to contribute a `search-linear-issues` tool that agents use during runs. A git plugin should contribute `create-branch` and `get-diff`. A file browser plugin should contribute `read-file` and `list-directory`.
+Linear 插件应能贡献一个 `search-linear-issues` 工具供 agent 在运行期间使用。git 插件应贡献 `create-branch` 和 `get-diff`。文件浏览器插件应贡献 `read-file` 和 `list-directory`。
 
-The key constraints:
+关键约束：
 
-- plugin tools are namespaced by plugin ID (e.g. `linear:search-issues`) so they cannot shadow core tools
-- plugin tools require the `agent.tools.register` capability
-- tool execution goes through the same worker RPC boundary as everything else
-- tool results appear in run logs
+- 插件工具按插件 ID 命名空间（例如 `linear:search-issues`），因此不能遮蔽核心工具
+- 插件工具需要 `agent.tools.register` 能力
+- 工具执行通过与其他一切相同的工作进程 RPC 边界进行
+- 工具结果出现在运行日志中
 
-This is a natural fit — the plugin already has the SDK context, the external API credentials, and the domain logic. Wrapping that in a tool definition is minimal additional work for the plugin author.
+这是天然的契合——插件已经拥有 SDK 上下文、外部 API 凭据和领域逻辑。将其包装为工具定义对插件作者来说是最少的额外工作。
 
-## 8. Support plugin-to-plugin events
+## 8. 支持插件间事件
 
-Plugins should be able to emit custom events that other plugins can subscribe to. For example, the git plugin detects a push and emits `plugin.@paperclip/plugin-git.push-detected`. The GitHub Issues plugin subscribes to that event and updates PR links.
+插件应能够发射其他插件可以订阅的自定义事件。例如，git 插件检测到推送并发射 `plugin.@paperclip/plugin-git.push-detected`。GitHub Issues 插件订阅该事件并更新 PR 链接。
 
-This avoids plugins needing to coordinate through shared state or external channels. The host routes plugin events through the same event bus with the same delivery semantics as core events.
+这避免了插件通过共享状态或外部渠道进行协调。宿主通过与核心事件相同的事件总线和相同的交付语义路由插件事件。
 
-Plugin events use a `plugin.<pluginId>.*` namespace so they cannot collide with core events.
+插件事件使用 `plugin.<pluginId>.*` 命名空间，因此不会与核心事件冲突。
 
-## 9. Auto-generate settings UI from config schema
+## 9. 从配置 schema 自动生成设置 UI
 
-Plugins that declare an `instanceConfigSchema` should get an auto-generated settings form for free. The host renders text inputs, dropdowns, toggles, arrays, and secret-ref pickers directly from the JSON Schema.
+声明了 `instanceConfigSchema` 的插件应免费获得一个自动生成的设置表单。宿主直接从 JSON Schema 渲染文本输入框、下拉框、开关、数组和密钥引用选择器。
 
-For plugins that need richer settings UX, they can declare a `settingsPage` extension slot and ship a custom React component. Both approaches coexist.
+对于需要更丰富设置 UX 的插件，可以声明 `settingsPage` 扩展槽并提供自定义 React 组件。两种方式可以共存。
 
-This matters because settings forms are boilerplate that every plugin needs. Auto-generating them from the schema that already exists removes a significant chunk of authoring friction.
+这很重要，因为设置表单是每个插件都需要的样板代码。从已存在的 schema 自动生成它们可以消除相当大的创作摩擦。
 
-## 10. Design for graceful shutdown and upgrade
+## 10. 为优雅停机和升级进行设计
 
-The spec should be explicit about what happens when a plugin worker stops — during upgrades, uninstalls, or instance restarts.
+规范应明确规定当插件工作进程停止时会发生什么——在升级、卸载或实例重启期间。
 
-The recommended policy:
+推荐策略：
 
-- send `shutdown()` with a configurable deadline (default 10 seconds)
-- SIGTERM after deadline, SIGKILL after 5 more seconds
-- in-flight jobs marked `cancelled`
-- in-flight bridge calls return structured errors to the UI
+- 发送 `shutdown()`，带可配置的截止时间（默认 10 秒）
+- 超过截止时间后发送 SIGTERM，再等 5 秒后发送 SIGKILL
+- 进行中的任务标记为 `cancelled`
+- 进行中的 bridge 调用向 UI 返回结构化错误
 
-For upgrades specifically: the old worker drains, the new worker starts. If the new version adds capabilities, it enters `upgrade_pending` until the operator approves.
+对于升级特别而言：旧工作进程排空，新工作进程启动。如果新版本添加了能力，它进入 `upgrade_pending` 状态，直到运营商批准。
 
-## 11. Define uninstall data lifecycle
+## 11. 定义卸载数据生命周期
 
-When a plugin is uninstalled, its data (`plugin_state`, `plugin_entities`, `plugin_jobs`, etc.) should be retained for a grace period (default 30 days), not immediately deleted. The operator can reinstall within the grace period and recover state, or force-purge via CLI.
+当插件被卸载时，其数据（`plugin_state`、`plugin_entities`、`plugin_jobs` 等）应在宽限期内保留（默认 30 天），而不是立即删除。运营商可以在宽限期内重新安装并恢复状态，或通过 CLI 强制清除。
 
-This matters because accidental uninstalls should not cause irreversible data loss.
+这很重要，因为意外卸载不应导致不可逆的数据丢失。
 
-## 12. Invest in plugin observability
+## 12. 投资于插件可观测性
 
-Plugin logs via `ctx.logger` should be stored and queryable from the plugin settings page. The host should also capture raw `stdout`/`stderr` from the worker process as fallback.
+通过 `ctx.logger` 记录的插件日志应被存储，并可从插件设置页面查询。宿主还应捕获工作进程的原始 `stdout`/`stderr` 作为备用。
 
-The plugin health dashboard should show: worker status, uptime, recent logs, job success/failure rates, webhook delivery rates, and resource usage. The host should emit internal events (`plugin.health.degraded`, `plugin.worker.crashed`) that other plugins or dashboards can consume.
+插件健康仪表板应显示：工作进程状态、正常运行时间、最近日志、任务成功/失败率、webhook 交付率和资源使用情况。宿主应发射内部事件（`plugin.health.degraded`、`plugin.worker.crashed`），供其他插件或仪表板消费。
 
-This is critical for operators. Without observability, debugging plugin issues requires SSH access and manual log tailing.
+这对运营商至关重要。没有可观测性，调试插件问题需要 SSH 访问和手动日志追踪。
 
-## 13. Ship a test harness and starter template
+## 13. 提供测试工具和入门模板
 
-A `@paperclipai/plugin-test-harness` package should provide a mock host with in-memory stores, synthetic event emission, and `getData`/`performAction`/`executeTool` simulation. Plugin authors should be able to write unit tests without a running Paperclip instance.
+`@paperclipai/plugin-test-harness` 包应提供一个带内存存储、合成事件发射和 `getData`/`performAction`/`executeTool` 模拟的 mock 宿主。插件作者应能在没有运行中的 Paperclip 实例的情况下编写单元测试。
 
-A `create-paperclip-plugin` CLI should scaffold a working plugin with manifest, worker, UI bundle, test file, and build config.
+`create-paperclip-plugin` CLI 应脚手架一个带 manifest、worker、UI bundle、测试文件和构建配置的可工作插件。
 
-Low authoring friction was called out as one of `opencode`'s best qualities. The test harness and starter template are how Paperclip achieves the same.
+低创作摩擦被称为 `opencode` 最出色的品质之一。测试工具和入门模板是 Paperclip 实现同等品质的方式。
 
-## 14. Support hot plugin lifecycle
+## 14. 支持插件热生命周期
 
-Plugin install, uninstall, upgrade, and config changes should take effect without restarting the Paperclip server. This is critical for developer workflow and operator experience.
+插件安装、卸载、升级和配置更改应在不重启 Paperclip 服务器的情况下生效。这对开发者工作流和运营商体验至关重要。
 
-The out-of-process worker architecture makes this natural:
+进程外工作进程架构使这变得自然：
 
-- **Hot install**: spawn a new worker, register its event subscriptions, job schedules, webhook endpoints, and agent tools in live routing tables, load its UI bundle into the extension slot registry.
-- **Hot uninstall**: graceful shutdown of the worker, remove all registrations from routing tables, unmount UI components, start data retention grace period.
-- **Hot upgrade**: shut down old worker, start new worker, atomically swap routing table entries, invalidate UI bundle cache so the frontend loads the updated bundle.
-- **Hot config change**: write new config to `plugin_config`, notify the running worker via IPC (`configChanged`). The worker applies the change without restarting. If it doesn't handle `configChanged`, the host restarts just that worker.
+- **热安装**：启动新工作进程，在实时路由表中注册其事件订阅、任务计划、webhook 端点和 agent 工具，将其 UI bundle 加载到扩展槽注册表中。
+- **热卸载**：工作进程优雅停机，从路由表中删除所有注册，卸载 UI 组件，开始数据保留宽限期。
+- **热升级**：关闭旧工作进程，启动新工作进程，原子地交换路由表条目，使 UI bundle 缓存失效，以便前端加载更新后的 bundle。
+- **热配置更改**：将新配置写入 `plugin_config`，通过 IPC（`configChanged`）通知运行中的工作进程。工作进程在不重启的情况下应用更改。如果它不处理 `configChanged`，宿主只重启该工作进程。
 
-Frontend cache invalidation uses versioned or content-hashed bundle URLs and a `plugin.ui.updated` event that triggers re-import without a full page reload.
+前端缓存失效使用版本化或内容哈希的 bundle URL 以及触发重新导入而无需整页重载的 `plugin.ui.updated` 事件。
 
-Each worker process is independent — starting, stopping, or replacing one worker never affects any other plugin or the host itself.
+每个工作进程都是独立的——启动、停止或替换一个工作进程永远不会影响任何其他插件或宿主本身。
 
-## 15. Define SDK versioning and compatibility
+## 15. 定义 SDK 版本控制和兼容性
 
-`opencode` does not have a formal SDK versioning story because plugins run in-process and are effectively pinned to the current runtime. Paperclip's out-of-process model means plugins may be built against one SDK version and run on a host that has moved forward. This needs explicit rules.
+`opencode` 没有正式的 SDK 版本控制方案，因为插件在进程内运行，实际上固定在当前运行时。Paperclip 的进程外模型意味着插件可能是针对一个 SDK 版本构建的，但在已向前演进的宿主上运行。这需要明确的规则。
 
 Recommended approach:
 

@@ -168,13 +168,13 @@ Paperclip 应有两个阈值等级：
 - 预算时间线和事件 UI
 - 咨询性配额与可执行预算的区分
 
-## Proposed Data Model
+## 提议的数据模型
 
 ### 1. `budget_policies`
 
-Create a new table for canonical budget definitions.
+创建新表以存储标准预算定义。
 
-Suggested fields:
+建议字段：
 
 - `id`
 - `company_id`
@@ -192,19 +192,19 @@ Suggested fields:
 - `created_at`
 - `updated_at`
 
-Notes:
+说明：
 
-- `scope_type` is one of `company | agent | project`
-- `scope_id` is nullable only for company-level policy if company is implied; otherwise keep it explicit
-- `metric` should start with `billed_cents`
-- `window_kind` starts with `calendar_month_utc | lifetime`
-- `amount` is stored in the natural unit of the metric
+- `scope_type` 为 `company | agent | project` 之一
+- 仅在公司级策略中隐含公司时，`scope_id` 才可为空；否则保持显式
+- `metric` 应从 `billed_cents` 开始
+- `window_kind` 从 `calendar_month_utc | lifetime` 开始
+- `amount` 以该指标的自然单位存储
 
 ### 2. `budget_incidents`
 
-Create a durable record of threshold crossings.
+创建阈值越过的持久化记录。
 
-Suggested fields:
+建议字段：
 
 - `id`
 - `company_id`
@@ -225,46 +225,46 @@ Suggested fields:
 - `created_at`
 - `updated_at`
 
-Notes:
+说明：
 
-- `threshold_type`: `soft | hard`
-- `status`: `open | acknowledged | resolved | dismissed`
-- one open incident per policy per threshold per window prevents duplicate approvals and alert spam
+- `threshold_type`：`soft | hard`
+- `status`：`open | acknowledged | resolved | dismissed`
+- 每个策略每个阈值每个窗口只保留一个 open 事件，防止重复审批和警告泛滥
 
-### 3. Project Pause State
+### 3. 项目暂停状态
 
-Projects need explicit pause semantics.
+项目需要明确的暂停语义。
 
-Recommended approach:
+推荐方式：
 
-- extend project status or add a pause field so a project can be blocked by budget
-- preserve whether the project is paused due to budget versus manually paused
+- 扩展项目状态或添加暂停字段，使项目可被预算阻止
+- 保留项目是因预算暂停还是手动暂停的区分
 
-Preferred shape:
+首选形态：
 
-- keep project workflow status as-is
-- add execution-state fields:
-  - `execution_status`: `active | paused | archived`
-  - `pause_reason`: `manual | budget | system | null`
+- 保持项目工作流状态不变
+- 添加执行状态字段：
+  - `execution_status`：`active | paused | archived`
+  - `pause_reason`：`manual | budget | system | null`
 
-If that is too large for the immediate pass, a smaller version is:
+如果当前阶段范围太大，可采用较小版本：
 
-- add `paused_at`
-- add `pause_reason`
+- 添加 `paused_at`
+- 添加 `pause_reason`
 
-The key requirement is behavioral, not cosmetic:
-Paperclip must know that a project is budget-paused and enforce it.
+关键要求是行为层面，而非表面层面：
+Paperclip 必须知道项目处于预算暂停状态并加以执行。
 
-### 4. Compatibility With Existing Budget Columns
+### 4. 与现有预算字段的兼容性
 
-Existing company and agent monthly budget columns should remain temporarily for compatibility.
+现有公司和代理月度预算字段应暂时保留以保持兼容性。
 
-Migration plan:
+迁移计划：
 
-1. keep reading existing columns during transition
-2. create equivalent `budget_policies` rows
-3. switch enforcement and UI to policies
-4. later remove or deprecate legacy columns
+1. 过渡期间继续读取现有字段
+2. 创建等效的 `budget_policies` 行
+3. 将执行和 UI 切换到策略
+4. 后续移除或弃用遗留字段
 
 ## Budget Engine
 

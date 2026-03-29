@@ -230,32 +230,32 @@ export interface MemoryAdapter {
 }
 ```
 
-This contract intentionally does not force a provider to expose its internal graph, filesystem, or ontology.
+该契约有意不强制要求提供商暴露其内部图结构、文件系统或本体论。
 
-## Optional Adapter Surfaces
+## 可选的适配器接口
 
-These should be capability-gated, not required:
+以下接口应基于能力声明来开放，而非强制要求：
 
-- `browse(scope, filters)` for file-system / graph / timeline inspection
-- `correct(handle, patch)` for natural-language correction flows
-- `profile(scope)` when the provider can synthesize stable preferences or summaries
-- `sync(source)` for connectors or background ingestion
-- `explain(queryResult)` for providers that can expose retrieval traces
+- `browse(scope, filters)`：用于文件系统 / 图结构 / 时间线检查
+- `correct(handle, patch)`：用于自然语言纠错流程
+- `profile(scope)`：当提供商能够合成稳定的偏好或摘要时使用
+- `sync(source)`：用于连接器或后台数据摄取
+- `explain(queryResult)`：用于能够暴露检索追踪信息的提供商
 
-## What Paperclip Should Persist
+## Paperclip 应持久化的内容
 
-Paperclip should not mirror the full provider memory corpus into Postgres unless the provider is a Paperclip-managed local provider.
+除非提供商是由 Paperclip 管理的本地提供商，否则 Paperclip 不应将提供商的完整记忆语料库镜像到 Postgres。
 
-Paperclip core should persist:
+Paperclip 核心应持久化：
 
-- memory bindings and overrides
-- provider keys and capability metadata
-- normalized memory operation logs
-- provider record handles returned by operations when available
-- source references back to issue comments, documents, runs, and activity
-- usage and cost data
+- 记忆绑定及其覆盖配置
+- 提供商键名和能力元数据
+- 规范化的记忆操作日志
+- 操作返回的提供商记录句柄（如有）
+- 指向工单评论、文档、运行和活动的来源引用
+- 使用量和成本数据
 
-For external providers, the memory payload itself can remain in the provider.
+对于外部提供商，记忆的实际内容可以保留在提供商侧。
 
 ## Hook Model
 
