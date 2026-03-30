@@ -198,8 +198,9 @@ export async function execute(ctx: AdapterExecutionContext): Promise<AdapterExec
     const graceSec = asNumber(config.graceSec, 20);
     const extraArgs = (() => {
       const fromExtraArgs = asStringArray(config.extraArgs);
-      if (fromExtraArgs.length > 0) return fromExtraArgs;
-      return asStringArray(config.args);
+      const raw = fromExtraArgs.length > 0 ? fromExtraArgs : asStringArray(config.args);
+      // Filter out args that belong to other adapters (e.g. Claude Code's --dangerously-skip-permissions)
+      return raw.filter((arg) => !arg.includes("dangerously-skip-permissions"));
     })();
 
     const runtimeSessionParams = parseObject(runtime.sessionParams);
